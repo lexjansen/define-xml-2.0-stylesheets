@@ -50,6 +50,9 @@
   <!-- Display Length, DisplayFormat and Significant Digits (0/1)? -->
   <xsl:param name="displayLengthDFormatSD" select="0" />
   
+  <!-- Display Other documents (0/1)? -->
+  <xsl:param name="displayOtherDocuments" select="1" />
+  
   <!-- ********************************************************************************************************* -->
   <!-- File:        define2-0.xsl                                                                                -->
   <!-- Description: This stylesheet works with the Define-XML 2.0.x specification, including the Analysis        -->
@@ -57,6 +60,7 @@
   <!-- Author:      Lex Jansen, CDISC Data Exchange Standards Team                                               -->
   <!--                                                                                                           -->  
   <!-- Changes:                                                                                                  -->
+  <!--   2020-09-11 - Added option to show other documents                                                       -->
   <!--   2018-11-21 - Code cleanup                                                                               -->
   <!--   2018-10-24 - Added PublishingSet to Standard display in CodeLists (Draft Define-XML 2.1)                -->
   <!--   2018-08-09 - Fixed issue when there is no ItemGroupDef/@def:ArchiveLocationID                           -->
@@ -229,6 +233,10 @@
   <xsl:variable name="g_seqCommentDefs" select="$g_MetaDataVersion/def:CommentDef"/>
   <xsl:variable name="g_seqWhereClauseDefs" select="$g_MetaDataVersion/def:WhereClauseDef"/>
   <xsl:variable name="g_seqleafs" select="$g_MetaDataVersion/def:leaf"/>
+
+  <xsl:variable name="g_seqOtherDocuments" select="$g_MetaDataVersion/def:leaf[not(@ID =$g_MetaDataVersion/*/def:DocumentRef/@leafID)]"/>
+
+  
   
   <xsl:variable name="g_StandardName">
     <xsl:choose>
@@ -534,8 +542,29 @@
             </li>
           </xsl:if>
         </xsl:if>
+
+        <!-- **************************************************** -->
+        <!-- ****************** Display Other Documents********** -->
+        <!-- **************************************************** -->
+        <xsl:if test="$displayOtherDocuments = '1' and $g_seqOtherDocuments">
+          <li class="hmenu-submenu">
+            <span onclick="toggle_submenu(this);" class="hmenu-bullet">+</span>
+            <a class="tocItem">Other Documents</a>
+            <ul>
+              <xsl:for-each select="$g_seqOtherDocuments">
+                <li class="hmenu-item">
+                  <span class="hmenu-bullet">+</span>
+                  <a class="external tocItem">
+                    <xsl:attribute name="href"><xsl:value-of select="@xlink:href"/></xsl:attribute>
+                    <xsl:value-of select="def:title"/>
+                  </a>
+                </li>
+              </xsl:for-each>
+            </ul>
+          </li>
+        </xsl:if>
       </ul>
- 
+
       <!-- **************************************************** -->
       <!-- ****************** VLM toggles ********************* -->
       <!-- **************************************************** -->
