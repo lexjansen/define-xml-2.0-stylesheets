@@ -60,6 +60,7 @@
   <!-- Author:      Lex Jansen, CDISC Data Exchange Standards Team                                               -->
   <!--                                                                                                           -->
   <!-- Changes:                                                                                                  -->
+  <!--   2020-09-18 - Added HTML language tag                                                                    -->
   <!--   2020-07-15 - Added interfaceLang parameter                                                              -->
   <!--   2019-02-11 - Fixed window title in browser                                                              -->
   <!--   2018-11-21 - Code cleanup                                                                               -->
@@ -192,7 +193,7 @@
   
   <!-- Global Variables (constants) -->
 
-  <xsl:variable name="STYLESHEET_VERSION" select="'2020-09-09'"/>
+  <xsl:variable name="STYLESHEET_VERSION" select="'2020-09-18'"/>
   
   <!-- XSLT 1.0 does not support the function 'upper-case()', so we need to use the 'translate() function, 
     which uses the variables $lowercase and $uppercase. -->
@@ -542,7 +543,17 @@
   <!-- Create the HTML elemnt                                            -->
   <!-- ***************************************************************** -->
   <xsl:template match="/">
-    <html lang="en">
+
+    <xsl:element name="html">
+      
+    <xsl:choose>
+      <xsl:when test="$interfaceLang = '' or $interfaceLang = '&quot;&quot;' or not($interfaceLang)">
+          <xsl:attribute name="lang"><xsl:value-of select="en"/></xsl:attribute>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:attribute name="lang"><xsl:value-of select="$interfaceLang"/></xsl:attribute>
+      </xsl:otherwise>
+    </xsl:choose>
       
       <xsl:call-template name="displaySystemProperties"/>
       <xsl:call-template name="displayParameters"/>
@@ -554,7 +565,8 @@
         <xsl:call-template name="generateMain"/>
 
       </body>
-    </html>
+      
+    </xsl:element>
   </xsl:template>
 
   <!-- ************************************************************* -->
