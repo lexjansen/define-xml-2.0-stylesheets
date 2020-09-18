@@ -1,57 +1,56 @@
 @echo off
 
-set project=C:\_projects\define-xml-2.0-stylesheets
+set project=.
 
-set Jars=C:\Program Files\SASHome\SASGraphJavaApplets\9.4
-set classpath=%classpath%;C:\Apache\SaxonHE9-9-1-7J\saxon9he.jar
+set classpath=%classpath%;..\lib\SaxonHE9-9-1-7J\saxon9he.jar
 
-set stylesheet=%project%\localization\stylesheets\define2-0.xsl
+set stylesheet=%project%\stylesheets\define2-0.xsl
 
 set log="%~n0.log"
 echo.>%log%
 
 
-call :transform arm-ja %project%\localization\xml\define.cdisc.adam.xml %stylesheet% %project%\localization\html\define.cdisc.adam_ja.html "interfaceLang=ja"
-call :transform arm-zh %project%\localization\xml\define.cdisc.adam.xml %stylesheet% %project%\localization\html\define.cdisc.adam_zh.html "interfaceLang=zh"
-call :transform arm-en %project%\localization\xml\define.cdisc.adam.xml %stylesheet% %project%\localization\html\define.cdisc.adam_en.html "interfaceLang=en"
-call :transform arm    %project%\localization\xml\define.cdisc.adam.xml %stylesheet% %project%\localization\html\define.cdisc.adam_default.html
+call :transform arm-ja %project%\xml\define.cdisc.adam.xml %stylesheet% %project%\html\define.cdisc.adam_ja.html "interfaceLang=ja"
+call :transform arm-zh %project%\xml\define.cdisc.adam.xml %stylesheet% %project%\html\define.cdisc.adam_zh.html "interfaceLang=zh"
+call :transform arm-en %project%\xml\define.cdisc.adam.xml %stylesheet% %project%\html\define.cdisc.adam_en.html "interfaceLang=en"
+call :transform arm    %project%\xml\define.cdisc.adam.xml %stylesheet% %project%\html\define.cdisc.adam_default.html
 
-call :transform arm-ja %project%\localization\xml\define.cdisc.arm.xml %stylesheet% %project%\localization\html\define.cdisc.arm_ja.html "interfaceLang=ja"
-call :transform arm-zh %project%\localization\xml\define.cdisc.arm.xml %stylesheet% %project%\localization\html\define.cdisc.arm_zh.html "interfaceLang=zh"
-call :transform arm-en %project%\localization\xml\define.cdisc.arm.xml %stylesheet% %project%\localization\html\define.cdisc.arm_en.html "interfaceLang=en"
-call :transform arm    %project%\localization\xml\define.cdisc.arm.xml %stylesheet% %project%\localization\html\define.cdisc.arm_default.html
+call :transform arm-ja %project%\xml\define.cdisc.arm.xml %stylesheet% %project%\html\define.cdisc.arm_ja.html "interfaceLang=ja"
+call :transform arm-zh %project%\xml\define.cdisc.arm.xml %stylesheet% %project%\html\define.cdisc.arm_zh.html "interfaceLang=zh"
+call :transform arm-en %project%\xml\define.cdisc.arm.xml %stylesheet% %project%\html\define.cdisc.arm_en.html "interfaceLang=en"
+call :transform arm    %project%\xml\define.cdisc.arm.xml %stylesheet% %project%\html\define.cdisc.arm_default.html
 
-call :transform sdtm-ja %project%\localization\xml\define.cdisc.sdtm.xml %stylesheet% %project%\localization\html\define.cdisc.sdtm_ja.html "interfaceLang=ja"
-call :transform sdtm-zh %project%\localization\xml\define.cdisc.sdtm.xml %stylesheet% %project%\localization\html\define.cdisc.sdtm_zh.html "interfaceLang=zh"
-call :transform sdtm-en %project%\localization\xml\define.cdisc.sdtm.xml %stylesheet% %project%\localization\html\define.cdisc.sdtm_en.html "interfaceLang=en"
-call :transform sdtm    %project%\localization\xml\define.cdisc.sdtm.xml %stylesheet% %project%\localization\html\define.cdisc.sdtm_default.html
+call :transform sdtm-ja %project%\xml\define.cdisc.sdtm.xml %stylesheet% %project%\html\define.cdisc.sdtm_ja.html "interfaceLang=ja"
+call :transform sdtm-zh %project%\xml\define.cdisc.sdtm.xml %stylesheet% %project%\html\define.cdisc.sdtm_zh.html "interfaceLang=zh"
+call :transform sdtm-en %project%\xml\define.cdisc.sdtm.xml %stylesheet% %project%\html\define.cdisc.sdtm_en.html "interfaceLang=en"
+call :transform sdtm    %project%\xml\define.cdisc.sdtm.xml %stylesheet% %project%\html\define.cdisc.sdtm_default.html
 
-call :transform sdtm-ja %project%\localization\xml\define.phuse.test.xml %stylesheet% %project%\localization\html\define.phuse.test_ja.html "interfaceLang=ja"
-call :transform sdtm-zh %project%\localization\xml\define.phuse.test.xml %stylesheet% %project%\localization\html\define.phuse.test_zh.html "interfaceLang=zh"
-call :transform sdtm-en %project%\localization\xml\define.phuse.test.xml %stylesheet% %project%\localization\html\define.phuse.test_en.html "interfaceLang=en"
-call :transform sdtm    %project%\localization\xml\define.phuse.test.xml %stylesheet% %project%\localization\html\define.phuse.test_default.html
+call :transform sdtm-ja %project%\xml\define.phuse.test.xml %stylesheet% %project%\html\define.phuse.test_ja.html "interfaceLang=ja"
+call :transform sdtm-zh %project%\xml\define.phuse.test.xml %stylesheet% %project%\html\define.phuse.test_zh.html "interfaceLang=zh"
+call :transform sdtm-en %project%\xml\define.phuse.test.xml %stylesheet% %project%\html\define.phuse.test_en.html "interfaceLang=en"
+call :transform sdtm    %project%\xml\define.phuse.test.xml %stylesheet% %project%\html\define.phuse.test_default.html
   
 
 
-call :transform2 arm-ja %project%\localization\xml\define.cdisc.adam.xml %stylesheet% %project%\localization\html\define.cdisc.adam.parameters_ja.html "interfaceLang=ja"
-call :transform2 arm-zh %project%\localization\xml\define.cdisc.adam.xml %stylesheet% %project%\localization\html\define.cdisc.adam.parameters_zh.html "interfaceLang=zh"
-call :transform2 arm-en %project%\localization\xml\define.cdisc.adam.xml %stylesheet% %project%\localization\html\define.cdisc.adam.parameters_en.html "interfaceLang=en"
-call :transform2 arm    %project%\localization\xml\define.cdisc.adam.xml %stylesheet% %project%\localization\html\define.cdisc.adam.parameters_default.html
+call :transform2 arm-ja %project%\xml\define.cdisc.adam.xml %stylesheet% %project%\html\define.cdisc.adam.parameters_ja.html "interfaceLang=ja"
+call :transform2 arm-zh %project%\xml\define.cdisc.adam.xml %stylesheet% %project%\html\define.cdisc.adam.parameters_zh.html "interfaceLang=zh"
+call :transform2 arm-en %project%\xml\define.cdisc.adam.xml %stylesheet% %project%\html\define.cdisc.adam.parameters_en.html "interfaceLang=en"
+call :transform2 arm    %project%\xml\define.cdisc.adam.xml %stylesheet% %project%\html\define.cdisc.adam.parameters_default.html
 
-call :transform2 arm-ja %project%\localization\xml\define.cdisc.arm.xml %stylesheet% %project%\localization\html\define.cdisc.arm.parameters_ja.html "interfaceLang=ja"
-call :transform2 arm-zh %project%\localization\xml\define.cdisc.arm.xml %stylesheet% %project%\localization\html\define.cdisc.arm.parameters_zh.html "interfaceLang=zh"
-call :transform2 arm-en %project%\localization\xml\define.cdisc.arm.xml %stylesheet% %project%\localization\html\define.cdisc.arm.parameters_en.html "interfaceLang=en"
-call :transform2 arm    %project%\localization\xml\define.cdisc.arm.xml %stylesheet% %project%\localization\html\define.cdisc.arm.parameters_default.html
+call :transform2 arm-ja %project%\xml\define.cdisc.arm.xml %stylesheet% %project%\html\define.cdisc.arm.parameters_ja.html "interfaceLang=ja"
+call :transform2 arm-zh %project%\xml\define.cdisc.arm.xml %stylesheet% %project%\html\define.cdisc.arm.parameters_zh.html "interfaceLang=zh"
+call :transform2 arm-en %project%\xml\define.cdisc.arm.xml %stylesheet% %project%\html\define.cdisc.arm.parameters_en.html "interfaceLang=en"
+call :transform2 arm    %project%\xml\define.cdisc.arm.xml %stylesheet% %project%\html\define.cdisc.arm.parameters_default.html
 
-call :transform2 sdtm-ja %project%\localization\xml\define.cdisc.sdtm.xml %stylesheet% %project%\localization\html\define.cdisc.sdtm.parameters_ja.html "interfaceLang=ja"
-call :transform2 sdtm-zh %project%\localization\xml\define.cdisc.sdtm.xml %stylesheet% %project%\localization\html\define.cdisc.sdtm.parameters_zh.html "interfaceLang=zh"
-call :transform2 sdtm-en %project%\localization\xml\define.cdisc.sdtm.xml %stylesheet% %project%\localization\html\define.cdisc.sdtm.parameters_en.html "interfaceLang=en"
-call :transform2 sdtm    %project%\localization\xml\define.cdisc.sdtm.xml %stylesheet% %project%\localization\html\define.cdisc.sdtm.parameters_default.html
+call :transform2 sdtm-ja %project%\xml\define.cdisc.sdtm.xml %stylesheet% %project%\html\define.cdisc.sdtm.parameters_ja.html "interfaceLang=ja"
+call :transform2 sdtm-zh %project%\xml\define.cdisc.sdtm.xml %stylesheet% %project%\html\define.cdisc.sdtm.parameters_zh.html "interfaceLang=zh"
+call :transform2 sdtm-en %project%\xml\define.cdisc.sdtm.xml %stylesheet% %project%\html\define.cdisc.sdtm.parameters_en.html "interfaceLang=en"
+call :transform2 sdtm    %project%\xml\define.cdisc.sdtm.xml %stylesheet% %project%\html\define.cdisc.sdtm.parameters_default.html
 
-call :transform2 sdtm-ja %project%\localization\xml\define.phuse.test.xml %stylesheet% %project%\localization\html\define.phuse.test.parameters_ja.html "interfaceLang=ja"
-call :transform2 sdtm-zh %project%\localization\xml\define.phuse.test.xml %stylesheet% %project%\localization\html\define.phuse.test.parameters_zh.html "interfaceLang=zh"
-call :transform2 sdtm-en %project%\localization\xml\define.phuse.test.xml %stylesheet% %project%\localization\html\define.phuse.test.parameters_en.html "interfaceLang=en"
-call :transform2 sdtm    %project%\localization\xml\define.phuse.test.xml %stylesheet% %project%\localization\html\define.phuse.test.parameters_default.html
+call :transform2 sdtm-ja %project%\xml\define.phuse.test.xml %stylesheet% %project%\html\define.phuse.test.parameters_ja.html "interfaceLang=ja"
+call :transform2 sdtm-zh %project%\xml\define.phuse.test.xml %stylesheet% %project%\html\define.phuse.test.parameters_zh.html "interfaceLang=zh"
+call :transform2 sdtm-en %project%\xml\define.phuse.test.xml %stylesheet% %project%\html\define.phuse.test.parameters_en.html "interfaceLang=en"
+call :transform2 sdtm    %project%\xml\define.phuse.test.xml %stylesheet% %project%\html\define.phuse.test.parameters_default.html
   
 type %log%
 
