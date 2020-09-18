@@ -234,7 +234,7 @@
   <xsl:variable name="g_seqWhereClauseDefs" select="$g_MetaDataVersion/def:WhereClauseDef"/>
   <xsl:variable name="g_seqleafs" select="$g_MetaDataVersion/def:leaf"/>
 
-  <xsl:variable name="g_seqOtherDocuments" select="$g_MetaDataVersion/def:leaf[not(@ID =$g_MetaDataVersion/*/def:DocumentRef/@leafID)]"/>
+  <xsl:variable name="g_seqOtherDocuments" select="$g_MetaDataVersion/def:leaf[not(@ID =$g_MetaDataVersion/def:AnnotatedCRF/def:DocumentRef/@leafID or @ID =$g_MetaDataVersion/def:SupplementalDoc/def:DocumentRef/@leafID)]"/>
 
   
   
