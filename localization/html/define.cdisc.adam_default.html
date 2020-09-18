@@ -1,0 +1,767 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<!--
+  xsl:version = "2.0"
+  xsl:vendor = "Saxonica"
+  xsl:vendor-url = "http://www.saxonica.com/"
+-->
+<!--
+  nCodeListItemDisplay = 5
+  displayCommentsTable = 0
+  displayMethodsTable = 1
+  displayPrefix = 0
+  displayLengthDFormatSD = 0
+  interfaceLang = "en"
+-->
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Script-Type" content="text/javascript">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title>CDISC-Sample: ADaM-IG 1.0</title>
+<script type="text/javascript">
+<!--
+/**
+ * With one argument, return the textContent or innerText of the element.
+ * With two arguments, set the textContent or innerText of element to value.
+ */
+function textContent(element, value) {
+  "use strict";
+  var rtn;
+  var content = element.textContent;  // Check if textContent is defined
+  if (value === undefined) { // No value passed, so return current text
+    if (content !== undefined) {
+      rtn = content;
+    } else {
+      rtn = element.innerText;
+    }
+    return rtn;
+  }
+  else { // A value was passed, so set text
+    if (content !== undefined) {
+      element.textContent = value;
+    } else {
+      element.innerText = value;
+    }
+  }
+}
+
+var ITEM  = '\u00A0';
+var CLOSE = '\u25BA';
+var OPEN  = '\u25BC';
+
+function toggle_submenu(e) {
+  "use strict";
+  if (textContent(e)===OPEN) {
+    textContent(e, CLOSE);
+  }
+  else {
+    textContent(e, OPEN);
+  }
+
+  var i;
+  for (i=0; i < e.parentNode.childNodes.length; i++) {
+    var c;
+    c=e.parentNode.childNodes[i];
+    if (c.tagName==='UL') {c.style.display=(c.style.display==='none') ? 'block' : 'none';}
+   }
+}
+
+function reset_menus() {
+"use strict";
+  var li;
+  var c;
+  var i;
+  var j;
+  var li_tags = document.getElementsByTagName('LI');
+  for (i=0; i < li_tags.length; i++) {
+    li=li_tags[i];
+    if ( li.className.match('hmenu-item') ){
+      for (j=0; j < li.childNodes.length; j++) {
+        c=li.childNodes[j];
+        if ( c.tagName === 'SPAN' && c.className.match('hmenu-bullet') ) {textContent(c, ITEM);}
+        }
+      }
+    if ( li.className.match('hmenu-submenu') ) {
+      for (j=0; j < li.childNodes.length; j++) {
+        c=li.childNodes[j];
+        if ( c.tagName === 'SPAN' && c.className.match('hmenu-bullet') ) {textContent(c, CLOSE);}
+        else if ( c.tagName === 'UL' ) { c.style.display = 'none'; }
+        }
+    }
+  }
+}
+
+function toggle_vlm(element) {
+  var child_id = element.childNodes[0].getAttribute("id");
+  var vlm_rows = document.getElementsByClassName(child_id);
+  for (j=0; j < vlm_rows.length; j++) {
+    if (vlm_rows[j].style.display==='none') {
+      vlm_rows[j].style.display=''; }
+    else {
+      vlm_rows[j].style.display='none'; 
+      }
+    }
+}
+
+function expand_all_vlm() {
+  var vlm_rows = document.getElementsByClassName("vlm");
+  for (j=0; j < vlm_rows.length; j++) {
+      vlm_rows[j].style.display='';
+    }
+}
+
+function collapse_all_vlm() {
+  var vlm_rows = document.getElementsByClassName("vlm");
+  for (j=0; j < vlm_rows.length; j++) {
+      vlm_rows[j].style.display='none';
+    }
+}
+
+/**
+ * Open external documents (PDFs, ...) in a new window.
+ */
+document.onclick = function(e)
+{
+  var target = e ? e.target : window.event.srcElement;    
+  while (target && !/^(a|body)$/i.test(target.nodeName))
+  {
+    target = target.parentNode;
+  }
+
+  if (target && target.className.match('external'))
+  {
+    var external = window.open(target.href);
+    return external.closed;
+  }
+}
+//-->
+</script>
+  <style type="text/css">
+      .external-link-gif{
+        background: 
+        url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9gCGhErDWL4mOoAAAB6SURBVBjTbVCxDcAgDHNRP2KDY9gYO5YbWNno1mPY6E3pAJEIYCmCOCQOPogII6wNkug4d49KiXMz1EiUEg8uLBN3Ui7FVduYmxjG3JRru+facubVuIdLEV4Dzwe8V4BYg7t4Ap+d57qUnuWICBzi116v1ggfd3bM+AEZWXFvnym8EwAAAABJRU5ErkJggg==)
+       no-repeat
+       right center;
+        padding: 8px;
+      }      
+      
+      body{
+        background-color: #FFFFFF;
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        padding: 30px;
+      }
+      
+      h1{
+        font-size: 1.6em;
+        margin-left: 0;
+        font-weight: bolder;
+        text-align: left;
+        color: #696969;
+      }
+      
+      h1.header{
+        text-align: center;
+      }
+      
+      ul{
+        margin-left: 0px;
+      }
+      
+      a{
+      color: #0000FF;
+        text-decoration: underline;
+      }
+      a.visited{
+      color: #551A8B;
+        text-decoration: underline;
+      }
+      a:hover{
+      color: #FF9900;
+        text-decoration: underline;
+      }
+      a.tocItem{
+      color: #004A95;
+      text-decoration: none;
+      margin-top: 2px;
+      font-size: 1.4em;
+      }
+      .tocItem{
+      text-decoration: none;
+      margin-top: 2px;
+      font-size: 1.4em;
+      }
+      
+      #menu{
+        position: fixed;
+        left: 0px;
+        top: 10px;
+        width: 20%;
+        height: 96%;
+        bottom: 0px;
+        overflow: auto;
+        background-color: #FFFFFF;
+        color: #000000;
+        border: 0px;
+        text-align: left;
+        white-space: nowrap;
+      }
+ 
+      .hmenu li{
+        list-style-type: none;
+        line-height: 200%;
+        padding-left: 0;
+      }
+      .hmenu ul{
+        padding-left: 14px;
+        margin-left: 0;
+      }
+      .hmenu-item{
+      }
+      .hmenu-submenu{
+      }
+      .hmenu-bullet{
+        float: left;
+        width: 16px;
+        color: #AAAAAA;
+        font-size: 1.2em;
+      }
+      
+      div.buttons {
+        padding: 5px 0 5px 40px;
+        display: inline-block;
+      }
+        div.button {
+        padding: 5px 0 5px 0;   
+      }
+      
+      button { 
+        width: 100%;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+        -webkit-box-shadow: 3px 3px 2px #888;
+        -moz-box-shadow: 3px 3px 2px #888;
+        box-shadow: 3px 3px 2px #888;
+        padding: 4px 16px 4px 16px;
+        display:block;
+        cursor: pointer;
+      }
+
+      #main{
+        position: absolute;
+        left: 22%;
+        top: 0px;
+        overflow: auto;
+        background-color: #FFFFFF;
+        color: #000000;
+        float: none !important;
+      }
+      
+      ul.codelist{
+        padding: 1px;
+        margin-left: 1px;
+        margin-right: 1px;
+        margin-top: 1px;
+        margin-bottom: 1px;
+        
+      }
+      .codelist li{
+        list-style-type:none;
+        line-height: 200%;
+        padding-left: 0;
+        text-indent: -4px;
+      }
+      
+      .codelist-caption{
+        font-size: 1.4em;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        margin-left: 0;
+        font-weight: bolder;
+        text-align: left;
+        color: #696969;
+      }
+      
+      .codelist-item{
+        list-style-type: disk;
+        list-style-position: inside;
+        padding-left: 0;
+        padding-right: 0;
+        margin: 0 0 0 0;
+        }
+
+      .codelist-item-decode{
+        white-space: pre; /* CSS 2.0 */
+        white-space: pre-wrap; /* CSS 2.1 */
+         /* CSS 3.0 */
+        white-space: -pre-wrap; /* Opera 4-6 */
+        white-space: -o-pre-wrap; /* Opera 7 */
+        white-space: -moz-pre-wrap; /* Mozilla */
+        white-space: -hp-pre-wrap; /* HP Printers */
+        word-wrap: break-word; /* IE 5+ */
+      }      
+
+      ul.SubClass {
+        list-style-type: '- ';
+        padding-left: 5;
+        margin: 0 0 0 0;
+      }
+      ul.SubClass.li {}
+
+      #main .docinfo{
+        width: 95%;
+        text-align: right;
+        padding: 0px 5px;
+      }
+      
+      div.containerbox{
+        padding: 0px;
+        margin: 10px auto;
+        border: 0px;
+        page-break-after: always;
+      }
+      
+      .study-name{
+        font-size: 1.6em;
+        font-weight: bold;
+        text-align: left;
+        padding: 15px;
+        margin-left: 20px;
+        margin-top: 40px;
+        margin-right: 20px;
+        margin-bottom: 20px;
+        color: #696969;
+        border: 0px;
+      }
+      
+      div.study-metadata{
+        font-size: 1.6em;
+        font-weight: bold;
+        text-align: left;
+        padding: 0px;
+        margin-left: 0px;
+        margin-top: 00px;
+        margin-right: 0px;
+        margin-bottom: 0px;
+        color: #696969;
+        border: 0px;
+      }
+      
+      dl.study-metadata{
+        width: 95%;
+        padding: 5px 0px;
+        font-size: 0.8em;
+        color: black;
+      }
+      
+      dl.study-metadata dt{
+        clear: left;
+        float: left;
+        width: 200px;
+        margin: 0;
+        padding: 5px 5px 5px 0px;
+        font-weight: bold;
+      }
+      
+      dl.study-metadata dd{
+        margin-left: 210px;
+        padding: 5px;
+        font-weight: normal;
+        min-height: 20px;
+      }
+      
+      div.codelist{
+        page-break-after: avoid;
+      }
+      
+      div.qval-indent {
+      margin-left: 20px;
+      }
+      
+      div.qval-indent2 {
+      margin-left: 40px;
+      }
+      
+      table{
+        width: 95%;
+        border-spacing: 4px;
+        border: 1px solid #000000;
+        background-color: #EEEEEE;
+        margin-top: 5px;
+        border-collapse: collapse;
+        padding: 5px;
+        empty-cells: show;
+      }
+      
+      table caption{
+        border: 0px;
+        left: 20px;
+        font-size: 1.4em;
+        font-weight: bolder;
+        color: #696969;
+        margin: 10px auto;
+        text-align: left;
+      }
+      
+      .description{
+        margin-left: 0px;
+        color: black;
+        font-weight: normal;
+        font-size: 0.85em;
+      }
+      
+      table caption .dataset{
+        font-weight: normal;
+        float: right;
+      }
+
+      table caption.header{
+        font-size: 1.6em;
+        margin-left: 0;
+        font-weight: bolder;
+        text-align: center;
+        color: #696969;
+      }
+      
+      table tr{
+        border: 1px solid #000000;
+      }
+      
+      table tr.header{
+        background-color: #6699CC;
+        color: #FFFFFF;
+        font-weight: bold;
+      }
+      
+      table th{
+        font-weight: bold;
+        vertical-align: top;
+        text-align: left;
+        padding: 5px;
+        border: 1px solid #000000;
+        font-size: 1.3em;
+      }
+      
+      table th.codedvalue{
+        width: 20%;
+      }
+      table th.length{
+        width: 7%;
+      }
+ 
+      table th.label{
+        width: 13%;
+      }
+ 
+      table td{
+        vertical-align: top;
+        padding: 5px;
+        border: 1px solid #000000;
+        font-size: 1.2em;
+        line-height: 150%;
+      }
+
+      table td.datatype{
+        text-align: left;
+      }
+      table td.role{
+        text-align: left;
+      }
+      table td.number{
+        text-align: right;
+      }
+      
+      tr.tablerowodd{
+        background-color: #FFFFFF;
+      }
+      tr.tableroweven{
+        background-color: #EEEEEE;
+      }
+      
+      .linebreakcell{
+        vertical-align: top;
+        margin-top: 3px;
+        margin-bottom: 3px;
+      }
+      
+      .nci,
+      .extended{
+        font-style: italic;
+      }
+      .super{
+        vertical-align: super;
+      }
+      .footnote{
+        font-size: 1.2em;
+      }
+      
+      .valuelist-reference{
+      vertical-align: super;
+      font-size: 0.8em;
+      padding-left: 5px;
+      cursor: pointer;
+      }
+      
+      .valuelist-no-reference{
+      vertical-align: super;
+      font-size: 0.8em;
+      padding-left: 5px;
+      }
+      
+      div.formalexpression{
+        margin-top: 6px;
+        margin-bottom: 6px;      
+      }
+
+      span.label{
+        font-weight: bold;      
+      }
+
+      .formalexpression-reference{
+        vertical-align: super;
+        font-size: 0.8em;
+        padding-left: 5px;
+      }
+
+      .formalexpression-code{
+        font-family:"Courier New", monospace, serif;
+        font-size:1.2em;
+        line-height:120%;
+        display:block;
+        vertical-align:top;
+        margin: 0px;
+        padding: 5px 0 0 20px;
+        white-space:pre;  /* CSS 2.0 */
+        white-space: pre-wrap; /* CSS 2.1 */
+        /* CSS 3.0 */
+        white-space: -pre-wrap; /* Opera 4-6 */
+        white-space: -o-pre-wrap; /* Opera 7 */
+        white-space: -moz-pre-wrap; /* Mozilla */
+        white-space: -hp-pre-wrap; /* HP Printers */
+        word-wrap: break-word; /* IE 5+ */
+      }
+      
+      .method-code{
+        vertical-align: top;
+        white-space: pre; /* CSS 2.0 */
+        white-space: pre-wrap; /* CSS 2.1 */
+         /* CSS 3.0 */
+        white-space: -pre-wrap; /* Opera 4-6 */
+        white-space: -o-pre-wrap; /* Opera 7 */
+        white-space: -moz-pre-wrap; /* Mozilla */
+        white-space: -hp-pre-wrap; /* HP Printers */
+        word-wrap: break-word; /* IE 5+ */
+      }
+
+      .linktop{
+        font-size: 1.2em;
+        margin-top: 5px;
+      }
+      .documentinfo,
+      .stylesheetinfo{
+        font-size: 1.1em;
+        line-height: 60%;
+      }
+      
+      .invisible{
+        display: none;
+      }
+      
+      .standard-reference {
+        width: 95%;
+        font-size: 1.0em;
+        font-weight: bold;
+        padding: 5px;
+        color: #696969;
+        white-space: nowrap;
+      }
+
+      .nodata{
+        width: 95%;
+        font-size: 1.0em;
+        font-weight: bold;
+        padding: 5px;
+        color: #000000;
+        white-space: nowrap;
+      }
+
+      span.unresolved{
+        color: #000000;
+      }
+      td.unresolved{
+      color: #000000;
+      }
+      td.span.unresolved{
+      color: #000000;
+      }
+      
+      span.prefix{
+        font-weight: normal;
+      }      
+
+      .arm-summary{
+        width: 95%;
+        border-spacing: 5px;
+        border-width: 1px;
+        border-color: #000000;
+        border-style: solid solid none solid;
+        background-color: #EEEEEE;
+        font-size: 1.2em;
+        line-height: 150%;
+        vertical-align: top;
+      }
+      .arm-summary-resultdisplay{
+        margin: 0px 0px 0px 0px;
+        padding: 10px 10px 10px 10px;  
+        border-spacing: 5px;
+        border-width: 1px;
+        border-color: #000000;
+        border-style: none none solid none;
+      }
+
+      .arm-display-title{
+        margin-left: 5pt;
+      }
+      
+      .table.analysisresults-detail{
+        background-color: #EEEEEE;
+      }
+      
+      .arm-summary-result{
+        margin-left: 20px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+      th span.arm-displaytitle{
+        font-weight: bold;
+      }
+      td span.arm-resulttitle{
+        font-weight: bold;
+      }
+      tr.arm-analysisresult{
+        background-color: #6699CC;
+        color: #FFFFFF;
+        font-weight: bold;
+        border: 1px solid #000000;
+      }
+      td.arm-label{
+        font-weight: bold;
+      }
+
+      p.arm-analysisvariable{
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+      .arm-data-reference{
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+      
+      .arm-code-context{
+        padding: 5px 0px;
+      }
+      .arm-code-ref{
+        font-size: 1.2em;
+        line-height: 150%;
+        padding: 5px;
+      }
+
+      .arm-code{
+        font-family:"Courier New", monospace, serif;
+        font-size:1.2em;
+        line-height:120%;
+        display:block;
+        vertical-align:top;
+        margin: 0px;
+        padding:0px;
+        white-space:pre;  /* CSS 2.0 */
+        white-space: pre-wrap; /* CSS 2.1 */
+        /* CSS 3.0 */
+        white-space: -pre-wrap; /* Opera 4-6 */
+        white-space: -o-pre-wrap; /* Opera 7 */
+        white-space: -moz-pre-wrap; /* Mozilla */
+        white-space: -hp-pre-wrap; /* HP Printers */
+        word-wrap: break-word; /* IE 5+ */
+      }
+      
+
+      
+      @media print{
+      
+        @page {
+          margin: 1.5cm;
+        }
+      
+        body,
+        h1,
+        table caption,
+        table caption.header{
+          color: #000;
+          background: #fff;
+          float: none !important;
+        }
+      
+        div.containerbox{
+          padding: 0px;
+          border: 0px;
+          page-break-after: always;
+        }
+      
+        a:link,
+        a:visited{
+          background: transparent;
+          text-decoration: none;
+          color: black;
+        }
+        a.external:link:after,
+        #main a:visited:after{
+          content: " (" attr(href) ") ";
+          font-size: 100%;
+          text-decoration: underline;
+          font-weight: normal;
+          color: black;
+        }
+        .external-link-gif,
+        .formalexpression-reference
+        .valuelist-reference{
+          display: none !important;
+          width: 0px;
+        }
+        
+        table{
+          border-width: 2px;
+        }
+
+        table tr.vlm{
+        display: table-row !important;
+        }
+      
+        #menu,
+        .linktop{
+          display: none !important;
+          width: 0px;
+        }
+        #main{
+          left: 2cm;
+          float: none !important;
+        }
+        span.prefix{
+          font-weight: normal;
+        }
+        
+        row, ul, img {
+          page-break-inside: avoid;
+        }
+      
+      }
+    </style>
+  </head><body onload="reset_menus();"><div id="menu"><a name="top" class="invisible" href="#main">Skip Navigation Link</a><span class="study-name">CDISC-Sample</span><ul class="hmenu"><li class="hmenu-submenu"><span onclick="toggle_submenu(this);" class="hmenu-bullet">+</span><a class="tocItem">Supplemental Documents</a><ul><li class="hmenu-item"><span class="hmenu-bullet">+</span><a class="external tocItem" href="analysis-data-reviewers-guide.pdf">Analysis Data Reviewer's Guide</a><span class="external-link-gif"></span></li></ul></li><li class="hmenu-submenu"><span class="hmenu-bullet" onclick="toggle_submenu(this);">+</span><a class="tocItem" href="#datasets">Datasets</a><ul><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#IG.IG.ADSL">ADSL (Subject-Level Analysis)</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#IG.IG.ADQSADAS">ADQSADAS (ADAS-Cog Analysis)</a></li></ul></li><li class="hmenu-submenu"><span onclick="toggle_submenu(this);" class="hmenu-bullet">+</span><a href="#decodelist" class="tocItem">Controlled Terminology</a><ul><li class="hmenu-submenu"><span class="hmenu-bullet" onclick="toggle_submenu(this);">+</span><a class="tocItem" href="#decodelist">CodeLists</a><ul><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#CL.CL.AGEGR1">AGEGR1</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#CL.CL.AGEGR1N">AGEGR1N</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#CL.CL.AGEU">Age Unit</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#CL.CL.ARM">ARM</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#CL.CL.ARMN">ARMN</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#CL.CL.AVISIT">AVISIT</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#CL.CL.AVISITN">AVISITN</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#CL.CL.AWU">Unit - AWU</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#CL.CL.BMICAT">BMICAT</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#CL.CL.DISCCD">Completion/Reason for Non-Completion</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#CL.CL.DISCREAS">DISCREAS</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#CL.CL.DTYPE">Derivation Type</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#CL.CL.DURDISC">DURDISC</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#CL.CL.ETHNIC">Ethnic Group</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#CL.CL.PARAMCD_ADQSADAS">PARAMCD_ADQSADAS</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#CL.CL.PARAMN_ADQSADAS">PARAMN_ADQSADAS</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#CL.CL.PARAM_ADQSADAS">PARAM_ADQSADAS</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#CL.CL.RACE">Race</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#CL.CL.RACEN">RACEN</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#CL.CL.SEX">Sex</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#CL.CL.VISIT">VISIT</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#CL.CL.VISITNUM">VISITNUM</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#CL.CL.YN">No Yes Response</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#CL.CL.Y_BLANK">No Yes Response - Y subset</a></li></ul></li></ul></li><li class="hmenu-submenu"><span class="hmenu-bullet" onclick="toggle_submenu(this);">+</span><a class="tocItem" href="#compmethod">Methods</a><ul><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADQSADAS.AVISIT">CM.ADQSADAS.AVISIT</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADQSADAS.ADY">CM.ADQSADAS.ADY</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADQSADAS.ADT">CM.ADQSADAS.ADT</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADQSADAS.AVAL">CM.ADQSADAS.AVAL</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADQSADAS.BASE">CM.ADQSADAS.BASE</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADQSADAS.CHG">CM.ADQSADAS.CHG</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADQSADAS.PCHG">CM.ADQSADAS.PCHG</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADQSADAS.ANL01FL">CM.ADQSADAS.ANL01FL</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADQSADAS.AWTDIFF">CM.ADQSADAS.AWTDIFF</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.SITEGR1">CM.ADSL.SITEGR1</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.TRTSDT">CM.ADSL.TRTSDT</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.TRTEDT">CM.ADSL.TRTEDT</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.TRTDUR">CM.ADSL.TRTDUR</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.AVGDD">CM.ADSL.AVGDD</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.CUMDOSE">CM.ADSL.CUMDOSE</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.AGEGR1">CM.ADSL.AGEGR1</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.SAFFL">CM.ADSL.SAFFL</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.ITTFL">CM.ADSL.ITTFL</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.EFFFL">CM.ADSL.EFFFL</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.COMP8FL">CM.ADSL.COMP8FL</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.COMP16FL">CM.ADSL.COMP16FL</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.COMP24FL">CM.ADSL.COMP24FL</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.DISCONFL">CM.ADSL.DISCONFL</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.DSRAEFL">CM.ADSL.DSRAEFL</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.BMIBL">CM.ADSL.BMIBL</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.BMIBLGR1">CM.ADSL.BMIBLGR1</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.HEIGHTBL">CM.ADSL.HEIGHTBL</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.WEIGHTBL">CM.ADSL.WEIGHTBL</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.EDUCLVL">CM.ADSL.EDUCLVL</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.DISONSDT">CM.ADSL.DISONSDT</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.DURDIS">CM.ADSL.DURDIS</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.DURDSGR1">CM.ADSL.DURDSGR1</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.VISIT1DT">CM.ADSL.VISIT1DT</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.VISNUMEN">CM.ADSL.VISNUMEN</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.RFENDT">CM.ADSL.RFENDT</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.DCDECOD">CM.ADSL.DCDECOD</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.DCREASCD">CM.ADSL.DCREASCD</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADSL.MMSETOT">CM.ADSL.MMSETOT</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADQSADAS.AVAL.ACITM01-ACITM14">CM.ADQSADAS.AVAL.ACITM01-ACITM14</a></li><li class="hmenu-item"><span class="hmenu-bullet">-</span><a class="tocItem" href="#MT.MT.ADQSADAS.AVAL.ACTOT">CM.ADQSADAS.AVAL.ACTOT</a></li></ul></li></ul><div class="buttons"><div class="button"><button type="button" onclick="expand_all_vlm();">Expand all VLM</button></div><div class="button"><button type="button" onclick="collapse_all_vlm();">Collapse all VLM</button></div></div></div><div id="main"><div class="docinfo"><p class="documentinfo">Date/Time of Define-XML document generation: 2013-03-03T14:47:00</p><p class="documentinfo">Define-XML version: 2.0.0</p><p class="stylesheetinfo">Stylesheet version: 2020-09-09</p></div><div class="study-metadata"><dl class="study-metadata"><dt>Standard</dt><dd>ADaM-IG 1.0</dd><dt>Study Name</dt><dd>CDISC-Sample</dd><dt>Study Description</dt><dd>CDISC-Sample Data Definition</dd><dt>Protocol Name</dt><dd>CDISC-Sample</dd><dt>Metadata Name</dt><dd>Study CDISC-Sample, Data Definitions</dd><dt>Metadata Description</dt><dd>Study CDISC-Sample, Data Definitions</dd></dl></div><a id="datasets"></a><h1 class="invisible">Datasets</h1><div class="containerbox"><table summary="Data Definition Tables"><caption class="header">Datasets</caption><tr class="header"><th scope="col">Dataset</th><th scope="col">Description</th><th scope="col">Class</th><th scope="col">Structure</th><th scope="col">Purpose</th><th scope="col">Keys</th><th scope="col">Documentation</th><th scope="col">Location</th></tr><tr class="tablerowodd" id="IG.ADSL"><td><a href="#IG.IG.ADSL">ADSL</a></td><td>Subject-Level Analysis</td><td>SUBJECT LEVEL ANALYSIS DATASET</td><td>one record per subject</td><td>Analysis</td><td>USUBJID</td><td><p class="linebreakcell">Screen Failures are excluded since they are not needed for this study analysis</p></td><td><a class="external" href="adsl.xpt">adsl.xpt </a><span class="external-link-gif"></span> </td></tr><tr class="tableroweven" id="IG.ADQSADAS"><td><a href="#IG.IG.ADQSADAS">ADQSADAS</a></td><td>ADAS-Cog Analysis</td><td>BASIC DATA STRUCTURE</td><td>One record per subject per parameter per analysis visit per analysis date</td><td>Analysis</td><td>USUBJID, PARAMCD, AVISIT, ADT</td><td><p class="linebreakcell">See referenced dataset creation program and Analysis Data Reviewer's Guide, Section 2.1</p><p class="linebreakcell"><a class="external" href="../programs/adqsadas-sas.txt">adqsadas.sas</a><span class="external-link-gif"></span> </p><p class="linebreakcell">Analysis Data Reviewer's Guide [<a class="external" href="analysis-data-reviewers-guide.pdf#Section2.1">Section2.1</a><span class="external-link-gif"></span> ]</p></td><td><a class="external" href="adqsadas.xpt">adqsadas.xpt </a><span class="external-link-gif"></span> </td></tr></table></div><p class="linktop">Go to the <a href="#main">top</a> of the Define-XML document</p><br><a id="IG.IG.ADSL"></a><div class="containerbox"><h1 class="invisible">Subject-Level Analysis (ADSL) </h1><table summary="ItemGroup IG.IG.ADSL"><caption><span>ADSL (Subject-Level Analysis) - SUBJECT LEVEL ANALYSIS DATASET <span class="dataset">Location: <a class="external" href="adsl.xpt">adsl.xpt </a><span class="external-link-gif"></span> </span></span></caption><tr class="header"><th scope="col">Variable</th><th scope="col">Label / Description</th><th scope="col">Type</th><th scope="col" class="length">Length or Display Format</th><th scope="col" abbr="Format">Controlled Terms or ISO Format</th><th scope="col">Origin / Source / Method / Comment</th></tr><tr class="tablerowodd"><td><a id="IG.ADSL.IT.ADSL.STUDYID"></a>STUDYID</td><td>Study Identifier</td><td class="datatype">text</td><td class="number">12</td><td></td><td><div class="linebreakcell">Predecessor: DM.STUDYID</div></td></tr><tr class="tableroweven"><td><a id="IG.ADSL.IT.ADSL.USUBJID"></a>USUBJID</td><td>Unique Subject Identifier</td><td class="datatype">text</td><td class="number">11</td><td></td><td><div class="linebreakcell">Predecessor: DM.USUBJID</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADSL.IT.ADSL.SUBJID"></a>SUBJID</td><td>Subject Identifier for the Study</td><td class="datatype">text</td><td class="number">4</td><td></td><td><div class="linebreakcell">Predecessor: DM.SUBJID</div></td></tr><tr class="tableroweven"><td><a id="IG.ADSL.IT.ADSL.SITEID"></a>SITEID</td><td>Study Site Identifier</td><td class="datatype">text</td><td class="number">3</td><td></td><td><div class="linebreakcell">Predecessor: DM.SITEID</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADSL.IT.ADSL.SITEGR1"></a>SITEGR1</td><td>Pooled Site Group 1</td><td class="datatype">text</td><td class="number">3</td><td></td><td><div class="linebreakcell">Derived</div><div class="method-code">refer to SAP, Section 7.1 - if not pooled then SITEGR1=SITEID. If pooled, SITEGR1 will be 900</div></td></tr><tr class="tableroweven"><td><a id="IG.ADSL.IT.ADSL.ARM"></a>ARM</td><td>Description of Planned Arm</td><td class="datatype">text</td><td class="number">20</td><td><span class="linebreakcell"><a href="#CL.CL.ARM">ARM</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"Placebo"</li><li class="codelist-item">•&nbsp;"Xanomeline Low Dose"</li><li class="codelist-item">•&nbsp;"Xanomeline High Dose"</li></ul></td><td><div class="linebreakcell">Predecessor: DM.ARM</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADSL.IT.ADSL.TRT01P"></a>TRT01P</td><td>Planned Treatment for Period 01</td><td class="datatype">text</td><td class="number">20</td><td><span class="linebreakcell"><a href="#CL.CL.ARM">ARM</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"Placebo"</li><li class="codelist-item">•&nbsp;"Xanomeline Low Dose"</li><li class="codelist-item">•&nbsp;"Xanomeline High Dose"</li></ul></td><td><div class="linebreakcell">Predecessor: DM.ARM</div></td></tr><tr class="tableroweven"><td><a id="IG.ADSL.IT.ADSL.TRT01PN"></a>TRT01PN</td><td>Planned Treatment for Period 01 (N)</td><td class="datatype">integer</td><td class="number">8</td><td><span class="linebreakcell"><a href="#CL.CL.ARMN">ARMN</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;0 = "Placebo"</li><li class="codelist-item">•&nbsp;54 = "Xanomeline Low Dose"</li><li class="codelist-item">•&nbsp;81 = "Xanomeline High Dose"</li></ul></td><td><div class="linebreakcell">Assigned</div><p class="linebreakcell">Numeric code for TRT01P which corresponds to the randomized dose</p></td></tr><tr class="tablerowodd"><td><a id="IG.ADSL.IT.ADSL.TRT01A"></a>TRT01A</td><td>Actual Treatment for Period 01</td><td class="datatype">text</td><td class="number">20</td><td><span class="linebreakcell"><a href="#CL.CL.ARM">ARM</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"Placebo"</li><li class="codelist-item">•&nbsp;"Xanomeline Low Dose"</li><li class="codelist-item">•&nbsp;"Xanomeline High Dose"</li></ul></td><td><div class="linebreakcell">Assigned</div><p class="linebreakcell">TRT01A=TRT01P, i.e., no difference between actual and randomized treatment in this study.</p></td></tr><tr class="tableroweven"><td><a id="IG.ADSL.IT.ADSL.TRT01AN"></a>TRT01AN</td><td>Actual Treatment for Period 01 (N)</td><td class="datatype">integer</td><td class="number">8</td><td><span class="linebreakcell"><a href="#CL.CL.ARMN">ARMN</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;0 = "Placebo"</li><li class="codelist-item">•&nbsp;54 = "Xanomeline Low Dose"</li><li class="codelist-item">•&nbsp;81 = "Xanomeline High Dose"</li></ul></td><td><div class="linebreakcell">Assigned</div><p class="linebreakcell">Numeric code for TRT01A which corresponds to the randomized dose</p></td></tr><tr class="tablerowodd"><td><a id="IG.ADSL.IT.ADSL.TRTSDT"></a>TRTSDT</td><td>Date of First Exposure to Treatment</td><td class="datatype">integer</td><td class="number">date9.</td><td></td><td><div class="linebreakcell">Derived</div><div class="method-code">SV.SVSTDTC when SV.VISITNUM=3, converted to SAS date</div></td></tr><tr class="tableroweven"><td><a id="IG.ADSL.IT.ADSL.TRTEDT"></a>TRTEDT</td><td>Date of Last Exposure to Treatment</td><td class="datatype">integer</td><td class="number">date9.</td><td></td><td><div class="linebreakcell">Derived</div><div class="method-code">The date of final dose (from the CRF) is EX.EXENDTC on the subject's last EX record. If the date of final dose is missing for the subject and the subject discontinued after visit 3, use the date of discontinuation as the date of last dose. Convert the date to a SAS date.</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADSL.IT.ADSL.TRTDUR"></a>TRTDUR</td><td>Duration of Treatment (days)</td><td class="datatype">integer</td><td class="number">8</td><td></td><td><div class="linebreakcell">Derived</div><div class="method-code">TRTEDT-TRTSDT+1</div></td></tr><tr class="tableroweven"><td><a id="IG.ADSL.IT.ADSL.AVGDD"></a>AVGDD</td><td>Avg Daily Dose (as planned)</td><td class="datatype">float</td><td class="number">8</td><td></td><td><div class="linebreakcell">Derived</div><div class="method-code">CUMDOSE/TRTDUR</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADSL.IT.ADSL.CUMDOSE"></a>CUMDOSE</td><td>Cumulative Dose (as planned)</td><td class="datatype">float</td><td class="number">8</td><td></td><td><div class="linebreakcell">Derived</div><div class="method-code">For ARMN=0 or 1: CUMDOSE=TRT01PN*TRTDUR. --- For ARMN=2: CUMDOSE will be based on 54mg per day for the # of days subj was in 1st dosing interval (i.e., visit4date-TRTSTDT+1 if 1st interval completed, TRTEDT-TRTSTDT+1 if subj discontinued &lt;=visit 4 and &gt; visit 3), 81mg per day for the # of days subj was in 2nd dosing interval (i.e., visit12date-visit4date if 2nd interval completed, TRTEDT-visit4date if subj discontinued &lt;= visit 12 and &gt; visit 4), and 54mg per day for the # of days subj was in 3rd dosing interval (i.e., TRTEDT - visit12date if subj continued after visit 12).</div></td></tr><tr class="tableroweven"><td><a id="IG.ADSL.IT.ADSL.AGE"></a>AGE</td><td>Age</td><td class="datatype">integer</td><td class="number">8</td><td></td><td><div class="linebreakcell">Predecessor: DM.AGE</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADSL.IT.ADSL.AGEGR1"></a>AGEGR1</td><td>Pooled Age Group 1</td><td class="datatype">text</td><td class="number">5</td><td><span class="linebreakcell"><a href="#CL.CL.AGEGR1">AGEGR1</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"&lt;65"</li><li class="codelist-item">•&nbsp;"65-80"</li><li class="codelist-item">•&nbsp;"&gt;80"</li></ul></td><td><div class="linebreakcell">Derived</div><div class="method-code">Character variable derived from ADSL.AGEGR1N</div></td></tr><tr class="tableroweven"><td><a id="IG.ADSL.IT.ADSL.AGEGR1N"></a>AGEGR1N</td><td>Pooled Age Group 1 (N)</td><td class="datatype">integer</td><td class="number">8</td><td><span class="linebreakcell"><a href="#CL.CL.AGEGR1N">AGEGR1N</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;1 = "&lt;65"</li><li class="codelist-item">•&nbsp;2 = "65-80"</li><li class="codelist-item">•&nbsp;3 = "&gt;80"</li></ul></td><td><div class="linebreakcell">Assigned</div><p class="linebreakcell">AGEGR1 = 1 if AGE &lt;65. AGEGR1 = 2 if AGE 65-80. AGEGR1 = 3 if AGE &gt;80.</p></td></tr><tr class="tablerowodd"><td><a id="IG.ADSL.IT.ADSL.AGEU"></a>AGEU</td><td>Age Units</td><td class="datatype">text</td><td class="number">5</td><td><span class="linebreakcell"><a href="#CL.CL.AGEU">Age Unit</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"YEARS"</li></ul></td><td><div class="linebreakcell">Predecessor: DM.AGEU</div></td></tr><tr class="tableroweven"><td><a id="IG.ADSL.IT.ADSL.RACE"></a>RACE</td><td>Race</td><td class="datatype">text</td><td class="number">32</td><td><span class="linebreakcell"><a href="#CL.CL.RACE">Race</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"WHITE"</li><li class="codelist-item">•&nbsp;"BLACK OR AFRICAN AMERICAN"</li><li class="codelist-item">•&nbsp;"ASIAN"</li><li class="codelist-item">•&nbsp;"AMERICAN INDIAN OR ALASKA NATIVE"</li></ul></td><td><div class="linebreakcell">Predecessor: DM.RACE</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADSL.IT.ADSL.RACEN"></a>RACEN</td><td>Race (N)</td><td class="datatype">integer</td><td class="number">8</td><td><span class="linebreakcell"><a href="#CL.CL.RACEN">RACEN</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;1 = "WHITE"</li><li class="codelist-item">•&nbsp;2 = "BLACK OR AFRICAN AMERICAN"</li><li class="codelist-item">•&nbsp;6 = "AMERICAN INDIAN OR ALASKA NATIVE"</li><li class="codelist-item">•&nbsp;7 = "ASIAN"</li></ul></td><td><div class="linebreakcell">Assigned</div><p class="linebreakcell">Numeric code for RACE</p></td></tr><tr class="tableroweven"><td><a id="IG.ADSL.IT.ADSL.SEX"></a>SEX</td><td>Sex</td><td class="datatype">text</td><td class="number">1</td><td><span class="linebreakcell"><a href="#CL.CL.SEX">Sex</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"F" = "Female"</li><li class="codelist-item">•&nbsp;"M" = "Male"</li><li class="codelist-item">•&nbsp;"U" = "Unknown"</li></ul></td><td><div class="linebreakcell">Predecessor: DM.SEX</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADSL.IT.ADSL.ETHNIC"></a>ETHNIC</td><td>Ethnicity</td><td class="datatype">text</td><td class="number">22</td><td><span class="linebreakcell"><a href="#CL.CL.ETHNIC">Ethnic Group</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"HISPANIC OR LATINO"</li><li class="codelist-item">•&nbsp;"NOT HISPANIC OR LATINO"</li></ul></td><td><div class="linebreakcell">Predecessor: DM.ETHNIC</div></td></tr><tr class="tableroweven"><td><a id="IG.ADSL.IT.ADSL.SAFFL"></a>SAFFL</td><td>Safety Population Flag</td><td class="datatype">text</td><td class="number">1</td><td><span class="linebreakcell"><a href="#CL.CL.YN">No Yes Response</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"N" = "No"</li><li class="codelist-item">•&nbsp;"Y" = "Yes"</li></ul></td><td><div class="linebreakcell">Derived</div><div class="method-code">Y if ITTFL='Y' and TRTSDT ne missing. N otherwise</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADSL.IT.ADSL.ITTFL"></a>ITTFL</td><td>Intent-To-Treat Population Flag</td><td class="datatype">text</td><td class="number">1</td><td><span class="linebreakcell"><a href="#CL.CL.YN">No Yes Response</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"N" = "No"</li><li class="codelist-item">•&nbsp;"Y" = "Yes"</li></ul></td><td><div class="linebreakcell">Derived</div><div class="method-code">Y if ARMCD ne ' '. N otherwise</div></td></tr><tr class="tableroweven"><td><a id="IG.ADSL.IT.ADSL.EFFFL"></a>EFFFL</td><td>Efficacy Population Flag</td><td class="datatype">text</td><td class="number">1</td><td><span class="linebreakcell"><a href="#CL.CL.YN">No Yes Response</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"N" = "No"</li><li class="codelist-item">•&nbsp;"Y" = "Yes"</li></ul></td><td><div class="linebreakcell">Derived</div><div class="method-code">Y if SAFFL='Y AND subject has at least one record in QS for ADAS-Cog with VISITNUM&gt;3 AND at least one record in QS for CIBIC+ with VISITNUM&gt;3, N otherwise</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADSL.IT.ADSL.COMP8FL"></a>COMP8FL</td><td>Completers of Week 8 Population Flag</td><td class="datatype">text</td><td class="number">1</td><td><span class="linebreakcell"><a href="#CL.CL.YN">No Yes Response</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"N" = "No"</li><li class="codelist-item">•&nbsp;"Y" = "Yes"</li></ul></td><td><div class="linebreakcell">Derived</div><div class="method-code">Y if subject has a SV.VISITNUM=8 and ENDDT &gt;= date of visit 8, N otherwise</div></td></tr><tr class="tableroweven"><td><a id="IG.ADSL.IT.ADSL.COMP16FL"></a>COMP16FL</td><td>Completers of Week 16 Population Flag</td><td class="datatype">text</td><td class="number">1</td><td><span class="linebreakcell"><a href="#CL.CL.YN">No Yes Response</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"N" = "No"</li><li class="codelist-item">•&nbsp;"Y" = "Yes"</li></ul></td><td><div class="linebreakcell">Derived</div><div class="method-code">Y if subject has a SV.VISITNUM=10 and ENDDT&gt;=date of visit 10, N otherwise</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADSL.IT.ADSL.COMP24FL"></a>COMP24FL</td><td>Completers of Week 24 Population Flag</td><td class="datatype">text</td><td class="number">1</td><td><span class="linebreakcell"><a href="#CL.CL.YN">No Yes Response</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"N" = "No"</li><li class="codelist-item">•&nbsp;"Y" = "Yes"</li></ul></td><td><div class="linebreakcell">Derived</div><div class="method-code">Y if subject has a SV.VISITNUM=12 and ENDDT&gt;= date of visit 12 , N otherwise</div></td></tr><tr class="tableroweven"><td><a id="IG.ADSL.IT.ADSL.DISCONFL"></a>DISCONFL</td><td>Did the Subject Discontinue the Study?</td><td class="datatype">text</td><td class="number">1</td><td><span class="linebreakcell"><a href="#CL.CL.Y_BLANK">No Yes Response - Y subset</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"Y" = "Yes"</li></ul></td><td><div class="linebreakcell">Derived</div><div class="method-code">Y if DCREASCD ^= 'Completed'. Null otherwise</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADSL.IT.ADSL.DSRAEFL"></a>DSRAEFL</td><td>Discontinued due to AE?</td><td class="datatype">text</td><td class="number">1</td><td><span class="linebreakcell"><a href="#CL.CL.Y_BLANK">No Yes Response - Y subset</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"Y" = "Yes"</li></ul></td><td><div class="linebreakcell">Derived</div><div class="method-code">Y if DCREASCD='Adverse Event'. Null otherwise</div></td></tr><tr class="tableroweven"><td><a id="IG.ADSL.IT.ADSL.DTHFL"></a>DTHFL</td><td>Subject Died?</td><td class="datatype">text</td><td class="number">1</td><td><span class="linebreakcell"><a href="#CL.CL.Y_BLANK">No Yes Response - Y subset</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"Y" = "Yes"</li></ul></td><td><div class="linebreakcell">Predecessor: DM.DTHFL</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADSL.IT.ADSL.BMIBL"></a>BMIBL</td><td>Baseline BMI (kg/m^2)</td><td class="datatype">float</td><td class="number">8</td><td></td><td><div class="linebreakcell">Derived</div><div class="method-code">WEIGHTBL / ((HEIGHTBL*100)**2)</div></td></tr><tr class="tableroweven"><td><a id="IG.ADSL.IT.ADSL.BMIBLGR1"></a>BMIBLGR1</td><td>Pooled Baseline BMI Group 1</td><td class="datatype">text</td><td class="number">6</td><td><span class="linebreakcell"><a href="#CL.CL.BMICAT">BMICAT</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"&lt;25" = "Normal"</li><li class="codelist-item">•&nbsp;"25-&lt;30" = "Overweight"</li><li class="codelist-item">•&nbsp;"&gt;30" = "Obese"</li></ul></td><td><div class="linebreakcell">Derived</div><div class="method-code">BMIBLGR1=Normal if . &lt; BMIBL &lt;25. BMIBLGR1=Overweight if 25 &lt;=BMIBL &lt;30. BMIBLGR1=Obese if BMIBL &gt;=30</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADSL.IT.ADSL.HEIGHTBL"></a>HEIGHTBL</td><td>Baseline Height (cm)</td><td class="datatype">float</td><td class="number">8</td><td></td><td><div class="linebreakcell">Derived</div><div class="method-code">VSSTRESN when VS.VSTESTCD='HEIGHT' and VS.VISITNUM=1</div></td></tr><tr class="tableroweven"><td><a id="IG.ADSL.IT.ADSL.WEIGHTBL"></a>WEIGHTBL</td><td>Baseline Weight (kg)</td><td class="datatype">float</td><td class="number">8</td><td></td><td><div class="linebreakcell">Derived</div><div class="method-code">VSSTRESN when VS.VSTESTCD='WEIGHT' and VS.VISITNUM=3</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADSL.IT.ADSL.EDUCLVL"></a>EDUCLVL</td><td>Years of Education</td><td class="datatype">integer</td><td class="number">8</td><td></td><td><div class="linebreakcell">Derived</div><div class="method-code">SC.SCSTRESN where SC.SCTESTCD=YEARSEDU</div></td></tr><tr class="tableroweven"><td><a id="IG.ADSL.IT.ADSL.DISONSDT"></a>DISONSDT</td><td>Date of Onset of Disease</td><td class="datatype">integer</td><td class="number">date9.</td><td></td><td><div class="linebreakcell">Derived</div><div class="method-code">MH.MHSTDTC where MHCAT='PRIMARY DIAGNOSIS' converted to SAS date</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADSL.IT.ADSL.DURDIS"></a>DURDIS</td><td>Duration of Disease (Months)</td><td class="datatype">float</td><td class="number">8</td><td></td><td><div class="linebreakcell">Derived</div><div class="method-code">number of months between VISIT1DT and DISONSET</div></td></tr><tr class="tableroweven"><td><a id="IG.ADSL.IT.ADSL.DURDSGR1"></a>DURDSGR1</td><td>Pooled Disease Duration Group 1</td><td class="datatype">text</td><td class="number">4</td><td><span class="linebreakcell"><a href="#CL.CL.DURDISC">DURDISC</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"&lt;12"</li><li class="codelist-item">•&nbsp;"&gt;=12"</li></ul></td><td><div class="linebreakcell">Derived</div><div class="method-code">grouping DURDIS values as &lt;12 and &gt;=12</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADSL.IT.ADSL.VISIT1DT"></a>VISIT1DT</td><td>Date of Visit 1</td><td class="datatype">integer</td><td class="number">date9.</td><td></td><td><div class="linebreakcell">Derived</div><div class="method-code">SV.SVSTDTC when SV.VISITNUM=1, converted to SAS date</div></td></tr><tr class="tableroweven"><td><a id="IG.ADSL.IT.ADSL.RFSTDTC"></a>RFSTDTC</td><td>Subject Reference Start Date/Time</td><td class="datatype">datetime</td><td class="number">20</td><td>ISO 8601</td><td><div class="linebreakcell">Predecessor: DM.RFSTDTC</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADSL.IT.ADSL.RFENDTC"></a>RFENDTC</td><td>Subject Reference End Date/Time</td><td class="datatype">datetime</td><td class="number">20</td><td>ISO 8601</td><td><div class="linebreakcell">Predecessor: DM.RFENDTC</div></td></tr><tr class="tableroweven"><td><a id="IG.ADSL.IT.ADSL.VISNUMEN"></a>VISNUMEN</td><td>End of Trt Visit (Vis 12 or Early Term.)</td><td class="datatype">integer</td><td class="number">8</td><td></td><td><div class="linebreakcell">Derived</div><div class="method-code">if DS.VISITNUM=13 where DSTERM='PROTCOL COMPLETED' then VISNUMEN=12, otherwise VISNUMEN=DS.VISITNUM where DSTERM='PROTCOL COMPLETED'</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADSL.IT.ADSL.RFENDT"></a>RFENDT</td><td>Date of Discontinuation/Completion</td><td class="datatype">integer</td><td class="number">8</td><td></td><td><div class="linebreakcell">Derived</div><div class="method-code">RFENDTC converted to SAS date</div></td></tr><tr class="tableroweven"><td><a id="IG.ADSL.IT.ADSL.DCDECOD"></a>DCDECOD</td><td>Standardized Disposition Term</td><td class="datatype">text</td><td class="number">27</td><td><a href="#CL.CL.DISCCD">Completion/Reason for Non-Completion</a><p class="linebreakcell">
+                  [9 Terms]</p></td><td><div class="linebreakcell">Derived</div><div class="method-code">DS.DSDECOD where DSCAT='DISPOSITION EVENT'</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADSL.IT.ADSL.DCREASCD"></a>DCREASCD</td><td>Reason for Discontinuation</td><td class="datatype">text</td><td class="number">18</td><td><a href="#CL.CL.DISCREAS">DISCREAS</a><p class="linebreakcell">
+                  [10 Terms]</p></td><td><div class="linebreakcell">Derived</div><div class="method-code">Grouping of DCDECOD values to support summarizing study completion status and reason for discontinuation</div></td></tr><tr class="tableroweven"><td><a id="IG.ADSL.IT.ADSL.MMSETOT"></a>MMSETOT</td><td>MMSE Total</td><td class="datatype">integer</td><td class="number">8</td><td></td><td><div class="linebreakcell">Derived</div><div class="method-code">sum of QS.QSORRES values for the subject</div></td></tr></table></div><p class="linktop">Go to the <a href="#main">top</a> of the Define-XML document</p><br><a id="IG.IG.ADQSADAS"></a><div class="containerbox"><h1 class="invisible">ADAS-Cog Analysis (ADQSADAS) </h1><table summary="ItemGroup IG.IG.ADQSADAS"><caption><span>ADQSADAS (ADAS-Cog Analysis) - BASIC DATA STRUCTURE <span class="dataset">Location: <a class="external" href="adqsadas.xpt">adqsadas.xpt </a><span class="external-link-gif"></span> </span></span></caption><tr class="header"><th scope="col">Variable</th><th scope="col">Where Condition</th><th scope="col">Label / Description</th><th scope="col">Type</th><th scope="col" class="length">Length or Display Format</th><th scope="col" abbr="Format">Controlled Terms or ISO Format</th><th scope="col">Origin / Source / Method / Comment</th></tr><tr class="tablerowodd"><td><a id="IG.ADQSADAS.IT.ADQSADAS.STUDYID"></a>STUDYID</td><td></td><td>Study Identifier</td><td class="datatype">text</td><td class="number">12</td><td></td><td><div class="linebreakcell">Predecessor: ADSL.STUDYID</div></td></tr><tr class="tableroweven"><td><a id="IG.ADQSADAS.IT.ADQSADAS.SITEID"></a>SITEID</td><td></td><td>Study Site Identifier</td><td class="datatype">text</td><td class="number">3</td><td></td><td><div class="linebreakcell">Predecessor: ADSL.SITEID</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADQSADAS.IT.ADQSADAS.SITEGR1"></a>SITEGR1</td><td></td><td>Pooled Site Group 1</td><td class="datatype">text</td><td class="number">3</td><td></td><td><div class="linebreakcell">Predecessor: ADSL.SITEGR1</div></td></tr><tr class="tableroweven"><td><a id="IG.ADQSADAS.IT.ADQSADAS.USUBJID"></a>USUBJID</td><td></td><td>Unique Subject Identifier</td><td class="datatype">text</td><td class="number">11</td><td></td><td><div class="linebreakcell">Predecessor: ADSL.USUBJID</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADQSADAS.IT.ADQSADAS.TRTSDT"></a>TRTSDT</td><td></td><td>Date of First Exposure to Treatment</td><td class="datatype">integer</td><td class="number">date9.</td><td></td><td><div class="linebreakcell">Predecessor: ADSL.TRTSDT</div></td></tr><tr class="tableroweven"><td><a id="IG.ADQSADAS.IT.ADQSADAS.TRTEDT"></a>TRTEDT</td><td></td><td>Date of Last Exposure to Treatment</td><td class="datatype">integer</td><td class="number">date9.</td><td></td><td><div class="linebreakcell">Predecessor: ADSL.TRTEDT</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADQSADAS.IT.ADQSADAS.TRTP"></a>TRTP</td><td></td><td>Planned Treatment</td><td class="datatype">text</td><td class="number">20</td><td><span class="linebreakcell"><a href="#CL.CL.ARM">ARM</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"Placebo"</li><li class="codelist-item">•&nbsp;"Xanomeline Low Dose"</li><li class="codelist-item">•&nbsp;"Xanomeline High Dose"</li></ul></td><td><div class="linebreakcell">Predecessor: ADSL.TRT01P</div></td></tr><tr class="tableroweven"><td><a id="IG.ADQSADAS.IT.ADQSADAS.TRTPN"></a>TRTPN</td><td></td><td>Planned Treatment (N)</td><td class="datatype">integer</td><td class="number">8</td><td><span class="linebreakcell"><a href="#CL.CL.ARMN">ARMN</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;0 = "Placebo"</li><li class="codelist-item">•&nbsp;54 = "Xanomeline Low Dose"</li><li class="codelist-item">•&nbsp;81 = "Xanomeline High Dose"</li></ul></td><td><div class="linebreakcell">Predecessor: ADSL.TRT01PN</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADQSADAS.IT.ADQSADAS.AGE"></a>AGE</td><td></td><td>Age</td><td class="datatype">integer</td><td class="number">8</td><td></td><td><div class="linebreakcell">Predecessor: ADSL.AGE</div></td></tr><tr class="tableroweven"><td><a id="IG.ADQSADAS.IT.ADQSADAS.AGEGR1"></a>AGEGR1</td><td></td><td>Pooled Age Group 1</td><td class="datatype">text</td><td class="number">5</td><td><span class="linebreakcell"><a href="#CL.CL.AGEGR1">AGEGR1</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"&lt;65"</li><li class="codelist-item">•&nbsp;"65-80"</li><li class="codelist-item">•&nbsp;"&gt;80"</li></ul></td><td><div class="linebreakcell">Predecessor: ADSL.AGEGR1</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADQSADAS.IT.ADQSADAS.AGEGR1N"></a>AGEGR1N</td><td></td><td>Pooled Age Group 1 (N)</td><td class="datatype">integer</td><td class="number">8</td><td><span class="linebreakcell"><a href="#CL.CL.AGEGR1N">AGEGR1N</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;1 = "&lt;65"</li><li class="codelist-item">•&nbsp;2 = "65-80"</li><li class="codelist-item">•&nbsp;3 = "&gt;80"</li></ul></td><td><div class="linebreakcell">Predecessor: ADSL.AGEGR1N</div></td></tr><tr class="tableroweven"><td><a id="IG.ADQSADAS.IT.ADQSADAS.RACE"></a>RACE</td><td></td><td>Race</td><td class="datatype">text</td><td class="number">32</td><td><span class="linebreakcell"><a href="#CL.CL.RACE">Race</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"WHITE"</li><li class="codelist-item">•&nbsp;"BLACK OR AFRICAN AMERICAN"</li><li class="codelist-item">•&nbsp;"ASIAN"</li><li class="codelist-item">•&nbsp;"AMERICAN INDIAN OR ALASKA NATIVE"</li></ul></td><td><div class="linebreakcell">Predecessor: ADSL.RACE</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADQSADAS.IT.ADQSADAS.RACEN"></a>RACEN</td><td></td><td>Race (N)</td><td class="datatype">integer</td><td class="number">8</td><td><span class="linebreakcell"><a href="#CL.CL.RACEN">RACEN</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;1 = "WHITE"</li><li class="codelist-item">•&nbsp;2 = "BLACK OR AFRICAN AMERICAN"</li><li class="codelist-item">•&nbsp;6 = "AMERICAN INDIAN OR ALASKA NATIVE"</li><li class="codelist-item">•&nbsp;7 = "ASIAN"</li></ul></td><td><div class="linebreakcell">Predecessor: ADSL.RACEN</div></td></tr><tr class="tableroweven"><td><a id="IG.ADQSADAS.IT.ADQSADAS.SEX"></a>SEX</td><td></td><td>Sex</td><td class="datatype">text</td><td class="number">1</td><td><span class="linebreakcell"><a href="#CL.CL.SEX">Sex</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"F" = "Female"</li><li class="codelist-item">•&nbsp;"M" = "Male"</li><li class="codelist-item">•&nbsp;"U" = "Unknown"</li></ul></td><td><div class="linebreakcell">Predecessor: ADSL.SEX</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADQSADAS.IT.ADQSADAS.ITTFL"></a>ITTFL</td><td></td><td>Intent-to-Treat Population Flag</td><td class="datatype">text</td><td class="number">1</td><td><span class="linebreakcell"><a href="#CL.CL.YN">No Yes Response</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"N" = "No"</li><li class="codelist-item">•&nbsp;"Y" = "Yes"</li></ul></td><td><div class="linebreakcell">Predecessor: ADSL.ITTFL</div></td></tr><tr class="tableroweven"><td><a id="IG.ADQSADAS.IT.ADQSADAS.EFFFL"></a>EFFFL</td><td></td><td>Efficacy Population Flag</td><td class="datatype">text</td><td class="number">1</td><td><span class="linebreakcell"><a href="#CL.CL.YN">No Yes Response</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"N" = "No"</li><li class="codelist-item">•&nbsp;"Y" = "Yes"</li></ul></td><td><div class="linebreakcell">Predecessor: ADSL.FASFL</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADQSADAS.IT.ADQSADAS.COMP24FL"></a>COMP24FL</td><td></td><td>Completers of Week 24 Population Flag</td><td class="datatype">text</td><td class="number">1</td><td><span class="linebreakcell"><a href="#CL.CL.YN">No Yes Response</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"N" = "No"</li><li class="codelist-item">•&nbsp;"Y" = "Yes"</li></ul></td><td><div class="linebreakcell">Predecessor: ADSL.COMP24FL</div></td></tr><tr class="tableroweven"><td><a id="IG.ADQSADAS.IT.ADQSADAS.AVISIT"></a>AVISIT</td><td></td><td>Analysis Visit</td><td class="datatype">text</td><td class="number">16</td><td><span class="linebreakcell"><a href="#CL.CL.AVISIT">AVISIT</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"Baseline"</li><li class="codelist-item">•&nbsp;"Week 8"</li><li class="codelist-item">•&nbsp;"Week 16"</li><li class="codelist-item">•&nbsp;"Week 24"</li></ul></td><td><div class="linebreakcell">Derived</div><div class="method-code">Derived based on windowing algorithm described in SAP, Section 8.2</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADQSADAS.IT.ADQSADAS.AVISITN"></a>AVISITN</td><td></td><td>Analysis Visit (N)</td><td class="datatype">integer</td><td class="number">8</td><td><span class="linebreakcell"><a href="#CL.CL.AVISITN">AVISITN</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;0 = "Baseline"</li><li class="codelist-item">•&nbsp;8 = "Week 8"</li><li class="codelist-item">•&nbsp;16 = "Week 16"</li><li class="codelist-item">•&nbsp;24 = "Week 24"</li></ul></td><td><div class="linebreakcell">Assigned</div><p class="linebreakcell">Numeric code for AVISIT</p></td></tr><tr class="tableroweven"><td><a id="IG.ADQSADAS.IT.ADQSADAS.VISIT"></a>VISIT</td><td></td><td>Visit Name</td><td class="datatype">text</td><td class="number">19</td><td><a href="#CL.CL.VISIT">VISIT</a><p class="linebreakcell">
+                  [37 Terms]</p></td><td><div class="linebreakcell">Predecessor: QS.VISIT</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADQSADAS.IT.ADQSADAS.VISITNUM"></a>VISITNUM</td><td></td><td>Visit Number</td><td class="datatype">float</td><td class="number">8</td><td><a href="#CL.CL.VISITNUM">VISITNUM</a><p class="linebreakcell">
+                  [37 Terms]</p></td><td><div class="linebreakcell">Predecessor: QS.VISITNUM</div></td></tr><tr class="tableroweven"><td><a id="IG.ADQSADAS.IT.ADQSADAS.ADY"></a>ADY</td><td></td><td>Analysis Relative Day</td><td class="datatype">integer</td><td class="number">8</td><td></td><td><div class="linebreakcell">Derived</div><div class="method-code">ADY = ADT - TRTSDT + 1, if ADT&gt;=TRTSDT. ADY = ADT - TRTSDT, if ADT&lt;TRTSDT.</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADQSADAS.IT.ADQSADAS.ADT"></a>ADT</td><td></td><td>Analysis Date</td><td class="datatype">integer</td><td class="number">8</td><td></td><td><div class="linebreakcell">Derived</div><div class="method-code">SAS date from QS.QSDTC</div></td></tr><tr class="tableroweven"><td><a id="IG.ADQSADAS.IT.ADQSADAS.PARAM"></a>PARAM</td><td></td><td>Parameter</td><td class="datatype">text</td><td class="number">100</td><td><a href="#CL.CL.PARAM_ADQSADAS">PARAM_ADQSADAS</a><p class="linebreakcell">
+                  [15 Terms]</p></td><td><div class="linebreakcell">Assigned</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADQSADAS.IT.ADQSADAS.PARAMCD"></a>PARAMCD</td><td></td><td>Parameter Code</td><td class="datatype">text</td><td class="number">8</td><td><a href="#CL.CL.PARAMCD_ADQSADAS">PARAMCD_ADQSADAS</a><p class="linebreakcell">
+                  [15 Terms]</p></td><td><div class="linebreakcell">Assigned</div></td></tr><tr class="tableroweven"><td><a id="IG.ADQSADAS.IT.ADQSADAS.PARAMN"></a>PARAMN</td><td></td><td>Parameter (N)</td><td class="datatype">integer</td><td class="number">8</td><td><a href="#CL.CL.PARAMN_ADQSADAS">PARAMN_ADQSADAS</a><p class="linebreakcell">
+                  [15 Terms]</p></td><td><div class="linebreakcell">Assigned</div><p class="linebreakcell">Assign a numeric code for each value of PARAMCD (see codelist PARAMN_ADQSADAS)</p></td></tr><tr class="tablerowodd"><td>AVAL<span class="valuelist-reference" onclick="toggle_vlm(this);"><a id="IG.ADQSADAS.IT.ADQSADAS.AVAL">VLM</a></span></td><td></td><td>Analysis Value</td><td class="datatype">integer</td><td class="number">8</td><td></td><td><div class="method-code">Derivations are described per parameter in the parameter value level metadata</div></td></tr><tr class="vlm tablerowodd IG.ADQSADAS.IT.ADQSADAS.AVAL"><td></td><td><a href="#IG.ADQSADAS.IT.ADQSADAS.PARAMCD" title="Parameter Code">PARAMCD</a> IN (<br><span class="linebreakcell">"ACITM01" (Word Recall Task), </span><br><span class="linebreakcell">"ACITM02" (Naming Objects And Fingers (Refer To 5 C), </span><br><span class="linebreakcell">"ACITM03" (Delayed Word Recall), </span><br><span class="linebreakcell">"ACITM04" (Commands), </span><br><span class="linebreakcell">"ACITM05" (Constructional Praxis), </span><br><span class="linebreakcell">"ACITM06" (Ideational Praxis), </span><br><span class="linebreakcell">"ACITM07" (Orientation), </span><br><span class="linebreakcell">"ACITM08" (Word Recognition), </span><br><span class="linebreakcell">"ACITM09" (Attention/Visual Search Task), </span><br><span class="linebreakcell">"ACITM10" (Maze Solution), </span><br><span class="linebreakcell">"ACITM11" (Spoken Language Ability), </span><br><span class="linebreakcell">"ACITM12" (Comprehension Of Spoken Language), </span><br><span class="linebreakcell">"ACITM13" (Word Finding Difficulty In Spontaneous Speech), </span><br><span class="linebreakcell">"ACITM14" (Recall Of Test Instructions)</span><br>) </td><td>Analysis Value</td><td class="datatype">integer</td><td class="number">8</td><td></td><td><div class="linebreakcell">Derived</div><div class="method-code">QS.QSSTRESN where QSTESTCD=PARAMCD</div></td></tr><tr class="vlm tablerowodd IG.ADQSADAS.IT.ADQSADAS.AVAL"><td></td><td><a href="#IG.ADQSADAS.IT.ADQSADAS.PARAMCD" title="Parameter Code">PARAMCD</a> = "ACTOT" (Adas-Cog(11) Subscore)</td><td>Analysis Value</td><td class="datatype">integer</td><td class="number">8</td><td></td><td><div class="linebreakcell">Derived</div><div class="method-code">Sum of ADAS scores for items 1, 2, 4, 5, 6, 7, 8, 11, 12, 13, and 14, see Analysis Data Reviewers Guide (Page 3) for details on adjusting for missing values.</div><p class="linebreakcell">Analysis Data Reviewer's Guide [<a class="external" href="analysis-data-reviewers-guide.pdf#page=3">3</a><span class="external-link-gif"></span> ]</p></td></tr><tr class="tableroweven"><td><a id="IG.ADQSADAS.IT.ADQSADAS.BASE"></a>BASE</td><td></td><td>Baseline Value</td><td class="datatype">integer</td><td class="number">8</td><td></td><td><div class="linebreakcell">Derived</div><div class="method-code">QS.QSSTRESN when QS.QSBLFL=Y (QS.VISITNUM=3)</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADQSADAS.IT.ADQSADAS.CHG"></a>CHG</td><td></td><td>Change from Baseline</td><td class="datatype">integer</td><td class="number">8</td><td></td><td><div class="linebreakcell">Derived</div><div class="method-code">AVAL - BASE</div></td></tr><tr class="tableroweven"><td><a id="IG.ADQSADAS.IT.ADQSADAS.PCHG"></a>PCHG</td><td></td><td>Percent Change from Baseline</td><td class="datatype">integer</td><td class="number">8</td><td></td><td><div class="linebreakcell">Derived</div><div class="method-code">100* (CHG/BASE)</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADQSADAS.IT.ADQSADAS.ABLFL"></a>ABLFL</td><td></td><td>ABLFL</td><td class="datatype">text</td><td class="number">1</td><td><span class="linebreakcell"><a href="#CL.CL.Y_BLANK">No Yes Response - Y subset</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"Y" = "Yes"</li></ul></td><td><div class="linebreakcell">Predecessor: QS.QSBLFL</div></td></tr><tr class="tableroweven"><td><a id="IG.ADQSADAS.IT.ADQSADAS.ANL01FL"></a>ANL01FL</td><td></td><td>Analysis Record Flag 01</td><td class="datatype">text</td><td class="number">1</td><td><span class="linebreakcell"><a href="#CL.CL.Y_BLANK">No Yes Response - Y subset</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"Y" = "Yes"</li></ul></td><td><div class="linebreakcell">Derived</div><div class="method-code">If multiple visits fall into the same visit window, then the one closest to the target date is chosen for analysis. These are flagged with ANL01FL="Y".</div></td></tr><tr class="tablerowodd"><td>DTYPE<span class="valuelist-reference" onclick="toggle_vlm(this);"><a id="IG.ADQSADAS.IT.ADQSADAS.DTYPE">VLM</a></span></td><td></td><td>Derivation Type</td><td class="datatype">text</td><td class="number">7</td><td><span class="linebreakcell"><a href="#CL.CL.DTYPE">Derivation Type</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"LOCF" = "Last Observation Carried Forward"</li></ul></td><td></td></tr><tr class="vlm tablerowodd IG.ADQSADAS.IT.ADQSADAS.DTYPE"><td></td><td><a href="#IG.ADQSADAS.IT.ADQSADAS.PARAMCD" title="Parameter Code">PARAMCD</a> NOT IN (<br><span class="linebreakcell">"ACTOT" (Adas-Cog(11) Subscore)</span><br>) </td><td>Derivation Type</td><td class="datatype">text</td><td class="number">10</td><td><span class="linebreakcell"><a href="#CL.CL.DTYPE">Derivation Type</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"LOCF" = "Last Observation Carried Forward"</li></ul></td><td><div class="linebreakcell">Assigned</div><p class="linebreakcell">Value: null</p></td></tr><tr class="vlm tablerowodd IG.ADQSADAS.IT.ADQSADAS.DTYPE"><td></td><td><a href="#IG.ADQSADAS.IT.ADQSADAS.PARAMCD" title="Parameter Code">PARAMCD</a> = "ACTOT" (Adas-Cog(11) Subscore)</td><td>Derivation Type</td><td class="datatype">text</td><td class="number">10</td><td><span class="linebreakcell"><a href="#CL.CL.DTYPE">Derivation Type</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"LOCF" = "Last Observation Carried Forward"</li></ul></td><td><div class="linebreakcell">Assigned</div><p class="linebreakcell">Value: LOCF denotes that the LOCF imputation method was used to impute the value for the given parameter and analysis visit.</p></td></tr><tr class="tableroweven"><td><a id="IG.ADQSADAS.IT.ADQSADAS.AWRANGE"></a>AWRANGE</td><td></td><td>Analysis Window Valid Relative Range</td><td class="datatype">text</td><td class="number">9</td><td></td><td><div class="linebreakcell">Assigned</div><p class="linebreakcell">Window range, specified in the SAP.</p></td></tr><tr class="tablerowodd"><td><a id="IG.ADQSADAS.IT.ADQSADAS.AWTARGET"></a>AWTARGET</td><td></td><td>Analysis Window Target</td><td class="datatype">integer</td><td class="number">8</td><td></td><td><div class="linebreakcell">Assigned</div><p class="linebreakcell">Target day within the window, specified in the SAP.</p></td></tr><tr class="tableroweven"><td><a id="IG.ADQSADAS.IT.ADQSADAS.AWTDIFF"></a>AWTDIFF</td><td></td><td>Analysis Window Diff from Target</td><td class="datatype">integer</td><td class="number">8</td><td></td><td><div class="linebreakcell">Derived</div><div class="method-code">Absolute difference between AWTARGET and ADY</div></td></tr><tr class="tablerowodd"><td><a id="IG.ADQSADAS.IT.ADQSADAS.AWLO"></a>AWLO</td><td></td><td>Analysis Window Beginning Timepoint</td><td class="datatype">integer</td><td class="number">8</td><td></td><td><div class="linebreakcell">Assigned</div><p class="linebreakcell">Start day of the window, specified in the SAP.</p></td></tr><tr class="tableroweven"><td><a id="IG.ADQSADAS.IT.ADQSADAS.AWHI"></a>AWHI</td><td></td><td>Analysis Window Ending Timepoint</td><td class="datatype">integer</td><td class="number">8</td><td></td><td><div class="linebreakcell">Assigned</div><p class="linebreakcell">End day of the window, specified in the SAP.</p></td></tr><tr class="tablerowodd"><td><a id="IG.ADQSADAS.IT.ADQSADAS.AWU"></a>AWU</td><td></td><td>Analysis Window Unit</td><td class="datatype">text</td><td class="number">4</td><td><span class="linebreakcell"><a href="#CL.CL.AWU">Unit - AWU</a></span><ul class="codelist"><li class="codelist-item">•&nbsp;"DAYS"</li></ul></td><td><div class="linebreakcell">Assigned</div><p class="linebreakcell">Assigned as "DAYS".</p></td></tr><tr class="tableroweven"><td>QSSEQ<span class="valuelist-reference" onclick="toggle_vlm(this);"><a id="IG.ADQSADAS.IT.ADQSADAS.QSSEQ">VLM</a></span></td><td></td><td>Sequence Number</td><td class="datatype">integer</td><td class="number">8</td><td></td><td></td></tr><tr class="vlm tableroweven IG.ADQSADAS.IT.ADQSADAS.QSSEQ"><td></td><td><a href="#IG.ADQSADAS.IT.ADQSADAS.PARAMCD" title="Parameter Code">PARAMCD</a> NOT IN (<br><span class="linebreakcell">"ACTOT" (Adas-Cog(11) Subscore)</span><br>) </td><td>Sequence Number</td><td class="datatype">integer</td><td class="number">8</td><td></td><td><div class="linebreakcell">Predecessor: QS.QSSEQ</div></td></tr><tr class="vlm tableroweven IG.ADQSADAS.IT.ADQSADAS.QSSEQ"><td></td><td><a href="#IG.ADQSADAS.IT.ADQSADAS.PARAMCD" title="Parameter Code">PARAMCD</a> = "ACTOT" (Adas-Cog(11) Subscore)</td><td>Sequence Number</td><td class="datatype">integer</td><td class="number">8</td><td></td><td><div class="linebreakcell">Assigned</div><p class="linebreakcell">Set QSSEQ to missing for post baseline records. Set to QS.QSSEQ where QS.VISIT=BASELINE and QS.QSTESTCD=ACTOT.</p></td></tr></table></div><p class="linktop">Go to the <a href="#main">top</a> of the Define-XML document</p><br><a id="decodelist"></a><div class="containerbox"><h1 class="header">CodeLists</h1><div class="codelist" id="CL.CL.AGEGR1"><div class="codelist-caption">AGEGR1</div><table summary="Code List - AGEGR1"><tr class="header"><th scope="col">Permitted Value (Code)</th><th scope="col">Rank</th></tr><tr class="tablerowodd"><td>&lt;65</td><td>1</td></tr><tr class="tableroweven"><td>65-80</td><td>2</td></tr><tr class="tablerowodd"><td>&gt;80</td><td>3</td></tr></table></div><div class="codelist" id="CL.CL.AGEGR1N"><div class="codelist-caption">AGEGR1N</div><table summary="Controlled Term - AGEGR1N"><tr class="header"><th scope="col" class="codedvalue">Permitted Value (Code)</th><th scope="col">Display Value (Decode)</th></tr><tr class="tablerowodd"><td>1</td><td class="codelist-item-decode">&lt;65</td></tr><tr class="tableroweven"><td>2</td><td class="codelist-item-decode">65-80</td></tr><tr class="tablerowodd"><td>3</td><td class="codelist-item-decode">&gt;80</td></tr></table></div><div class="codelist" id="CL.CL.AGEU"><div class="codelist-caption">Age Unit [<span class="nci">C66781</span>]</div><table summary="Code List - Age Unit"><tr class="header"><th scope="col">Permitted Value (Code)</th></tr><tr class="tablerowodd"><td>YEARS [<span class="nci">C29848</span>]</td></tr></table></div><div class="codelist" id="CL.CL.ARM"><div class="codelist-caption">ARM</div><table summary="Code List - ARM"><tr class="header"><th scope="col">Permitted Value (Code)</th></tr><tr class="tablerowodd"><td>Placebo</td></tr><tr class="tableroweven"><td>Xanomeline Low Dose</td></tr><tr class="tablerowodd"><td>Xanomeline High Dose</td></tr></table></div><div class="codelist" id="CL.CL.ARMN"><div class="codelist-caption">ARMN</div><table summary="Controlled Term - ARMN"><tr class="header"><th scope="col" class="codedvalue">Permitted Value (Code)</th><th scope="col">Display Value (Decode)</th></tr><tr class="tablerowodd"><td>0</td><td class="codelist-item-decode">Placebo</td></tr><tr class="tableroweven"><td>54</td><td class="codelist-item-decode">Xanomeline Low Dose</td></tr><tr class="tablerowodd"><td>81</td><td class="codelist-item-decode">Xanomeline High Dose</td></tr></table></div><div class="codelist" id="CL.CL.AVISIT"><div class="codelist-caption">AVISIT</div><table summary="Code List - AVISIT"><tr class="header"><th scope="col">Permitted Value (Code)</th></tr><tr class="tablerowodd"><td>Baseline</td></tr><tr class="tableroweven"><td>Week 8</td></tr><tr class="tablerowodd"><td>Week 16</td></tr><tr class="tableroweven"><td>Week 24</td></tr></table></div><div class="codelist" id="CL.CL.AVISITN"><div class="codelist-caption">AVISITN</div><table summary="Controlled Term - AVISITN"><tr class="header"><th scope="col" class="codedvalue">Permitted Value (Code)</th><th scope="col">Display Value (Decode)</th></tr><tr class="tablerowodd"><td>0</td><td class="codelist-item-decode">Baseline</td></tr><tr class="tableroweven"><td>8</td><td class="codelist-item-decode">Week 8</td></tr><tr class="tablerowodd"><td>16</td><td class="codelist-item-decode">Week 16</td></tr><tr class="tableroweven"><td>24</td><td class="codelist-item-decode">Week 24</td></tr></table></div><div class="codelist" id="CL.CL.AWU"><div class="codelist-caption">Unit - AWU [<span class="nci">C71620</span>]</div><table summary="Code List - Unit - AWU"><tr class="header"><th scope="col">Permitted Value (Code)</th></tr><tr class="tablerowodd"><td>DAYS [<span class="nci">C25301</span>]</td></tr></table></div><div class="codelist" id="CL.CL.BMICAT"><div class="codelist-caption">BMICAT</div><table summary="Controlled Term - BMICAT"><tr class="header"><th scope="col" class="codedvalue">Permitted Value (Code)</th><th scope="col">Display Value (Decode)</th><th scope="col">Rank</th></tr><tr class="tablerowodd"><td>&lt;25</td><td class="codelist-item-decode">Normal</td><td>1</td></tr><tr class="tableroweven"><td>25-&lt;30</td><td class="codelist-item-decode">Overweight</td><td>2</td></tr><tr class="tablerowodd"><td>&gt;30</td><td class="codelist-item-decode">Obese</td><td>3</td></tr></table></div><div class="codelist" id="CL.CL.DISCCD"><div class="codelist-caption">Completion/Reason for Non-Completion [<span class="nci">C66727</span>]</div><table summary="Code List - Completion/Reason for Non-Completion"><tr class="header"><th scope="col">Permitted Value (Code)</th></tr><tr class="tablerowodd"><td>COMPLETED [<span class="nci">C25250</span>]</td></tr><tr class="tableroweven"><td>ADVERSE EVENT [<span class="nci">C41331</span>]</td></tr><tr class="tablerowodd"><td>DEATH [<span class="nci">C28554</span>]</td></tr><tr class="tableroweven"><td>LACK OF EFFICACY [<span class="nci">C48226</span>]</td></tr><tr class="tablerowodd"><td>LOST TO FOLLOW-UP [<span class="nci">C48227</span>]</td></tr><tr class="tableroweven"><td>PHYSICIAN DECISION [<span class="nci">C48250</span>]</td></tr><tr class="tablerowodd"><td>PROTOCOL VIOLATION [<span class="nci">C48251</span>]</td></tr><tr class="tableroweven"><td>STUDY TERMINATED BY SPONSOR [<span class="nci">C49632</span>]</td></tr><tr class="tablerowodd"><td>WITHDRAWAL BY SUBJECT [<span class="nci">C49634</span>]</td></tr></table></div><div class="codelist" id="CL.CL.DISCREAS"><div class="codelist-caption">DISCREAS</div><table summary="Code List - DISCREAS"><tr class="header"><th scope="col">Permitted Value (Code)</th></tr><tr class="tablerowodd"><td>Completed</td></tr><tr class="tableroweven"><td>Adverse Event</td></tr><tr class="tablerowodd"><td>Death</td></tr><tr class="tableroweven"><td>I/E Not Met</td></tr><tr class="tablerowodd"><td>Lack of Efficacy</td></tr><tr class="tableroweven"><td>Lost to Follow-up</td></tr><tr class="tablerowodd"><td>Physician Decision</td></tr><tr class="tableroweven"><td>Protocol Violation</td></tr><tr class="tablerowodd"><td>Sponsor Decision</td></tr><tr class="tableroweven"><td>Withdrew Consent</td></tr></table></div><div class="codelist" id="CL.CL.DTYPE"><div class="codelist-caption">Derivation Type [<span class="nci">C81224</span>]</div><table summary="Controlled Term - Derivation Type"><tr class="header"><th scope="col" class="codedvalue">Permitted Value (Code)</th><th scope="col">Display Value (Decode)</th></tr><tr class="tablerowodd"><td>LOCF [<span class="nci">C81198</span>]</td><td class="codelist-item-decode">Last Observation Carried Forward</td></tr></table></div><div class="codelist" id="CL.CL.DURDISC"><div class="codelist-caption">DURDISC</div><table summary="Code List - DURDISC"><tr class="header"><th scope="col">Permitted Value (Code)</th><th scope="col">Rank</th></tr><tr class="tablerowodd"><td>&lt;12</td><td>1</td></tr><tr class="tableroweven"><td>&gt;=12</td><td>2</td></tr></table></div><div class="codelist" id="CL.CL.ETHNIC"><div class="codelist-caption">Ethnic Group [<span class="nci">C66790</span>]</div><table summary="Code List - Ethnic Group"><tr class="header"><th scope="col">Permitted Value (Code)</th></tr><tr class="tablerowodd"><td>HISPANIC OR LATINO [<span class="nci">C17459</span>]</td></tr><tr class="tableroweven"><td>NOT HISPANIC OR LATINO [<span class="nci">C41222</span>]</td></tr></table></div><div class="codelist" id="CL.CL.PARAMCD_ADQSADAS"><div class="codelist-caption">PARAMCD_ADQSADAS</div><table summary="Controlled Term - PARAMCD_ADQSADAS"><tr class="header"><th scope="col" class="codedvalue">Permitted Value (Code)</th><th scope="col">Display Value (Decode)</th></tr><tr class="tablerowodd"><td>ACITM01</td><td class="codelist-item-decode">Word Recall Task</td></tr><tr class="tableroweven"><td>ACITM02</td><td class="codelist-item-decode">Naming Objects And Fingers (Refer To 5 C</td></tr><tr class="tablerowodd"><td>ACITM03</td><td class="codelist-item-decode">Delayed Word Recall</td></tr><tr class="tableroweven"><td>ACITM04</td><td class="codelist-item-decode">Commands</td></tr><tr class="tablerowodd"><td>ACITM05</td><td class="codelist-item-decode">Constructional Praxis</td></tr><tr class="tableroweven"><td>ACITM06</td><td class="codelist-item-decode">Ideational Praxis</td></tr><tr class="tablerowodd"><td>ACITM07</td><td class="codelist-item-decode">Orientation</td></tr><tr class="tableroweven"><td>ACITM08</td><td class="codelist-item-decode">Word Recognition</td></tr><tr class="tablerowodd"><td>ACITM09</td><td class="codelist-item-decode">Attention/Visual Search Task</td></tr><tr class="tableroweven"><td>ACITM10</td><td class="codelist-item-decode">Maze Solution</td></tr><tr class="tablerowodd"><td>ACITM11</td><td class="codelist-item-decode">Spoken Language Ability</td></tr><tr class="tableroweven"><td>ACITM12</td><td class="codelist-item-decode">Comprehension Of Spoken Language</td></tr><tr class="tablerowodd"><td>ACITM13</td><td class="codelist-item-decode">Word Finding Difficulty In Spontaneous Speech</td></tr><tr class="tableroweven"><td>ACITM14</td><td class="codelist-item-decode">Recall Of Test Instructions</td></tr><tr class="tablerowodd"><td>ACTOT</td><td class="codelist-item-decode">Adas-Cog(11) Subscore</td></tr></table></div><div class="codelist" id="CL.CL.PARAMN_ADQSADAS"><div class="codelist-caption">PARAMN_ADQSADAS</div><table summary="Controlled Term - PARAMN_ADQSADAS"><tr class="header"><th scope="col" class="codedvalue">Permitted Value (Code)</th><th scope="col">Display Value (Decode)</th></tr><tr class="tablerowodd"><td>1</td><td class="codelist-item-decode">Word Recall Task</td></tr><tr class="tableroweven"><td>2</td><td class="codelist-item-decode">Naming Objects And Fingers (Refer To 5 C</td></tr><tr class="tablerowodd"><td>3</td><td class="codelist-item-decode">Delayed Word Recall</td></tr><tr class="tableroweven"><td>4</td><td class="codelist-item-decode">Commands</td></tr><tr class="tablerowodd"><td>5</td><td class="codelist-item-decode">Constructional Praxis</td></tr><tr class="tableroweven"><td>6</td><td class="codelist-item-decode">Ideational Praxis</td></tr><tr class="tablerowodd"><td>7</td><td class="codelist-item-decode">Orientation</td></tr><tr class="tableroweven"><td>8</td><td class="codelist-item-decode">Word Recognition</td></tr><tr class="tablerowodd"><td>9</td><td class="codelist-item-decode">Attention/Visual Search Task</td></tr><tr class="tableroweven"><td>10</td><td class="codelist-item-decode">Maze Solution</td></tr><tr class="tablerowodd"><td>11</td><td class="codelist-item-decode">Spoken Language Ability</td></tr><tr class="tableroweven"><td>12</td><td class="codelist-item-decode">Comprehension Of Spoken Language</td></tr><tr class="tablerowodd"><td>13</td><td class="codelist-item-decode">Word Finding Difficulty In Spontaneous S</td></tr><tr class="tableroweven"><td>14</td><td class="codelist-item-decode">Recall Of Test Instructions</td></tr><tr class="tablerowodd"><td>15</td><td class="codelist-item-decode">Adas-Cog(11) Subscore</td></tr></table></div><div class="codelist" id="CL.CL.PARAM_ADQSADAS"><div class="codelist-caption">PARAM_ADQSADAS</div><table summary="Code List - PARAM_ADQSADAS"><tr class="header"><th scope="col">Permitted Value (Code)</th></tr><tr class="tablerowodd"><td>Word Recall Task</td></tr><tr class="tableroweven"><td>Naming Objects And Fingers (Refer To 5 C</td></tr><tr class="tablerowodd"><td>Delayed Word Recall</td></tr><tr class="tableroweven"><td>Commands</td></tr><tr class="tablerowodd"><td>Constructional Praxis</td></tr><tr class="tableroweven"><td>Ideational Praxis</td></tr><tr class="tablerowodd"><td>Orientation</td></tr><tr class="tableroweven"><td>Word Recognition</td></tr><tr class="tablerowodd"><td>Attention/Visual Search Task</td></tr><tr class="tableroweven"><td>Maze Solution</td></tr><tr class="tablerowodd"><td>Spoken Language Ability</td></tr><tr class="tableroweven"><td>Comprehension Of Spoken Language</td></tr><tr class="tablerowodd"><td>Word Finding Difficulty In Spontaneous S</td></tr><tr class="tableroweven"><td>Recall Of Test Instructions</td></tr><tr class="tablerowodd"><td>Adas-Cog(11) Subscore</td></tr></table></div><div class="codelist" id="CL.CL.RACE"><div class="codelist-caption">Race [<span class="nci">C74457</span>]</div><table summary="Code List - Race"><tr class="header"><th scope="col">Permitted Value (Code)</th></tr><tr class="tablerowodd"><td>WHITE [<span class="nci">C41261</span>]</td></tr><tr class="tableroweven"><td>BLACK OR AFRICAN AMERICAN [<span class="nci">C16352</span>]</td></tr><tr class="tablerowodd"><td>ASIAN [<span class="nci">C41260</span>]</td></tr><tr class="tableroweven"><td>AMERICAN INDIAN OR ALASKA NATIVE [<span class="nci">C41259</span>]</td></tr></table></div><div class="codelist" id="CL.CL.RACEN"><div class="codelist-caption">RACEN</div><table summary="Controlled Term - RACEN"><tr class="header"><th scope="col" class="codedvalue">Permitted Value (Code)</th><th scope="col">Display Value (Decode)</th></tr><tr class="tablerowodd"><td>1</td><td class="codelist-item-decode">WHITE</td></tr><tr class="tableroweven"><td>2</td><td class="codelist-item-decode">BLACK OR AFRICAN AMERICAN</td></tr><tr class="tablerowodd"><td>6</td><td class="codelist-item-decode">AMERICAN INDIAN OR ALASKA NATIVE</td></tr><tr class="tableroweven"><td>7</td><td class="codelist-item-decode">ASIAN</td></tr></table></div><div class="codelist" id="CL.CL.SEX"><div class="codelist-caption">Sex [<span class="nci">C66731</span>]</div><table summary="Controlled Term - Sex"><tr class="header"><th scope="col" class="codedvalue">Permitted Value (Code)</th><th scope="col">Display Value (Decode)</th></tr><tr class="tablerowodd"><td>F [<span class="nci">C16576</span>]</td><td class="codelist-item-decode">Female</td></tr><tr class="tableroweven"><td>M [<span class="nci">C20197</span>]</td><td class="codelist-item-decode">Male</td></tr><tr class="tablerowodd"><td>U [<span class="nci">C17998</span>]</td><td class="codelist-item-decode">Unknown</td></tr></table></div><div class="codelist" id="CL.CL.VISIT"><div class="codelist-caption">VISIT</div><table summary="Code List - VISIT"><tr class="header"><th scope="col">Permitted Value (Code)</th></tr><tr class="tablerowodd"><td>SCREENING 1</td></tr><tr class="tableroweven"><td>UNSCHEDULED 1.1</td></tr><tr class="tablerowodd"><td>UNSCHEDULED 1.2</td></tr><tr class="tableroweven"><td>UNSCHEDULED 1.3</td></tr><tr class="tablerowodd"><td>SCREENING 2</td></tr><tr class="tableroweven"><td>BASELINE</td></tr><tr class="tablerowodd"><td>UNSCHEDULED 3.1</td></tr><tr class="tableroweven"><td>AMBUL ECG PLACEMENT</td></tr><tr class="tablerowodd"><td>WEEK 2</td></tr><tr class="tableroweven"><td>UNSCHEDULED 4.1</td></tr><tr class="tablerowodd"><td>UNSCHEDULED 4.2</td></tr><tr class="tableroweven"><td>WEEK 4</td></tr><tr class="tablerowodd"><td>UNSCHEDULED 5.1</td></tr><tr class="tableroweven"><td>AMBUL ECG REMOVAL</td></tr><tr class="tablerowodd"><td>UNSCHEDULED 6.1</td></tr><tr class="tableroweven"><td>WEEK 6</td></tr><tr class="tablerowodd"><td>UNSCHEDULED 7.1</td></tr><tr class="tableroweven"><td>WEEK 8</td></tr><tr class="tablerowodd"><td>WEEK 10 (T)</td></tr><tr class="tableroweven"><td>UNSCHEDULED 8.2</td></tr><tr class="tablerowodd"><td>WEEK 12</td></tr><tr class="tableroweven"><td>WEEK 14 (T)</td></tr><tr class="tablerowodd"><td>UNSCHEDULED 9.2</td></tr><tr class="tableroweven"><td>UNSCHEDULED 9.3</td></tr><tr class="tablerowodd"><td>WEEK 16</td></tr><tr class="tableroweven"><td>WEEK 18 (T)</td></tr><tr class="tablerowodd"><td>UNSCHEDULED 10.2</td></tr><tr class="tableroweven"><td>WEEK 20</td></tr><tr class="tablerowodd"><td>WEEK 22 (T)</td></tr><tr class="tableroweven"><td>UNSCHEDULED 11.2</td></tr><tr class="tablerowodd"><td>WEEK 24</td></tr><tr class="tableroweven"><td>UNSCHEDULED 12.1</td></tr><tr class="tablerowodd"><td>WEEK 26</td></tr><tr class="tableroweven"><td>UNSCHEDULED 13.1</td></tr><tr class="tablerowodd"><td>AE FOLLOW-UP</td></tr><tr class="tableroweven"><td>RETRIEVAL</td></tr><tr class="tablerowodd"><td>Rash followup</td></tr></table></div><div class="codelist" id="CL.CL.VISITNUM"><div class="codelist-caption">VISITNUM</div><table summary="Controlled Term - VISITNUM"><tr class="header"><th scope="col" class="codedvalue">Permitted Value (Code)</th><th scope="col">Display Value (Decode)</th></tr><tr class="tablerowodd"><td>1</td><td class="codelist-item-decode">SCREENING 1</td></tr><tr class="tableroweven"><td>1.1</td><td class="codelist-item-decode">UNSCHEDULED 1.1</td></tr><tr class="tablerowodd"><td>1.2</td><td class="codelist-item-decode">UNSCHEDULED 1.2</td></tr><tr class="tableroweven"><td>1.3</td><td class="codelist-item-decode">UNSCHEDULED 1.3</td></tr><tr class="tablerowodd"><td>2</td><td class="codelist-item-decode">SCREENING 2</td></tr><tr class="tableroweven"><td>3</td><td class="codelist-item-decode">BASELINE</td></tr><tr class="tablerowodd"><td>3.1</td><td class="codelist-item-decode">UNSCHEDULED 3.1</td></tr><tr class="tableroweven"><td>3.5</td><td class="codelist-item-decode">AMBUL ECG PLACEMENT</td></tr><tr class="tablerowodd"><td>4</td><td class="codelist-item-decode">WEEK 2</td></tr><tr class="tableroweven"><td>4.1</td><td class="codelist-item-decode">UNSCHEDULED 4.1</td></tr><tr class="tablerowodd"><td>4.2</td><td class="codelist-item-decode">UNSCHEDULED 4.2</td></tr><tr class="tableroweven"><td>5</td><td class="codelist-item-decode">WEEK 4</td></tr><tr class="tablerowodd"><td>5.1</td><td class="codelist-item-decode">UNSCHEDULED 5.1</td></tr><tr class="tableroweven"><td>6</td><td class="codelist-item-decode">AMBUL ECG REMOVAL</td></tr><tr class="tablerowodd"><td>6.1</td><td class="codelist-item-decode">UNSCHEDULED 6.1</td></tr><tr class="tableroweven"><td>7</td><td class="codelist-item-decode">WEEK 6</td></tr><tr class="tablerowodd"><td>7.1</td><td class="codelist-item-decode">UNSCHEDULED 7.1</td></tr><tr class="tableroweven"><td>8</td><td class="codelist-item-decode">WEEK 8</td></tr><tr class="tablerowodd"><td>8.1</td><td class="codelist-item-decode">WEEK 10 (T)</td></tr><tr class="tableroweven"><td>8.2</td><td class="codelist-item-decode">UNSCHEDULED 8.2</td></tr><tr class="tablerowodd"><td>9</td><td class="codelist-item-decode">WEEK 12</td></tr><tr class="tableroweven"><td>9.1</td><td class="codelist-item-decode">WEEK 14 (T)</td></tr><tr class="tablerowodd"><td>9.2</td><td class="codelist-item-decode">UNSCHEDULED 9.2</td></tr><tr class="tableroweven"><td>9.3</td><td class="codelist-item-decode">UNSCHEDULED 9.3</td></tr><tr class="tablerowodd"><td>10</td><td class="codelist-item-decode">WEEK 16</td></tr><tr class="tableroweven"><td>10.1</td><td class="codelist-item-decode">WEEK 18 (T)</td></tr><tr class="tablerowodd"><td>10.2</td><td class="codelist-item-decode">UNSCHEDULED 10.2</td></tr><tr class="tableroweven"><td>11</td><td class="codelist-item-decode">WEEK 20</td></tr><tr class="tablerowodd"><td>11.1</td><td class="codelist-item-decode">WEEK 22 (T)</td></tr><tr class="tableroweven"><td>11.2</td><td class="codelist-item-decode">UNSCHEDULED 11.2</td></tr><tr class="tablerowodd"><td>12</td><td class="codelist-item-decode">WEEK 24</td></tr><tr class="tableroweven"><td>12.1</td><td class="codelist-item-decode">UNSCHEDULED 12.1</td></tr><tr class="tablerowodd"><td>13</td><td class="codelist-item-decode">WEEK 26</td></tr><tr class="tableroweven"><td>13.1</td><td class="codelist-item-decode">UNSCHEDULED 13.1</td></tr><tr class="tablerowodd"><td>101</td><td class="codelist-item-decode">AE FOLLOW-UP</td></tr><tr class="tableroweven"><td>201</td><td class="codelist-item-decode">RETRIEVAL</td></tr><tr class="tablerowodd"><td>501</td><td class="codelist-item-decode">Rash followup</td></tr></table></div><div class="codelist" id="CL.CL.YN"><div class="codelist-caption">No Yes Response [<span class="nci">C66742</span>]</div><table summary="Controlled Term - No Yes Response"><tr class="header"><th scope="col" class="codedvalue">Permitted Value (Code)</th><th scope="col">Display Value (Decode)</th></tr><tr class="tablerowodd"><td>N [<span class="nci">C49487</span>]</td><td class="codelist-item-decode">No</td></tr><tr class="tableroweven"><td>Y [<span class="nci">C49488</span>]</td><td class="codelist-item-decode">Yes</td></tr></table></div><div class="codelist" id="CL.CL.Y_BLANK"><div class="codelist-caption">No Yes Response - Y subset [<span class="nci">C66742</span>]</div><table summary="Controlled Term - No Yes Response - Y subset"><tr class="header"><th scope="col" class="codedvalue">Permitted Value (Code)</th><th scope="col">Display Value (Decode)</th></tr><tr class="tablerowodd"><td>Y [<span class="nci">C49488</span>]</td><td class="codelist-item-decode">Yes</td></tr></table></div><p class="linktop">Go to the <a href="#main">top</a> of the Define-XML document</p><br></div><a id="compmethod"></a><div class="containerbox"><h1 class="invisible">Methods</h1><table summary="Methods"><caption class="header">Methods</caption><tr class="header"><th scope="col">Method</th><th scope="col">Type</th><th scope="col">Description</th></tr><tr id="MT.MT.ADQSADAS.AVISIT" class="tablerowodd"><td>CM.ADQSADAS.AVISIT</td><td>Computation</td><td><div class="method-code">Derived based on windowing algorithm described in SAP, Section 8.2</div></td></tr><tr id="MT.MT.ADQSADAS.ADY" class="tableroweven"><td>CM.ADQSADAS.ADY</td><td>Computation</td><td><div class="method-code">ADY = ADT - TRTSDT + 1, if ADT&gt;=TRTSDT. ADY = ADT - TRTSDT, if ADT&lt;TRTSDT.</div></td></tr><tr id="MT.MT.ADQSADAS.ADT" class="tablerowodd"><td>CM.ADQSADAS.ADT</td><td>Computation</td><td><div class="method-code">SAS date from QS.QSDTC</div></td></tr><tr id="MT.MT.ADQSADAS.AVAL" class="tableroweven"><td>CM.ADQSADAS.AVAL</td><td>Computation</td><td><div class="method-code">Derivations are described per parameter in the parameter value level metadata</div></td></tr><tr id="MT.MT.ADQSADAS.BASE" class="tablerowodd"><td>CM.ADQSADAS.BASE</td><td>Computation</td><td><div class="method-code">QS.QSSTRESN when QS.QSBLFL=Y (QS.VISITNUM=3)</div></td></tr><tr id="MT.MT.ADQSADAS.CHG" class="tableroweven"><td>CM.ADQSADAS.CHG</td><td>Computation</td><td><div class="method-code">AVAL - BASE</div></td></tr><tr id="MT.MT.ADQSADAS.PCHG" class="tablerowodd"><td>CM.ADQSADAS.PCHG</td><td>Computation</td><td><div class="method-code">100* (CHG/BASE)</div></td></tr><tr id="MT.MT.ADQSADAS.ANL01FL" class="tableroweven"><td>CM.ADQSADAS.ANL01FL</td><td>Computation</td><td><div class="method-code">If multiple visits fall into the same visit window, then the one closest to the target date is chosen for analysis. These are flagged with ANL01FL="Y".</div></td></tr><tr id="MT.MT.ADQSADAS.AWTDIFF" class="tablerowodd"><td>CM.ADQSADAS.AWTDIFF</td><td>Computation</td><td><div class="method-code">Absolute difference between AWTARGET and ADY</div></td></tr><tr id="MT.MT.ADSL.SITEGR1" class="tableroweven"><td>CM.ADSL.SITEGR1</td><td>Computation</td><td><div class="method-code">refer to SAP, Section 7.1 - if not pooled then SITEGR1=SITEID. If pooled, SITEGR1 will be 900</div></td></tr><tr id="MT.MT.ADSL.TRTSDT" class="tablerowodd"><td>CM.ADSL.TRTSDT</td><td>Computation</td><td><div class="method-code">SV.SVSTDTC when SV.VISITNUM=3, converted to SAS date</div></td></tr><tr id="MT.MT.ADSL.TRTEDT" class="tableroweven"><td>CM.ADSL.TRTEDT</td><td>Computation</td><td><div class="method-code">The date of final dose (from the CRF) is EX.EXENDTC on the subject's last EX record. If the date of final dose is missing for the subject and the subject discontinued after visit 3, use the date of discontinuation as the date of last dose. Convert the date to a SAS date.</div></td></tr><tr id="MT.MT.ADSL.TRTDUR" class="tablerowodd"><td>CM.ADSL.TRTDUR</td><td>Computation</td><td><div class="method-code">TRTEDT-TRTSDT+1</div></td></tr><tr id="MT.MT.ADSL.AVGDD" class="tableroweven"><td>CM.ADSL.AVGDD</td><td>Computation</td><td><div class="method-code">CUMDOSE/TRTDUR</div></td></tr><tr id="MT.MT.ADSL.CUMDOSE" class="tablerowodd"><td>CM.ADSL.CUMDOSE</td><td>Computation</td><td><div class="method-code">For ARMN=0 or 1: CUMDOSE=TRT01PN*TRTDUR. --- For ARMN=2: CUMDOSE will be based on 54mg per day for the # of days subj was in 1st dosing interval (i.e., visit4date-TRTSTDT+1 if 1st interval completed, TRTEDT-TRTSTDT+1 if subj discontinued &lt;=visit 4 and &gt; visit 3), 81mg per day for the # of days subj was in 2nd dosing interval (i.e., visit12date-visit4date if 2nd interval completed, TRTEDT-visit4date if subj discontinued &lt;= visit 12 and &gt; visit 4), and 54mg per day for the # of days subj was in 3rd dosing interval (i.e., TRTEDT - visit12date if subj continued after visit 12).</div></td></tr><tr id="MT.MT.ADSL.AGEGR1" class="tableroweven"><td>CM.ADSL.AGEGR1</td><td>Computation</td><td><div class="method-code">Character variable derived from ADSL.AGEGR1N</div></td></tr><tr id="MT.MT.ADSL.SAFFL" class="tablerowodd"><td>CM.ADSL.SAFFL</td><td>Computation</td><td><div class="method-code">Y if ITTFL='Y' and TRTSDT ne missing. N otherwise</div></td></tr><tr id="MT.MT.ADSL.ITTFL" class="tableroweven"><td>CM.ADSL.ITTFL</td><td>Computation</td><td><div class="method-code">Y if ARMCD ne ' '. N otherwise</div></td></tr><tr id="MT.MT.ADSL.EFFFL" class="tablerowodd"><td>CM.ADSL.EFFFL</td><td>Computation</td><td><div class="method-code">Y if SAFFL='Y AND subject has at least one record in QS for ADAS-Cog with VISITNUM&gt;3 AND at least one record in QS for CIBIC+ with VISITNUM&gt;3, N otherwise</div></td></tr><tr id="MT.MT.ADSL.COMP8FL" class="tableroweven"><td>CM.ADSL.COMP8FL</td><td>Computation</td><td><div class="method-code">Y if subject has a SV.VISITNUM=8 and ENDDT &gt;= date of visit 8, N otherwise</div></td></tr><tr id="MT.MT.ADSL.COMP16FL" class="tablerowodd"><td>CM.ADSL.COMP16FL</td><td>Computation</td><td><div class="method-code">Y if subject has a SV.VISITNUM=10 and ENDDT&gt;=date of visit 10, N otherwise</div></td></tr><tr id="MT.MT.ADSL.COMP24FL" class="tableroweven"><td>CM.ADSL.COMP24FL</td><td>Computation</td><td><div class="method-code">Y if subject has a SV.VISITNUM=12 and ENDDT&gt;= date of visit 12 , N otherwise</div></td></tr><tr id="MT.MT.ADSL.DISCONFL" class="tablerowodd"><td>CM.ADSL.DISCONFL</td><td>Computation</td><td><div class="method-code">Y if DCREASCD ^= 'Completed'. Null otherwise</div></td></tr><tr id="MT.MT.ADSL.DSRAEFL" class="tableroweven"><td>CM.ADSL.DSRAEFL</td><td>Computation</td><td><div class="method-code">Y if DCREASCD='Adverse Event'. Null otherwise</div></td></tr><tr id="MT.MT.ADSL.BMIBL" class="tablerowodd"><td>CM.ADSL.BMIBL</td><td>Computation</td><td><div class="method-code">WEIGHTBL / ((HEIGHTBL*100)**2)</div></td></tr><tr id="MT.MT.ADSL.BMIBLGR1" class="tableroweven"><td>CM.ADSL.BMIBLGR1</td><td>Computation</td><td><div class="method-code">BMIBLGR1=Normal if . &lt; BMIBL &lt;25. BMIBLGR1=Overweight if 25 &lt;=BMIBL &lt;30. BMIBLGR1=Obese if BMIBL &gt;=30</div></td></tr><tr id="MT.MT.ADSL.HEIGHTBL" class="tablerowodd"><td>CM.ADSL.HEIGHTBL</td><td>Computation</td><td><div class="method-code">VSSTRESN when VS.VSTESTCD='HEIGHT' and VS.VISITNUM=1</div></td></tr><tr id="MT.MT.ADSL.WEIGHTBL" class="tableroweven"><td>CM.ADSL.WEIGHTBL</td><td>Computation</td><td><div class="method-code">VSSTRESN when VS.VSTESTCD='WEIGHT' and VS.VISITNUM=3</div></td></tr><tr id="MT.MT.ADSL.EDUCLVL" class="tablerowodd"><td>CM.ADSL.EDUCLVL</td><td>Computation</td><td><div class="method-code">SC.SCSTRESN where SC.SCTESTCD=YEARSEDU</div></td></tr><tr id="MT.MT.ADSL.DISONSDT" class="tableroweven"><td>CM.ADSL.DISONSDT</td><td>Computation</td><td><div class="method-code">MH.MHSTDTC where MHCAT='PRIMARY DIAGNOSIS' converted to SAS date</div></td></tr><tr id="MT.MT.ADSL.DURDIS" class="tablerowodd"><td>CM.ADSL.DURDIS</td><td>Computation</td><td><div class="method-code">number of months between VISIT1DT and DISONSET</div></td></tr><tr id="MT.MT.ADSL.DURDSGR1" class="tableroweven"><td>CM.ADSL.DURDSGR1</td><td>Computation</td><td><div class="method-code">grouping DURDIS values as &lt;12 and &gt;=12</div></td></tr><tr id="MT.MT.ADSL.VISIT1DT" class="tablerowodd"><td>CM.ADSL.VISIT1DT</td><td>Computation</td><td><div class="method-code">SV.SVSTDTC when SV.VISITNUM=1, converted to SAS date</div></td></tr><tr id="MT.MT.ADSL.VISNUMEN" class="tableroweven"><td>CM.ADSL.VISNUMEN</td><td>Computation</td><td><div class="method-code">if DS.VISITNUM=13 where DSTERM='PROTCOL COMPLETED' then VISNUMEN=12, otherwise VISNUMEN=DS.VISITNUM where DSTERM='PROTCOL COMPLETED'</div></td></tr><tr id="MT.MT.ADSL.RFENDT" class="tablerowodd"><td>CM.ADSL.RFENDT</td><td>Computation</td><td><div class="method-code">RFENDTC converted to SAS date</div></td></tr><tr id="MT.MT.ADSL.DCDECOD" class="tableroweven"><td>CM.ADSL.DCDECOD</td><td>Computation</td><td><div class="method-code">DS.DSDECOD where DSCAT='DISPOSITION EVENT'</div></td></tr><tr id="MT.MT.ADSL.DCREASCD" class="tablerowodd"><td>CM.ADSL.DCREASCD</td><td>Computation</td><td><div class="method-code">Grouping of DCDECOD values to support summarizing study completion status and reason for discontinuation</div></td></tr><tr id="MT.MT.ADSL.MMSETOT" class="tableroweven"><td>CM.ADSL.MMSETOT</td><td>Computation</td><td><div class="method-code">sum of QS.QSORRES values for the subject</div></td></tr><tr id="MT.MT.ADQSADAS.AVAL.ACITM01-ACITM14" class="tablerowodd"><td>CM.ADQSADAS.AVAL.ACITM01-ACITM14</td><td>Computation</td><td><div class="method-code">QS.QSSTRESN where QSTESTCD=PARAMCD</div></td></tr><tr id="MT.MT.ADQSADAS.AVAL.ACTOT" class="tableroweven"><td>CM.ADQSADAS.AVAL.ACTOT</td><td>Computation</td><td><div class="method-code">Sum of ADAS scores for items 1, 2, 4, 5, 6, 7, 8, 11, 12, 13, and 14, see Analysis Data Reviewers Guide (Page 3) for details on adjusting for missing values.</div><p class="linebreakcell">Analysis Data Reviewer's Guide [<a class="external" href="analysis-data-reviewers-guide.pdf#page=3">3</a><span class="external-link-gif"></span> ]</p></td></tr></table></div><p class="linktop">Go to the <a href="#main">top</a> of the Define-XML document</p><br></div></body></html>
