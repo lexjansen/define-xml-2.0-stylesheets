@@ -3,7 +3,6 @@
 set project=C:\_projects\define-xml-2.0-stylesheets
 
 set Jars=C:\Program Files\SASHome\SASGraphJavaApplets\9.4
-REM set CLASSPATH=%Jars%\xml-apis.jar;%Jars%\serializer.jar;%Jars%\xalan.jar;%Jars%\xercesImpl.jar;%CLASSPATH%
 set classpath=%classpath%;C:\Apache\SaxonHE9-9-1-7J\saxon9he.jar
 
 set stylesheet=%project%\localization\stylesheets\define2-0.xsl
@@ -60,18 +59,6 @@ echo.
 echo done!
 
 PING localhost -n 3 >NUL
-
-goto :EOF
-
-
-:convert
-
-set xml=%1
-set xsl=%2
-set out=%3
-set lang=%4
-
-javaw -XX:+HeapDumpOnOutOfMemoryError -Xms256m -Xmx1024m org.apache.xalan.xslt.Process -param interfaceLang "%lang%" -IN "%xml%" -XSL %xsl% -OUT "%out%" >> %log% 2>&1
 
 goto :EOF
 
