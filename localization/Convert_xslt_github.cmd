@@ -2,7 +2,7 @@
 
 set project=.
 
-set classpath=%classpath%;..\lib\SaxonHE9-9-1-7J\saxon9he.jar
+set classpath=%classpath%;..\lib\SaxonHE10-8J\saxon-he-10.8.jar
 
 set stylesheet=%project%\stylesheets\define2-0.xsl
 
