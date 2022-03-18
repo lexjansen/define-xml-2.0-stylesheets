@@ -9,7 +9,7 @@
     <!--
           import ODM foundation schemas
     -->
-    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
-    <xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="xmldsig-core-schema.xsd"/>
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="../core/xml.xsd"/>
+    <xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="../core/xmldsig-core-schema.xsd"/>
     <xs:include schemaLocation="ODM1-3-2-foundation.xsd"/>
 </xs:schema>
