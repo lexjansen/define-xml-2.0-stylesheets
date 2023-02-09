@@ -3,7 +3,7 @@
 
   The MIT License (MIT) 
   
-  Copyright (c) 2013-2020 Lex Jansen
+  Copyright (c) 2013-2023 Lex Jansen
   
   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
   associated documentation files (the "Software"), to deal in the Software without restriction, 
@@ -65,7 +65,7 @@
   <!-- Author:      Lex Jansen, CDISC Data Exchange Standards Team                                               -->
   <!--                                                                                                           -->
   <!-- Changes:                                                                                                  -->
-  <!--   2023-02-08 - Add decodes to WhereClause when variablesw have the codelist in VLM                        -->
+  <!--   2023-02-08 - Add decodes to WhereClause when variables have the codelist in VLM                         -->
   <!--                Issue #9: Stylesheet does not display decodes in WhereClause                               -->
   <!--                Credits: Pierre Dostie (PDO)                                                               -->
   <!--   2020-09-18 - Added HTML language tag                                                                    -->
@@ -201,7 +201,7 @@
   
   <!-- Global Variables (constants) -->
 
-  <xsl:variable name="STYLESHEET_VERSION" select="'2020-09-18'"/>
+  <xsl:variable name="STYLESHEET_VERSION" select="'2023-02-08'"/>
   
   <!-- XSLT 1.0 does not support the function 'upper-case()', so we need to use the 'translate() function, 
     which uses the variables $lowercase and $uppercase. -->
