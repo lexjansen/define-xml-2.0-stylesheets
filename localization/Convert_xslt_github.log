@@ -1,97 +1,478 @@
 
 Transform -s:.\xml\define.cdisc.adam.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam_ja.html  
-java net.sf.saxon.Transform -s:.\xml\define.cdisc.adam.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam_ja.html -versionmsg:off interfaceLang=ja displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+java net.sf.saxon.Transform -t -s:.\xml\define.cdisc.adam.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam_ja.html -versionmsg:off interfaceLang=ja displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 715.2123ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.adam.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.adam.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 18.3897ms
+Tree size: 3573 nodes, 8126 characters, 1928 attributes
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/stylesheets/dictionary.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 3.1533ms
+Tree size: 775 nodes, 1036 characters, 252 attributes
+Execution time: 245.8693ms
+Memory used: 116Mb
 
 Transform -s:.\xml\define.cdisc.adam.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam_zh.html  
-java net.sf.saxon.Transform -s:.\xml\define.cdisc.adam.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam_zh.html -versionmsg:off interfaceLang=zh displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+java net.sf.saxon.Transform -t -s:.\xml\define.cdisc.adam.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam_zh.html -versionmsg:off interfaceLang=zh displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 677.946ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.adam.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.adam.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 16.3139ms
+Tree size: 3573 nodes, 8126 characters, 1928 attributes
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/stylesheets/dictionary.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 3.2747ms
+Tree size: 775 nodes, 1036 characters, 252 attributes
+Execution time: 219.9776ms
+Memory used: 116Mb
 
 Transform -s:.\xml\define.cdisc.adam.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam_en.html  
-java net.sf.saxon.Transform -s:.\xml\define.cdisc.adam.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam_en.html -versionmsg:off interfaceLang=en displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+java net.sf.saxon.Transform -t -s:.\xml\define.cdisc.adam.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam_en.html -versionmsg:off interfaceLang=en displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 678.7239ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.adam.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.adam.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 16.6767ms
+Tree size: 3573 nodes, 8126 characters, 1928 attributes
+Execution time: 180.4005ms
+Memory used: 113Mb
 
 Transform -s:.\xml\define.cdisc.adam.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam_default.html  
-java net.sf.saxon.Transform -s:.\xml\define.cdisc.adam.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam_default.html -versionmsg:off displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+java net.sf.saxon.Transform -t -s:.\xml\define.cdisc.adam.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam_default.html -versionmsg:off displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 671.3685ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.adam.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.adam.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 15.8924ms
+Tree size: 3573 nodes, 8126 characters, 1928 attributes
+Execution time: 176.6216ms
+Memory used: 113Mb
+
+Transform -s:.\xml\define.cdisc.adam_issue09.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam_defaultissue09.html  
+java net.sf.saxon.Transform -t -s:.\xml\define.cdisc.adam_issue09.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam_defaultissue09.html -versionmsg:off displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 674.8572ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.adam_issue09.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.adam_issue09.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 16.7372ms
+Tree size: 3670 nodes, 8268 characters, 1963 attributes
+Execution time: 184.98ms
+Memory used: 116Mb
 
 Transform -s:.\xml\define.cdisc.arm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.arm_ja.html  
-java net.sf.saxon.Transform -s:.\xml\define.cdisc.arm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.arm_ja.html -versionmsg:off interfaceLang=ja displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+java net.sf.saxon.Transform -t -s:.\xml\define.cdisc.arm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.arm_ja.html -versionmsg:off interfaceLang=ja displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 681.4593ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.arm.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.arm.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 19.3493ms
+Tree size: 5189 nodes, 14862 characters, 2834 attributes
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/stylesheets/dictionary.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 2.2582ms
+Tree size: 775 nodes, 1036 characters, 252 attributes
+Execution time: 252.9666ms
+Memory used: 129Mb
 
 Transform -s:.\xml\define.cdisc.arm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.arm_zh.html  
-java net.sf.saxon.Transform -s:.\xml\define.cdisc.arm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.arm_zh.html -versionmsg:off interfaceLang=zh displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+java net.sf.saxon.Transform -t -s:.\xml\define.cdisc.arm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.arm_zh.html -versionmsg:off interfaceLang=zh displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 672.8037ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.arm.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.arm.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 19.5515ms
+Tree size: 5189 nodes, 14862 characters, 2834 attributes
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/stylesheets/dictionary.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 1.8212ms
+Tree size: 775 nodes, 1036 characters, 252 attributes
+Execution time: 252.0078ms
+Memory used: 132Mb
 
 Transform -s:.\xml\define.cdisc.arm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.arm_en.html  
-java net.sf.saxon.Transform -s:.\xml\define.cdisc.arm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.arm_en.html -versionmsg:off interfaceLang=en displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+java net.sf.saxon.Transform -t -s:.\xml\define.cdisc.arm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.arm_en.html -versionmsg:off interfaceLang=en displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 671.047ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.arm.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.arm.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 20.9419ms
+Tree size: 5189 nodes, 14862 characters, 2834 attributes
+Execution time: 210.1849ms
+Memory used: 124Mb
 
 Transform -s:.\xml\define.cdisc.arm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.arm_default.html  
-java net.sf.saxon.Transform -s:.\xml\define.cdisc.arm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.arm_default.html -versionmsg:off displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+java net.sf.saxon.Transform -t -s:.\xml\define.cdisc.arm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.arm_default.html -versionmsg:off displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 680.357ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.arm.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.arm.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 20.2975ms
+Tree size: 5189 nodes, 14862 characters, 2834 attributes
+Execution time: 207.9998ms
+Memory used: 124Mb
 
 Transform -s:.\xml\define.cdisc.sdtm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.sdtm_ja.html  
-java net.sf.saxon.Transform -s:.\xml\define.cdisc.sdtm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.sdtm_ja.html -versionmsg:off interfaceLang=ja displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+java net.sf.saxon.Transform -t -s:.\xml\define.cdisc.sdtm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.sdtm_ja.html -versionmsg:off interfaceLang=ja displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 667.8038ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.sdtm.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.sdtm.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 33.7908ms
+Tree size: 13008 nodes, 20904 characters, 8447 attributes
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/stylesheets/dictionary.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 3.4564ms
+Tree size: 775 nodes, 1036 characters, 252 attributes
+Execution time: 545.1303ms
+Memory used: 55Mb
 
 Transform -s:.\xml\define.cdisc.sdtm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.sdtm_zh.html  
-java net.sf.saxon.Transform -s:.\xml\define.cdisc.sdtm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.sdtm_zh.html -versionmsg:off interfaceLang=zh displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+java net.sf.saxon.Transform -t -s:.\xml\define.cdisc.sdtm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.sdtm_zh.html -versionmsg:off interfaceLang=zh displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 669.9396ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.sdtm.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.sdtm.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 33.4545ms
+Tree size: 13008 nodes, 20904 characters, 8447 attributes
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/stylesheets/dictionary.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 3.019ms
+Tree size: 775 nodes, 1036 characters, 252 attributes
+Execution time: 546.8145ms
+Memory used: 56Mb
 
 Transform -s:.\xml\define.cdisc.sdtm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.sdtm_en.html  
-java net.sf.saxon.Transform -s:.\xml\define.cdisc.sdtm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.sdtm_en.html -versionmsg:off interfaceLang=en displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+java net.sf.saxon.Transform -t -s:.\xml\define.cdisc.sdtm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.sdtm_en.html -versionmsg:off interfaceLang=en displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 685.9166ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.sdtm.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.sdtm.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 33.6172ms
+Tree size: 13008 nodes, 20904 characters, 8447 attributes
+Execution time: 547.8252ms
+Memory used: 48Mb
 
 Transform -s:.\xml\define.cdisc.sdtm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.sdtm_default.html  
-java net.sf.saxon.Transform -s:.\xml\define.cdisc.sdtm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.sdtm_default.html -versionmsg:off displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+java net.sf.saxon.Transform -t -s:.\xml\define.cdisc.sdtm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.sdtm_default.html -versionmsg:off displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 668.5173ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.sdtm.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.sdtm.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 33.8794ms
+Tree size: 13008 nodes, 20904 characters, 8447 attributes
+Execution time: 495.7599ms
+Memory used: 51Mb
 
 Transform -s:.\xml\define.phuse.test.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.phuse.test_ja.html  
-java net.sf.saxon.Transform -s:.\xml\define.phuse.test.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.phuse.test_ja.html -versionmsg:off interfaceLang=ja displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+java net.sf.saxon.Transform -t -s:.\xml\define.phuse.test.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.phuse.test_ja.html -versionmsg:off interfaceLang=ja displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 681.792ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.phuse.test.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.phuse.test.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 19.3863ms
+Tree size: 5116 nodes, 15560 characters, 2822 attributes
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/stylesheets/dictionary.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 2.4023ms
+Tree size: 775 nodes, 1036 characters, 252 attributes
+Execution time: 283.2839ms
+Memory used: 24Mb
 
 Transform -s:.\xml\define.phuse.test.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.phuse.test_zh.html  
-java net.sf.saxon.Transform -s:.\xml\define.phuse.test.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.phuse.test_zh.html -versionmsg:off interfaceLang=zh displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+java net.sf.saxon.Transform -t -s:.\xml\define.phuse.test.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.phuse.test_zh.html -versionmsg:off interfaceLang=zh displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 672.4402ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.phuse.test.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.phuse.test.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 19.7012ms
+Tree size: 5116 nodes, 15560 characters, 2822 attributes
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/stylesheets/dictionary.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 3.6753ms
+Tree size: 775 nodes, 1036 characters, 252 attributes
+Execution time: 287.8897ms
+Memory used: 24Mb
 
 Transform -s:.\xml\define.phuse.test.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.phuse.test_en.html  
-java net.sf.saxon.Transform -s:.\xml\define.phuse.test.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.phuse.test_en.html -versionmsg:off interfaceLang=en displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+java net.sf.saxon.Transform -t -s:.\xml\define.phuse.test.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.phuse.test_en.html -versionmsg:off interfaceLang=en displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 673.6513ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.phuse.test.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.phuse.test.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 19.3559ms
+Tree size: 5116 nodes, 15560 characters, 2822 attributes
+Execution time: 237.9921ms
+Memory used: 134Mb
 
 Transform -s:.\xml\define.phuse.test.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.phuse.test_default.html  
-java net.sf.saxon.Transform -s:.\xml\define.phuse.test.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.phuse.test_default.html -versionmsg:off displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+java net.sf.saxon.Transform -t -s:.\xml\define.phuse.test.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.phuse.test_default.html -versionmsg:off displayCommentsTable="0" displayPrefix="0" displayLengthDFormatSD="0" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 674.4443ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.phuse.test.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.phuse.test.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 20.0758ms
+Tree size: 5116 nodes, 15560 characters, 2822 attributes
+Execution time: 238.9037ms
+Memory used: 134Mb
 
 Transform -s:.\xml\define.cdisc.adam.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam.parameters_ja.html  
-java net.sf.saxon.Transform -s:.\xml\define.cdisc.adam.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam.parameters_ja.html -versionmsg:off interfaceLang=ja displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+java net.sf.saxon.Transform -t -s:.\xml\define.cdisc.adam.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam.parameters_ja.html -versionmsg:off interfaceLang=ja displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 734.8295ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.adam.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.adam.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 17.5533ms
+Tree size: 3573 nodes, 8126 characters, 1928 attributes
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/stylesheets/dictionary.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 2.4969ms
+Tree size: 775 nodes, 1036 characters, 252 attributes
+Execution time: 230.0616ms
+Memory used: 118Mb
 
 Transform -s:.\xml\define.cdisc.adam.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam.parameters_zh.html  
-java net.sf.saxon.Transform -s:.\xml\define.cdisc.adam.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam.parameters_zh.html -versionmsg:off interfaceLang=zh displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+java net.sf.saxon.Transform -t -s:.\xml\define.cdisc.adam.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam.parameters_zh.html -versionmsg:off interfaceLang=zh displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 682.67ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.adam.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.adam.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 17.5905ms
+Tree size: 3573 nodes, 8126 characters, 1928 attributes
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/stylesheets/dictionary.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 2.8548ms
+Tree size: 775 nodes, 1036 characters, 252 attributes
+Execution time: 232.8452ms
+Memory used: 118Mb
 
 Transform -s:.\xml\define.cdisc.adam.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam.parameters_en.html  
-java net.sf.saxon.Transform -s:.\xml\define.cdisc.adam.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam.parameters_en.html -versionmsg:off interfaceLang=en displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+java net.sf.saxon.Transform -t -s:.\xml\define.cdisc.adam.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam.parameters_en.html -versionmsg:off interfaceLang=en displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 669.7683ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.adam.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.adam.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 17.323ms
+Tree size: 3573 nodes, 8126 characters, 1928 attributes
+Execution time: 189.8846ms
+Memory used: 113Mb
 
 Transform -s:.\xml\define.cdisc.adam.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam.parameters_default.html  
-java net.sf.saxon.Transform -s:.\xml\define.cdisc.adam.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam.parameters_default.html -versionmsg:off displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+java net.sf.saxon.Transform -t -s:.\xml\define.cdisc.adam.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.adam.parameters_default.html -versionmsg:off displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 675.1159ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.adam.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.adam.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 18.5711ms
+Tree size: 3573 nodes, 8126 characters, 1928 attributes
+Execution time: 192.7585ms
+Memory used: 113Mb
 
 Transform -s:.\xml\define.cdisc.arm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.arm.parameters_ja.html  
-java net.sf.saxon.Transform -s:.\xml\define.cdisc.arm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.arm.parameters_ja.html -versionmsg:off interfaceLang=ja displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+java net.sf.saxon.Transform -t -s:.\xml\define.cdisc.arm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.arm.parameters_ja.html -versionmsg:off interfaceLang=ja displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 675.2678ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.arm.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.arm.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 20.2919ms
+Tree size: 5189 nodes, 14862 characters, 2834 attributes
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/stylesheets/dictionary.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 1.979ms
+Tree size: 775 nodes, 1036 characters, 252 attributes
+Execution time: 269.2741ms
+Memory used: 126Mb
 
 Transform -s:.\xml\define.cdisc.arm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.arm.parameters_zh.html  
-java net.sf.saxon.Transform -s:.\xml\define.cdisc.arm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.arm.parameters_zh.html -versionmsg:off interfaceLang=zh displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+java net.sf.saxon.Transform -t -s:.\xml\define.cdisc.arm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.arm.parameters_zh.html -versionmsg:off interfaceLang=zh displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 682.4653ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.arm.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.arm.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 22.4917ms
+Tree size: 5189 nodes, 14862 characters, 2834 attributes
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/stylesheets/dictionary.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 2.0045ms
+Tree size: 775 nodes, 1036 characters, 252 attributes
+Execution time: 273.7344ms
+Memory used: 132Mb
 
 Transform -s:.\xml\define.cdisc.arm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.arm.parameters_en.html  
-java net.sf.saxon.Transform -s:.\xml\define.cdisc.arm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.arm.parameters_en.html -versionmsg:off interfaceLang=en displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+java net.sf.saxon.Transform -t -s:.\xml\define.cdisc.arm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.arm.parameters_en.html -versionmsg:off interfaceLang=en displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 674.8436ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.arm.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.arm.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 20.1139ms
+Tree size: 5189 nodes, 14862 characters, 2834 attributes
+Execution time: 227.3307ms
+Memory used: 126Mb
 
 Transform -s:.\xml\define.cdisc.arm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.arm.parameters_default.html  
-java net.sf.saxon.Transform -s:.\xml\define.cdisc.arm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.arm.parameters_default.html -versionmsg:off displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+java net.sf.saxon.Transform -t -s:.\xml\define.cdisc.arm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.arm.parameters_default.html -versionmsg:off displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 691.2098ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.arm.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.arm.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 20.7758ms
+Tree size: 5189 nodes, 14862 characters, 2834 attributes
+Execution time: 227.6079ms
+Memory used: 124Mb
 
 Transform -s:.\xml\define.cdisc.sdtm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.sdtm.parameters_ja.html  
-java net.sf.saxon.Transform -s:.\xml\define.cdisc.sdtm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.sdtm.parameters_ja.html -versionmsg:off interfaceLang=ja displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+java net.sf.saxon.Transform -t -s:.\xml\define.cdisc.sdtm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.sdtm.parameters_ja.html -versionmsg:off interfaceLang=ja displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 672.0295ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.sdtm.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.sdtm.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 37.3844ms
+Tree size: 13008 nodes, 20904 characters, 8447 attributes
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/stylesheets/dictionary.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 3.3455ms
+Tree size: 775 nodes, 1036 characters, 252 attributes
+Execution time: 577.6696ms
+Memory used: 56Mb
 
 Transform -s:.\xml\define.cdisc.sdtm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.sdtm.parameters_zh.html  
-java net.sf.saxon.Transform -s:.\xml\define.cdisc.sdtm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.sdtm.parameters_zh.html -versionmsg:off interfaceLang=zh displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+java net.sf.saxon.Transform -t -s:.\xml\define.cdisc.sdtm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.sdtm.parameters_zh.html -versionmsg:off interfaceLang=zh displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 677.7872ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.sdtm.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.sdtm.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 34.4387ms
+Tree size: 13008 nodes, 20904 characters, 8447 attributes
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/stylesheets/dictionary.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 3.2813ms
+Tree size: 775 nodes, 1036 characters, 252 attributes
+Execution time: 573.9632ms
+Memory used: 57Mb
 
 Transform -s:.\xml\define.cdisc.sdtm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.sdtm.parameters_en.html  
-java net.sf.saxon.Transform -s:.\xml\define.cdisc.sdtm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.sdtm.parameters_en.html -versionmsg:off interfaceLang=en displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+java net.sf.saxon.Transform -t -s:.\xml\define.cdisc.sdtm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.sdtm.parameters_en.html -versionmsg:off interfaceLang=en displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 683.0426ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.sdtm.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.sdtm.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 36.0737ms
+Tree size: 13008 nodes, 20904 characters, 8447 attributes
+Execution time: 523.4899ms
+Memory used: 54Mb
 
 Transform -s:.\xml\define.cdisc.sdtm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.sdtm.parameters_default.html  
-java net.sf.saxon.Transform -s:.\xml\define.cdisc.sdtm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.sdtm.parameters_default.html -versionmsg:off displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+java net.sf.saxon.Transform -t -s:.\xml\define.cdisc.sdtm.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.cdisc.sdtm.parameters_default.html -versionmsg:off displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 690.3334ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.sdtm.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.cdisc.sdtm.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 36.3273ms
+Tree size: 13008 nodes, 20904 characters, 8447 attributes
+Execution time: 533.7114ms
+Memory used: 55Mb
 
 Transform -s:.\xml\define.phuse.test.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.phuse.test.parameters_ja.html  
-java net.sf.saxon.Transform -s:.\xml\define.phuse.test.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.phuse.test.parameters_ja.html -versionmsg:off interfaceLang=ja displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+java net.sf.saxon.Transform -t -s:.\xml\define.phuse.test.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.phuse.test.parameters_ja.html -versionmsg:off interfaceLang=ja displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 677.4894ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.phuse.test.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.phuse.test.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 20.7821ms
+Tree size: 5116 nodes, 15560 characters, 2822 attributes
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/stylesheets/dictionary.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 3.1288ms
+Tree size: 775 nodes, 1036 characters, 252 attributes
+Execution time: 313.6646ms
+Memory used: 24Mb
 
 Transform -s:.\xml\define.phuse.test.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.phuse.test.parameters_zh.html  
-java net.sf.saxon.Transform -s:.\xml\define.phuse.test.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.phuse.test.parameters_zh.html -versionmsg:off interfaceLang=zh displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+java net.sf.saxon.Transform -t -s:.\xml\define.phuse.test.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.phuse.test.parameters_zh.html -versionmsg:off interfaceLang=zh displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 687.1212ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.phuse.test.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.phuse.test.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 22.0559ms
+Tree size: 5116 nodes, 15560 characters, 2822 attributes
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/stylesheets/dictionary.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 3.025ms
+Tree size: 775 nodes, 1036 characters, 252 attributes
+Execution time: 304.471ms
+Memory used: 27Mb
 
 Transform -s:.\xml\define.phuse.test.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.phuse.test.parameters_en.html  
-java net.sf.saxon.Transform -s:.\xml\define.phuse.test.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.phuse.test.parameters_en.html -versionmsg:off interfaceLang=en displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+java net.sf.saxon.Transform -t -s:.\xml\define.phuse.test.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.phuse.test.parameters_en.html -versionmsg:off interfaceLang=en displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 680.2905ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.phuse.test.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.phuse.test.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 21.6354ms
+Tree size: 5116 nodes, 15560 characters, 2822 attributes
+Execution time: 258.2379ms
+Memory used: 134Mb
 
 Transform -s:.\xml\define.phuse.test.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.phuse.test.parameters_default.html  
-java net.sf.saxon.Transform -s:.\xml\define.phuse.test.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.phuse.test.parameters_default.html -versionmsg:off displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+java net.sf.saxon.Transform -t -s:.\xml\define.phuse.test.xml -xsl:.\stylesheets\define2-0.xsl -o:.\html\define.phuse.test.parameters_default.html -versionmsg:off displayCommentsTable="1" displayPrefix="1" displayLengthDFormatSD="1" 
+SaxonJ-HE 11.5 from Saxonica
+Java version 1.8.0_92
+Stylesheet compilation time: 684.0562ms
+Processing file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.phuse.test.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/C:/_github/lexjansen/define-xml-2.0-stylesheets/localization/./xml/define.phuse.test.xml using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 21.7552ms
+Tree size: 5116 nodes, 15560 characters, 2822 attributes
+Execution time: 267.8986ms
+Memory used: 21Mb
 
