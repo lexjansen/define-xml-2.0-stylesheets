@@ -20,11 +20,16 @@
   OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:odm="http://www.cdisc.org/ns/odm/v1.3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:def="http://www.cdisc.org/ns/def/v2.0" xmlns:xlink="http://www.w3.org/1999/xlink" 
-  xmlns:arm="http://www.cdisc.org/ns/arm/v1.0" xml:lang="en"
+<xsl:stylesheet version="1.0" 
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:odm="http://www.cdisc.org/ns/odm/v1.3" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:def="http://www.cdisc.org/ns/def/v2.0" 
+  xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xmlns:arm="http://www.cdisc.org/ns/arm/v1.0" 
+  xml:lang="en"
   exclude-result-prefixes="def xlink odm xsi arm">
+  
   <xsl:output method="html" indent="no" encoding="utf-8" 
     doctype-system="http://www.w3.org/TR/html4/strict.dtd"
     doctype-public="-//W3C//DTD HTML 4.01//EN" version="4.0"/>
@@ -60,6 +65,9 @@
   <!-- Author:      Lex Jansen, CDISC Data Exchange Standards Team                                               -->
   <!--                                                                                                           -->
   <!-- Changes:                                                                                                  -->
+  <!--   2023-02-08 - Add decodes to WhereClause when variablesw have the codelist in VLM                        -->
+  <!--                Issue #9: Stylesheet does not display decodes in WhereClause                               -->
+  <!--                Credits: Pierre Dostie (PDO)                                                               -->
   <!--   2020-09-18 - Added HTML language tag                                                                    -->
   <!--   2020-07-15 - Added interfaceLang parameter                                                              -->
   <!--   2019-02-11 - Fixed window title in browser                                                              -->
@@ -919,13 +927,6 @@
          <xsl:call-template name="tableItemDefs"/>
       </xsl:for-each>
 
-      <!-- ****************************************************  -->
-      <!-- Create the Value Level Metadata (Value List)          -->
-      <!-- ****************************************************  -->
-      <!-- 
-      <xsl:call-template name="tableValueLists"/>
-       -->
-      
       <!-- ***************************************************************** -->
       <!-- Create the Code Lists, Enumerated Items and External Dictionaries -->
       <!-- ***************************************************************** -->
@@ -1207,11 +1208,16 @@
                       <xsl:variable name="whereRefItemName" select="$g_seqItemDefs[@OID=$whereRefItemOID]/@Name"/>
                       <xsl:variable name="whereRefItemDataType" select="$g_seqItemDefs[@OID=$whereRefItemOID]/@DataType"/>
                       <xsl:variable name="whereOP" select="./@Comparator"/>
-                      <xsl:variable name="whereRefItemCodeListOID"
-                        select="$g_seqItemDefs[@OID=$whereRefItemOID]/odm:CodeListRef/@CodeListOID"/>
-                      <xsl:variable name="whereRefItemCodeList"
-                        select="$g_seqCodeLists[@OID=$whereRefItemCodeListOID]"/>
-                      
+                      <xsl:variable name="whereRefItemCodeListOID" select="$g_seqItemDefs[@OID=$whereRefItemOID]/odm:CodeListRef/@CodeListOID"/>
+            					<!-- ************************************************************* -->
+            					<!-- PDO                                                           -->
+            					<!-- Remove whereRefItemCodeList variable                          -->
+            					<!-- and create whereRefItemValueListOID variable                  -->
+            					<!-- PDO                                                           -->
+            					<!-- ************************************************************* -->
+            					<!--xsl:variable name="whereRefItemCodeList" select="$g_seqCodeLists[@OID=$whereRefItemCodeListOID]"/-->
+            					<xsl:variable name="whereRefItemValueListOID" select="$g_seqItemDefs[@OID=$whereRefItemOID]/def:ValueListRef/@ValueListOID"/>	
+                     
                       <xsl:call-template name="ItemGroupItemLink">
                         <xsl:with-param name="ItemGroupOID" select="$ItemGroupOID"/>
                         <xsl:with-param name="ItemOID" select="$whereRefItemOID"/>
@@ -1234,12 +1240,18 @@
                           <xsl:for-each select="./odm:CheckValue">
                             <xsl:variable name="CheckValueINNOTIN" select="."/>
                             <p class="linebreakcell"> 
-                              <xsl:call-template name="displayValue">
-                                <xsl:with-param name="Value" select="$CheckValueINNOTIN"/>
-                                <xsl:with-param name="DataType" select="$g_seqItemDefs[@OID=$whereRefItemOID]/@DataType"/>
-                                <xsl:with-param name="decode" select="1"/>
-                                <xsl:with-param name="CodeList" select="$whereRefItemCodeList"/>
-                              </xsl:call-template>
+            							  <!-- ************************************************************* -->
+            							  <!-- PDO                                                           -->
+            							  <!-- Call new template displayValue                                -->
+            							  <!-- PDO                                                           -->
+            							  <!-- ************************************************************* -->
+            							  <xsl:call-template name="displayValue">
+              								<xsl:with-param name="Value" select="$CheckValueINNOTIN"/>
+              								<xsl:with-param name="whereRefItemOID" select="$whereRefItemOID"/>
+              								<xsl:with-param name="whereRefItemCodeListOID" select="$whereRefItemCodeListOID"/>
+              								<xsl:with-param name="whereRefItemValueListOID" select="$whereRefItemValueListOID"/>
+              								<xsl:with-param name="decode" select="1"/>
+            							  </xsl:call-template>
                               <xsl:if test="position() != $Nvalues">
                                 <xsl:value-of select="', '"/>
                               </xsl:if>
@@ -1250,23 +1262,35 @@
                         <xsl:when test="$whereOP = 'EQ'">
                           <xsl:variable name="CheckValueEQ" select="./odm:CheckValue"/>
                           <xsl:text> = </xsl:text>
-                          <xsl:call-template name="displayValue">
-                            <xsl:with-param name="Value" select="$CheckValueEQ"/>
-                            <xsl:with-param name="DataType" select="$g_seqItemDefs[@OID=$whereRefItemOID]/@DataType"/>
-                            <xsl:with-param name="decode" select="1"/>
-                            <xsl:with-param name="CodeList" select="$whereRefItemCodeList"/>
-                          </xsl:call-template>
+            						  <!-- ************************************************************* -->
+            						  <!-- PDO                                                           -->
+            						  <!-- Call new template displayValue                                -->
+            						  <!-- PDO                                                           -->
+            						  <!-- ************************************************************* -->
+            						  <xsl:call-template name="displayValue">
+              							<xsl:with-param name="Value" select="$CheckValueEQ"/>
+              							<xsl:with-param name="whereRefItemOID" select="$whereRefItemOID"/>
+              							<xsl:with-param name="whereRefItemCodeListOID" select="$whereRefItemCodeListOID"/>
+              							<xsl:with-param name="whereRefItemValueListOID" select="$whereRefItemValueListOID"/>
+              							<xsl:with-param name="decode" select="1"/>
+            						  </xsl:call-template>
                         </xsl:when>
   
                         <xsl:when test="$whereOP = 'NE'">
                           <xsl:variable name="CheckValueNE" select="./odm:CheckValue"/>
                           <xsl:text> &#x2260; </xsl:text>
-                          <xsl:call-template name="displayValue">
-                            <xsl:with-param name="Value" select="$CheckValueNE"/>
-                            <xsl:with-param name="DataType" select="$g_seqItemDefs[@OID=$whereRefItemOID]/@DataType"/>
-                            <xsl:with-param name="decode" select="1"/>
-                            <xsl:with-param name="CodeList" select="$whereRefItemCodeList"/>
-                          </xsl:call-template>
+            						  <!-- ************************************************************* -->
+            						  <!-- PDO                                                           -->
+            						  <!-- Call new template displayValue                                -->
+            						  <!-- PDO                                                           -->
+            						  <!-- ************************************************************* -->
+            						  <xsl:call-template name="displayValue">
+              							<xsl:with-param name="Value" select="$CheckValueNE"/>
+              							<xsl:with-param name="whereRefItemOID" select="$whereRefItemOID"/>
+              							<xsl:with-param name="whereRefItemCodeListOID" select="$whereRefItemCodeListOID"/>
+              							<xsl:with-param name="whereRefItemValueListOID" select="$whereRefItemValueListOID"/>
+              							<xsl:with-param name="decode" select="1"/>
+            						  </xsl:call-template>
                         </xsl:when>
   
                         <xsl:otherwise>
@@ -1289,12 +1313,18 @@
                               <xsl:value-of select="$whereOP"/>
                             </xsl:otherwise>
                           </xsl:choose>
-                          <xsl:call-template name="displayValue">
-                            <xsl:with-param name="Value" select="$CheckValueOTH"/>
-                            <xsl:with-param name="DataType" select="$g_seqItemDefs[@OID=$whereRefItemOID]/@DataType"/>
-                            <xsl:with-param name="decode" select="1"/>
-                            <xsl:with-param name="CodeList" select="$whereRefItemCodeList"/>
-                          </xsl:call-template>                        
+            						  <!-- ************************************************************* -->
+            						  <!-- PDO                                                           -->
+            						  <!-- Call new template displayValue                                -->
+            						  <!-- PDO                                                           -->
+            						  <!-- ************************************************************* -->
+            						  <xsl:call-template name="displayValue">
+              							<xsl:with-param name="Value" select="$CheckValueOTH"/>
+              							<xsl:with-param name="whereRefItemOID" select="$whereRefItemOID"/>
+              							<xsl:with-param name="whereRefItemCodeListOID" select="$whereRefItemCodeListOID"/>
+              							<xsl:with-param name="whereRefItemValueListOID" select="$whereRefItemValueListOID"/>
+              							<xsl:with-param name="decode" select="1"/>
+            						  </xsl:call-template>
                         </xsl:otherwise>
                       </xsl:choose>
                       
@@ -1393,8 +1423,8 @@
                       
                       <xsl:text>  [</xsl:text>
                       <xsl:call-template name="displayWhereClause">
-                        <xsl:with-param name="ValueItemRef"
-                           select="$AnalysisResult/arm:AnalysisDatasets/arm:AnalysisDataset[@ItemGroupOID=$ItemGroupOID]"/>
+                        <xsl:with-param name="ValueItemRef" 
+                          select="$AnalysisResult/arm:AnalysisDatasets/arm:AnalysisDataset[@ItemGroupOID=$ItemGroupOID]"/>
                         <xsl:with-param name="ItemGroupLink" select="$ItemGroupOID"/>
                         <xsl:with-param name="decode" select="0"/>
                         <xsl:with-param name="break" select="0"/>
@@ -3416,10 +3446,15 @@
         <xsl:variable name="whereRefItemOID" select="./@def:ItemOID"/>
         <xsl:variable name="whereRefItemName" select="$g_seqItemDefs[@OID=$whereRefItemOID]/@Name"/>
         <xsl:variable name="whereOP" select="./@Comparator"/>
-        <xsl:variable name="whereRefItemCodeListOID"
-          select="$g_seqItemDefs[@OID=$whereRefItemOID]/odm:CodeListRef/@CodeListOID"/>
-        <xsl:variable name="whereRefItemCodeList"
-          select="$g_seqCodeLists[@OID=$whereRefItemCodeListOID]"/>
+        <xsl:variable name="whereRefItemCodeListOID" select="$g_seqItemDefs[@OID=$whereRefItemOID]/odm:CodeListRef/@CodeListOID"/>
+    		<!-- ************************************************************* -->
+    		<!-- PDO                                                           -->
+    		<!-- Remove whereRefItemCodeList variable                          -->
+    		<!-- and create whereRefItemValueListOID variable                  -->
+    		<!-- PDO                                                           -->
+    		<!-- ************************************************************* -->
+    		<!--xsl:variable name="whereRefItemCodeList" select="$g_seqCodeLists[@OID=$whereRefItemCodeListOID]"/-->
+    		<xsl:variable name="whereRefItemValueListOID" select="$g_seqItemDefs[@OID=$whereRefItemOID]/def:ValueListRef/@ValueListOID"/>	
         
         <xsl:call-template name="ItemGroupItemLink">
           <xsl:with-param name="ItemGroupOID" select="$ItemGroupLink"/>
@@ -3444,12 +3479,18 @@
             <xsl:for-each select="./odm:CheckValue">
               <xsl:variable name="CheckValueINNOTIN" select="."/>
               <span class="linebreakcell">
-                <xsl:call-template name="displayValue">
-                  <xsl:with-param name="Value" select="$CheckValueINNOTIN"/>
-                  <xsl:with-param name="DataType" select="$g_seqItemDefs[@OID=$whereRefItemOID]/@DataType"/>
-                  <xsl:with-param name="decode" select="$decode"/>
-                  <xsl:with-param name="CodeList" select="$whereRefItemCodeList"/>
-                </xsl:call-template>
+      				  <!-- ************************************************************* -->
+      				  <!-- PDO                                                           -->
+      				  <!-- Call new template displayValue                                -->
+      				  <!-- PDO                                                           -->
+      				  <!-- ************************************************************* -->
+      				  <xsl:call-template name="displayValue">
+        					<xsl:with-param name="Value" select="$CheckValueINNOTIN"/>
+        					<xsl:with-param name="whereRefItemOID" select="$whereRefItemOID"/>
+        					<xsl:with-param name="whereRefItemCodeListOID" select="$whereRefItemCodeListOID"/>
+        					<xsl:with-param name="whereRefItemValueListOID" select="$whereRefItemValueListOID"/>
+        					<xsl:with-param name="decode" select="$decode"/>
+      				  </xsl:call-template>
                 <xsl:if test="position() != $Nvalues">
                   <xsl:value-of select="', '"/>
                 </xsl:if>
@@ -3461,23 +3502,35 @@
           <xsl:when test="$whereOP = 'EQ'">
             <xsl:variable name="CheckValueEQ" select="./odm:CheckValue"/>
             <xsl:value-of select="$Comparator_EQ"/>
-            <xsl:call-template name="displayValue">
-              <xsl:with-param name="Value" select="$CheckValueEQ"/>
-              <xsl:with-param name="DataType" select="$g_seqItemDefs[@OID=$whereRefItemOID]/@DataType"/>
-              <xsl:with-param name="decode" select="$decode"/>
-              <xsl:with-param name="CodeList" select="$whereRefItemCodeList"/>
-            </xsl:call-template>
+    			  <!-- ************************************************************* -->
+    			  <!-- PDO                                                           -->
+    			  <!-- Call new template displayValue                                -->
+    			  <!-- PDO                                                           -->
+    			  <!-- ************************************************************* -->
+    			  <xsl:call-template name="displayValue">
+      				<xsl:with-param name="Value" select="$CheckValueEQ"/>
+      				<xsl:with-param name="whereRefItemOID" select="$whereRefItemOID"/>
+      				<xsl:with-param name="whereRefItemCodeListOID" select="$whereRefItemCodeListOID"/>
+      				<xsl:with-param name="whereRefItemValueListOID" select="$whereRefItemValueListOID"/>
+      				<xsl:with-param name="decode" select="$decode"/>
+    			  </xsl:call-template>
           </xsl:when>
 
           <xsl:when test="$whereOP = 'NE'">
             <xsl:variable name="CheckValueNE" select="./odm:CheckValue"/>
-            <xsl:value-of select="$Comparator_NE"/> 
-            <xsl:call-template name="displayValue">
-              <xsl:with-param name="Value" select="$CheckValueNE"/>
-              <xsl:with-param name="DataType" select="$g_seqItemDefs[@OID=$whereRefItemOID]/@DataType"/>
-              <xsl:with-param name="decode" select="$decode"/>
-              <xsl:with-param name="CodeList" select="$whereRefItemCodeList"/>
-            </xsl:call-template>
+            <xsl:value-of select="$Comparator_NE"/>
+    			  <!-- ************************************************************* -->
+    			  <!-- PDO                                                           -->
+    			  <!-- Call new template displayValue                                -->
+    			  <!-- PDO                                                           -->
+    			  <!-- ************************************************************* -->
+    			  <xsl:call-template name="displayValue">
+      				<xsl:with-param name="Value" select="$CheckValueNE"/>
+      				<xsl:with-param name="whereRefItemOID" select="$whereRefItemOID"/>
+      				<xsl:with-param name="whereRefItemCodeListOID" select="$whereRefItemCodeListOID"/>
+      				<xsl:with-param name="whereRefItemValueListOID" select="$whereRefItemValueListOID"/>
+      				<xsl:with-param name="decode" select="$decode"/>
+    			  </xsl:call-template>
           </xsl:when>
 
           <xsl:otherwise>
@@ -3500,12 +3553,18 @@
                 <xsl:value-of select="$whereOP"/>
               </xsl:otherwise>
             </xsl:choose>
-            <xsl:call-template name="displayValue">
-              <xsl:with-param name="Value" select="$CheckValueOTH"/>
-              <xsl:with-param name="DataType" select="$g_seqItemDefs[@OID=$whereRefItemOID]/@DataType"/>
-              <xsl:with-param name="decode" select="$decode"/>
-              <xsl:with-param name="CodeList" select="$whereRefItemCodeList"/>
-            </xsl:call-template>            
+    			  <!-- ************************************************************* -->
+    			  <!-- PDO                                                           -->
+    			  <!-- Call new template displayValue                                -->
+    			  <!-- PDO                                                           -->
+    			  <!-- ************************************************************* -->
+    			  <xsl:call-template name="displayValue">
+     				 <xsl:with-param name="Value" select="$CheckValueOTH"/>
+     				 <xsl:with-param name="whereRefItemOID" select="$whereRefItemOID"/>
+     				 <xsl:with-param name="whereRefItemCodeListOID" select="$whereRefItemCodeListOID"/>
+     				 <xsl:with-param name="whereRefItemValueListOID" select="$whereRefItemValueListOID"/>
+     				 <xsl:with-param name="decode" select="$decode"/>
+  			    </xsl:call-template>
           </xsl:otherwise>
         </xsl:choose>
         
@@ -3526,32 +3585,65 @@
   </xsl:template>
 
 
+
   <!-- ************************************************************* -->
+  <!-- PDO                                                           -->
   <!-- displayValue                                                  -->
+  <!-- PDO                                                           -->
   <!-- ************************************************************* -->
   <xsl:template name="displayValue">
-    <xsl:param name="Value"/>
-    <xsl:param name="DataType"/>
-    <xsl:param name="decode"/>
-    <xsl:param name="CodeList"/>
+      <xsl:param name="Value"/>
+      <xsl:param name="whereRefItemOID"/>
+      <xsl:param name="whereRefItemCodeListOID"/>
+      <xsl:param name="whereRefItemValueListOID"/>
+      <xsl:param name="decode"/>
 
+    <xsl:variable name="DataType" select="$g_seqItemDefs[@OID=$whereRefItemOID]/@DataType"/>
     <xsl:if test="$DataType != 'integer' and $DataType != 'float'">
       <xsl:text>"</xsl:text><xsl:value-of select="$Value"/><xsl:text>"</xsl:text>
     </xsl:if>
     <xsl:if test="$DataType = 'integer' or $DataType = 'float'">
       <xsl:value-of select="$Value"/>
     </xsl:if>
-    <xsl:if test="$decode='1'">
-      <xsl:if test="$CodeList/odm:CodeListItem[@CodedValue=$Value]">
-        <xsl:text> (</xsl:text>  
-        <xsl:value-of
-          select="$CodeList/odm:CodeListItem[@CodedValue=$Value]/odm:Decode/odm:TranslatedText"/>
-        <xsl:text>)</xsl:text>
-      </xsl:if>
-    </xsl:if>
+
+    <xsl:choose>
+  		<xsl:when test="$whereRefItemCodeListOID">
+  			<xsl:variable name="CodeList" select="$g_seqCodeLists[@OID=$whereRefItemCodeListOID]"/>
+  			<xsl:if test="$decode='1'">
+  			  <xsl:if test="$CodeList/odm:CodeListItem[@CodedValue=$Value]">
+  				<xsl:text> (</xsl:text>  
+  				<xsl:value-of
+  				  select="$CodeList/odm:CodeListItem[@CodedValue=$Value]/odm:Decode/odm:TranslatedText"/>
+  				<xsl:text>)</xsl:text>
+  			  </xsl:if>
+  			</xsl:if>
+  		</xsl:when>
+  		<xsl:when test="$whereRefItemValueListOID">
+  		  <xsl:for-each select="$g_seqValueListDefs[@OID=$whereRefItemValueListOID]/odm:ItemRef/@ItemOID">
+  		    <xsl:variable name="ValueListItemOID" select="."/>
+    			<xsl:variable name="ValueListCodeListOID" select="$g_seqItemDefs[@OID=$ValueListItemOID]/odm:CodeListRef/@CodeListOID"/>
+    	    <xsl:if test="$g_seqCodeLists[@OID=$ValueListCodeListOID]/odm:CodeListItem[@CodedValue=$Value]">
+    	      <xsl:variable name="CodeList" select="$g_seqCodeLists[@OID=$ValueListCodeListOID]"/>
+    	      <xsl:if test="$decode='1'">
+      			  <xsl:if test="$CodeList/odm:CodeListItem[@CodedValue=$Value]">
+      				<xsl:text> (</xsl:text>  
+      				<xsl:value-of
+      				  select="$CodeList/odm:CodeListItem[@CodedValue=$Value]/odm:Decode/odm:TranslatedText"/>
+      				<xsl:text>)</xsl:text>
+      			  </xsl:if>
+      			</xsl:if>
+    		  </xsl:if>
+  		  </xsl:for-each>
+  		</xsl:when>
+  		<xsl:otherwise>
+  		</xsl:otherwise>
+	  </xsl:choose>
   </xsl:template>
+  <!-- ************************************************************* -->
+  <!-- PDO                                                           -->
+  <!-- ************************************************************* -->
   
- <!-- ************************************************************* -->
+  <!-- ************************************************************* -->
   <!-- Link to ItemGroup Item                                        -->
   <!-- ************************************************************* -->
   <xsl:template name="ItemGroupItemLink">
@@ -3674,7 +3766,7 @@
     </xsl:if>
   </xsl:template>
 
-	<!-- ************************************************************* -->
+  <!-- ************************************************************* -->
   <!-- Template:    setRowClassOddeven                               -->
   <!-- Description: This template sets the table row class attribute -->
   <!--              based on the specified table row number          -->

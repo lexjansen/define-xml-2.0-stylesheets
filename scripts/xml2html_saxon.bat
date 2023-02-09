@@ -13,7 +13,7 @@ set xsl=%1
 set xml=%2
 set html=%3
 
-set saxon_jar=/library/Java/SaxonHE10-8J/saxon-he-10.8.jar
+set saxon_jar=/library/Java/SaxonHE11-5J/saxon-he-11.5.jar
 
-java -jar %saxon_jar% -xsl:%xsl% -s:%xml% -o:%html%
+java -jar %saxon_jar% -t -xsl:%xsl% -s:%xml% -o:%html%
 

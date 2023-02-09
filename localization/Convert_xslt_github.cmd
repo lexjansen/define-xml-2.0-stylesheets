@@ -2,7 +2,7 @@
 
 set project=.
 
-set classpath=%classpath%;..\lib\SaxonHE10-8J\saxon-he-10.8.jar
+set classpath=%classpath%;..\lib\SaxonHE11-5J\saxon-he-11.5.jar
 
 set stylesheet=%project%\stylesheets\define2-0.xsl
 
@@ -14,6 +14,7 @@ call :transform adam-ja %project%\xml\define.cdisc.adam.xml %stylesheet% %projec
 call :transform adam-zh %project%\xml\define.cdisc.adam.xml %stylesheet% %project%\html\define.cdisc.adam_zh.html "interfaceLang=zh"
 call :transform adam-en %project%\xml\define.cdisc.adam.xml %stylesheet% %project%\html\define.cdisc.adam_en.html "interfaceLang=en"
 call :transform adam    %project%\xml\define.cdisc.adam.xml %stylesheet% %project%\html\define.cdisc.adam_default.html
+call :transform adam    %project%\xml\define.cdisc.adam_issue09.xml %stylesheet% %project%\html\define.cdisc.adam_defaultissue09.html
 
 call :transform arm-ja %project%\xml\define.cdisc.arm.xml %stylesheet% %project%\html\define.cdisc.arm_ja.html "interfaceLang=ja"
 call :transform arm-zh %project%\xml\define.cdisc.arm.xml %stylesheet% %project%\html\define.cdisc.arm_zh.html "interfaceLang=zh"
@@ -79,11 +80,11 @@ set param4=displayLengthDFormatSD="0"
 
 
 if (%param1%)==() (
-  echo java net.sf.saxon.Transform -s:%2 -xsl:%3 -o:%4 -versionmsg:off %param2% %param3% %param4% >> %log%
-  java net.sf.saxon.Transform -s:%2 -xsl:%3 -o:%4 -versionmsg:off %param2% %param3% %param4% >> %log% 2>&1
+  echo java net.sf.saxon.Transform -t -s:%2 -xsl:%3 -o:%4 -versionmsg:off %param2% %param3% %param4% >> %log%
+  java net.sf.saxon.Transform -t -s:%2 -xsl:%3 -o:%4 -versionmsg:off %param2% %param3% %param4% >> %log% 2>&1
   ) else (
-  echo java net.sf.saxon.Transform -s:%2 -xsl:%3 -o:%4 -versionmsg:off %param1:"=% %param2% %param3% %param4% >> %log%
-  java net.sf.saxon.Transform -s:%2 -xsl:%3 -o:%4 -versionmsg:off %param1:"=% %param2% %param3% %param4% >> %log% 2>&1
+  echo java net.sf.saxon.Transform -t -s:%2 -xsl:%3 -o:%4 -versionmsg:off %param1:"=% %param2% %param3% %param4% >> %log%
+  java net.sf.saxon.Transform -t -s:%2 -xsl:%3 -o:%4 -versionmsg:off %param1:"=% %param2% %param3% %param4% >> %log% 2>&1
   )
 echo.>> %log%
 goto :EOF
@@ -105,11 +106,11 @@ set param4=displayLengthDFormatSD="1"
 
 
 if (%param1%)==() (
-  echo java net.sf.saxon.Transform -s:%2 -xsl:%3 -o:%4 -versionmsg:off %param2% %param3% %param4% >> %log%
-  java net.sf.saxon.Transform -s:%2 -xsl:%3 -o:%4 -versionmsg:off %param2% %param3% %param4% >> %log% 2>&1
+  echo java net.sf.saxon.Transform -t -s:%2 -xsl:%3 -o:%4 -versionmsg:off %param2% %param3% %param4% >> %log%
+  java net.sf.saxon.Transform -t -s:%2 -xsl:%3 -o:%4 -versionmsg:off %param2% %param3% %param4% >> %log% 2>&1
   ) else (
-  echo java net.sf.saxon.Transform -s:%2 -xsl:%3 -o:%4 -versionmsg:off %param1:"=% %param2% %param3% %param4% >> %log%
-  java net.sf.saxon.Transform -s:%2 -xsl:%3 -o:%4 -versionmsg:off %param1:"=% %param2% %param3% %param4% >> %log% 2>&1
+  echo java net.sf.saxon.Transform -t -s:%2 -xsl:%3 -o:%4 -versionmsg:off %param1:"=% %param2% %param3% %param4% >> %log%
+  java net.sf.saxon.Transform -t -s:%2 -xsl:%3 -o:%4 -versionmsg:off %param1:"=% %param2% %param3% %param4% >> %log% 2>&1
   )
 echo.>> %log%
 goto :EOF
