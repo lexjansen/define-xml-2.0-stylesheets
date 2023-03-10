@@ -65,8 +65,6 @@
   <!-- Author:      Lex Jansen, CDISC Data Exchange Standards Team                                               -->
   <!--                                                                                                           -->
   <!-- Changes:                                                                                                  -->
-  <!--   2023-03-10 - Display ValueList Description as tooltip on VLM link                                       -->
-  <!--              - Support one level of subclass nesting (Credits: Pierre Dostie)                             -->
   <!--   2023-02-08 - Add decodes to WhereClause when variables have the codelist in VLM                         -->
   <!--                Issue #9: Stylesheet does not display decodes in WhereClause                               -->
   <!--                Credits: Pierre Dostie (PDO)                                                               -->
@@ -203,7 +201,7 @@
   
   <!-- Global Variables (constants) -->
 
-  <xsl:variable name="STYLESHEET_VERSION" select="'2023-03-10'"/>
+  <xsl:variable name="STYLESHEET_VERSION" select="'2023-02-08'"/>
   
   <!-- XSLT 1.0 does not support the function 'upper-case()', so we need to use the 'translate() function, 
     which uses the variables $lowercase and $uppercase. -->
@@ -1019,13 +1017,13 @@
   <!-- **************************************************** -->
   <xsl:template name="tableStandards">
     
-    <h1 class="invisible"><xsl:value-of select="$term_STANDARDS_FOR_STUDY"/><xsl:text> </xsl:text><xsl:value-of
+    <h1 class="invisible"><xsl:value-of select="$term_STANDARDS_FOR_STUDY"/> <xsl:value-of
       select="/odm:ODM/odm:Study/odm:GlobalVariables/odm:StudyName"/></h1>
  
     <div class="containerbox">
       
       <table id="Standards_Table" summary="Standards">
-        <caption class="header"><xsl:value-of select="$term_STANDARDS_FOR_STUDY"/><xsl:text> </xsl:text><xsl:value-of
+        <caption class="header"><xsl:value-of select="$term_STANDARDS_FOR_STUDY"/> <xsl:value-of
           select="/odm:ODM/odm:Study/odm:GlobalVariables/odm:StudyName"/></caption>
         <tr class="header">
           <th scope="col"><xsl:value-of select="$term_STANDARD"/></th>
@@ -1761,8 +1759,6 @@
                 <xsl:when test="$ItemDef/def:ValueListRef/@ValueListOID">
                   <xsl:value-of select="$ItemDef/@Name"/>
                   
-                  <xsl:variable name="ValueListDesciption" select="$g_seqValueListDefs[@OID = $ItemDef/def:ValueListRef/@ValueListOID]/odm:Description/odm:TranslatedText"/>                  
-                  
                   <xsl:choose>
                     <xsl:when test="$g_seqValueListDefs[@OID = $ItemDef/def:ValueListRef/@ValueListOID]">
                       <xsl:element name="span">
@@ -1772,9 +1768,6 @@
                           <xsl:attribute name="id">
                             <xsl:value-of select="../@OID"/>.<xsl:value-of select="$ItemDef/@OID"/>
                           </xsl:attribute>
-                          <xsl:if test="$ValueListDesciption">
-                            <xsl:attribute name="title"><xsl:value-of select="$ValueListDesciption"/></xsl:attribute>
-                          </xsl:if>
                           <xsl:text>VLM</xsl:text>
                         </a>
                       </xsl:element>
@@ -3269,29 +3262,22 @@
   <!-- ************************************************************* -->
   <xsl:template name="displayItemGroupClass">
     
-    <xsl:if test="@def:Class">
-      <xsl:value-of select="@def:Class" />    
-    </xsl:if>
-    
+      <xsl:if test="@def:Class">
+        <xsl:value-of select="@def:Class" />    
+      </xsl:if>
+
     <xsl:if test="def:Class/@Name">
+      <!--  Define-XML v2.1 (only one SubClass level supported currently) -->
       <xsl:variable name="ClassName" select="def:Class/@Name"/>
-      <xsl:value-of select="$ClassName" />
-      <xsl:for-each select="def:Class/def:SubClass[(@ParentClass=$ClassName or not(@ParentClass)) and @Name]">
-        <xsl:variable name="SubClassName" select="@Name"/>
-        <ul class="SubClass">
-          <li class="SubClass"><xsl:value-of select="$SubClassName" /></li>
-          <xsl:if test="../def:SubClass[@ParentClass=$SubClassName]">
-            <li class="SubClassContainer">
-              <ul class="SubClass">
-                <xsl:for-each select="../def:SubClass[@ParentClass=$SubClassName]">
-                  <li class="SubSubClass"><xsl:value-of select="@Name" /></li>        
-                </xsl:for-each>
-              </ul>
-            </li>          
-          </xsl:if>
-        </ul>
-      </xsl:for-each>
-    </xsl:if>
+        <xsl:value-of select="$ClassName" />
+        <xsl:if test="def:Class/def:SubClass/@Name">
+          <ul class="SubClass">
+            <xsl:for-each select="def:Class/def:SubClass[@ParentClass=$ClassName or not(@ParentClass)]">
+              <li class="SubClass"><xsl:value-of select="@Name" /></li>
+            </xsl:for-each>
+          </ul>
+        </xsl:if>
+      </xsl:if>
   </xsl:template>
   
   <!-- ************************************************************* -->
@@ -4320,7 +4306,7 @@ document.onclick = function(e)
       }
       
       .codelist-item{
-        list-style-type: disc;
+        list-style-type: disk;
         list-style-position: inside;
         padding-left: 0;
         padding-right: 0;
@@ -4339,18 +4325,11 @@ document.onclick = function(e)
       }      
 
       ul.SubClass {
-        list-style-type: disc;
+        list-style-type: '- ';
+        padding-left: 5;
         margin: 0 0 0 0;
       }
-      li.SubClass {
-        list-style-type: disc;
-      }  
-      li.SubClassContainer {
-        list-style-type: none;
-      }
-      li.SubSubClass {
-        list-style-type: square;
-      }
+      ul.SubClass.li {}
 
       #main .docinfo{
         width: 95%;
