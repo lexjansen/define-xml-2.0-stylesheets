@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dictionary>
+        <entry term="Analysis Parameter(s)">
+                <TranslatedText xml:lang="zh">分析参数</TranslatedText>
+                <TranslatedText xml:lang="ja">解析パラメータ</TranslatedText>
+        </entry>
+        <entry term="Analysis Purpose">
+                <TranslatedText xml:lang="zh">分析目的</TranslatedText>
+                <TranslatedText xml:lang="ja">解析目的</TranslatedText>
+        </entry>
+        <entry term="Analysis Reason">
+                <TranslatedText xml:lang="zh">分析原因</TranslatedText>
+                <TranslatedText xml:lang="ja">解析理由</TranslatedText>
+        </entry>
+        <entry term="Analysis Result">
+                <TranslatedText xml:lang="zh">分析结果</TranslatedText>
+                <TranslatedText xml:lang="ja">解析結果</TranslatedText>
+        </entry>
+        <entry term="Analysis Results Metadata">
+                <TranslatedText xml:lang="zh">分析结果元数据</TranslatedText>
+                <TranslatedText xml:lang="ja">解析結果のメタデータ</TranslatedText>
+        </entry>
+        <entry term="Analysis Results Metadata - Detail">
+                <TranslatedText xml:lang="zh">分析结果元数据-详细信息</TranslatedText>
+                <TranslatedText xml:lang="ja">解析結果メタデータ：詳細</TranslatedText>
+        </entry>
+        <entry term="Analysis Results Metadata - Summary">
+                <TranslatedText xml:lang="zh">分析结果元数据-概要</TranslatedText>
+                <TranslatedText xml:lang="ja">解析結果メタデータ：要約</TranslatedText>
+        </entry>
+        <entry term="Analysis Variable(s)">
+                <TranslatedText xml:lang="zh">分析变量</TranslatedText>
+                <TranslatedText xml:lang="ja">解析変数</TranslatedText>
+        </entry>
+        <entry term="Class">
+                <TranslatedText xml:lang="zh">类</TranslatedText>
+                <TranslatedText xml:lang="ja">クラス</TranslatedText>
+        </entry>
+        <entry term="Code List">
+                <TranslatedText xml:lang="zh">代码清单</TranslatedText>
+                <TranslatedText xml:lang="ja">コードリスト</TranslatedText>
+        </entry>
+        <entry term="CodeLists">
+                <TranslatedText xml:lang="zh">代码清单</TranslatedText>
+                <TranslatedText xml:lang="ja">コードリスト</TranslatedText>
+        </entry>
+        <entry term="Collapse all VLM">
+                <TranslatedText xml:lang="zh">收起所有VLM</TranslatedText>
+                <TranslatedText xml:lang="ja">全てのVLMを折りたたむ</TranslatedText>
+        </entry>
+        <entry term="Comment">
+                <TranslatedText xml:lang="zh">注释</TranslatedText>
+                <TranslatedText xml:lang="ja">コメント</TranslatedText>
+        </entry>
+        <entry term="Comments">
+                <TranslatedText xml:lang="zh">注释</TranslatedText>
+                <TranslatedText xml:lang="ja">コメント</TranslatedText>
+        </entry>
+        <entry term="Controlled Term">
+                <TranslatedText xml:lang="zh">受控术语</TranslatedText>
+                <TranslatedText xml:lang="ja">統制用語</TranslatedText>
+        </entry>
+        <entry term="Controlled Terminology">
+                <TranslatedText xml:lang="zh">受控术语</TranslatedText>
+                <TranslatedText xml:lang="ja">統制用語</TranslatedText>
+        </entry>
+        <entry term="Controlled Terms or ISO Format">
+                <TranslatedText xml:lang="zh">受控术语或ISO格式</TranslatedText>
+                <TranslatedText xml:lang="ja">統制用語又はISO形式</TranslatedText>
+        </entry>
+        <entry term="Data References (incl. Selection Criteria)">
+                <TranslatedText xml:lang="zh">数据参考（包括选择标准）</TranslatedText>
+                <TranslatedText xml:lang="ja">参照データ（選択基準を含む）</TranslatedText>
+        </entry>
+        <entry term="Dataset">
+                <TranslatedText xml:lang="zh">数据集</TranslatedText>
+                <TranslatedText xml:lang="ja">データセット</TranslatedText>
+        </entry>
+        <entry term="Datasets">
+                <TranslatedText xml:lang="zh">数据集</TranslatedText>
+                <TranslatedText xml:lang="ja">データセット</TranslatedText>
+        </entry>
+        <entry term="Date/Time of Define-XML document generation">
+                <TranslatedText xml:lang="zh">Define-XML文档的创建日期/时间</TranslatedText>
+                <TranslatedText xml:lang="ja">Define-XMLドキュメントの作成日時</TranslatedText>
+        </entry>
+        <entry term="Define-XML Context">
+                <TranslatedText xml:lang="zh">Define-XML上下文</TranslatedText>
+                <TranslatedText xml:lang="ja">Define-XMLのコンテキスト</TranslatedText>
+        </entry>
+        <entry term="Define-XML version">
+                <TranslatedText xml:lang="zh">Define-XML版本</TranslatedText>
+                <TranslatedText xml:lang="ja">Define-XMLのバージョン</TranslatedText>
+        </entry>
+        <entry term="Description">
+                <TranslatedText xml:lang="zh">描述</TranslatedText>
+                <TranslatedText xml:lang="ja">要約</TranslatedText>
+        </entry>
+        <entry term="Dictionary Version">
+                <TranslatedText xml:lang="zh">词典版本</TranslatedText>
+                <TranslatedText xml:lang="ja">辞書バージョン</TranslatedText>
+        </entry>
+        <entry term="Display">
+                <TranslatedText xml:lang="zh">显示</TranslatedText>
+                <TranslatedText xml:lang="ja">表示</TranslatedText>
+        </entry>
+        <entry term="Display Format">
+                <TranslatedText xml:lang="zh">显示格式</TranslatedText>
+                <TranslatedText xml:lang="ja">表示形式</TranslatedText>
+        </entry>
+        <entry term="Display Value (Decode)">
+                <TranslatedText xml:lang="zh">显示值（解码）</TranslatedText>
+                <TranslatedText xml:lang="ja">表示値（デコード）</TranslatedText>
+        </entry>
+        <entry term="Documentation">
+                <TranslatedText xml:lang="zh">文献资料</TranslatedText>
+                <TranslatedText xml:lang="ja">ドキュメンテーション</TranslatedText>
+        </entry>
+        <entry term="Expand all VLM">
+                <TranslatedText xml:lang="zh">展开所有VLM</TranslatedText>
+                <TranslatedText xml:lang="ja">すべてのVLMを展開する</TranslatedText>
+        </entry>
+        <entry term="Extended Value">
+                <TranslatedText xml:lang="zh">扩展值</TranslatedText>
+                <TranslatedText xml:lang="ja">拡張した値</TranslatedText>
+        </entry>
+        <entry term="External Dictionaries">
+                <TranslatedText xml:lang="zh">外部词典</TranslatedText>
+                <TranslatedText xml:lang="ja">外部辞書</TranslatedText>
+        </entry>
+        <entry term="External Dictionaries (MedDra, WHODRUG, ...)">
+                <TranslatedText xml:lang="zh">外部词典（MedDra，WHODRUG等）</TranslatedText>
+                <TranslatedText xml:lang="ja">外部辞書（MedDra、WHODRUG等）</TranslatedText>
+        </entry>
+        <entry term="External Dictionary">
+                <TranslatedText xml:lang="zh">外部词典</TranslatedText>
+                <TranslatedText xml:lang="ja">外部辞書</TranslatedText>
+        </entry>
+        <entry term="Formal Expression">
+                <TranslatedText xml:lang="zh">形式表达式</TranslatedText>
+                <TranslatedText xml:lang="ja">形式的な式</TranslatedText>
+        </entry>
+        <entry term="Go to the top of the Define-XML document">
+                <TranslatedText xml:lang="zh">回到Define-XML文档的顶部</TranslatedText>
+                <TranslatedText xml:lang="ja">Define-XMLドキュメントの先頭へ移動する</TranslatedText>
+        </entry>
+        <entry term="Keys">
+                <TranslatedText xml:lang="zh">按键</TranslatedText>
+                <TranslatedText xml:lang="ja">キー</TranslatedText>
+        </entry>
+        <entry term="Label / Description">
+                <TranslatedText xml:lang="zh">标签/描述</TranslatedText>
+                <TranslatedText xml:lang="ja">ラベル/要約</TranslatedText>
+        </entry>
+        <entry term="Length ">
+                <TranslatedText xml:lang="zh">长度</TranslatedText>
+                <TranslatedText xml:lang="ja">文字数</TranslatedText>
+        </entry>
+        <entry term="Length [SignificantDigits] : Display Format">
+                <TranslatedText xml:lang="zh">长度 [有效数字] : 显示格式</TranslatedText>
+                <TranslatedText xml:lang="ja">文字数 [有効桁数] : 表示形式</TranslatedText>
+        </entry>
+        <entry term="Length or Display Format">
+                <TranslatedText xml:lang="zh">长度或显示格式</TranslatedText>
+                <TranslatedText xml:lang="ja">文字数又は表示形式</TranslatedText>
+        </entry>
+        <entry term="Location">
+                <TranslatedText xml:lang="zh">位置</TranslatedText>
+                <TranslatedText xml:lang="ja">ロケーション</TranslatedText>
+        </entry>
+        <entry term="Metadata Description">
+                <TranslatedText xml:lang="zh">元数据说明</TranslatedText>
+                <TranslatedText xml:lang="ja">メタデータの要約</TranslatedText>
+        </entry>
+        <entry term="Metadata Name">
+                <TranslatedText xml:lang="zh">元数据名称</TranslatedText>
+                <TranslatedText xml:lang="ja">メタデータ名</TranslatedText>
+        </entry>
+        <entry term="Method">
+                <TranslatedText xml:lang="zh">方法</TranslatedText>
+                <TranslatedText xml:lang="ja">メソッド</TranslatedText>
+        </entry>
+        <entry term="Methods">
+                <TranslatedText xml:lang="zh">方法</TranslatedText>
+                <TranslatedText xml:lang="ja">メソッド</TranslatedText>
+        </entry>
+        <entry term="No Data">
+                <TranslatedText xml:lang="zh">没有数据</TranslatedText>
+                <TranslatedText xml:lang="ja">データなし</TranslatedText>
+        </entry>
+        <entry term="Non Standard">
+                <TranslatedText xml:lang="zh">非标准</TranslatedText>
+                <TranslatedText xml:lang="ja">非標準</TranslatedText>
+        </entry>
+        <entry term="Origin">
+                <TranslatedText xml:lang="zh">来源</TranslatedText>
+                <TranslatedText xml:lang="ja">オリジン</TranslatedText>
+        </entry>
+        <entry term="Origin / Source / Method / Comment">
+                <TranslatedText xml:lang="zh">来源/源/方法/注释</TranslatedText>
+                <TranslatedText xml:lang="ja">オリジン/ソース/メソッド/コメント</TranslatedText>
+        </entry>
+        <entry term="Permitted Value (Code)">
+                <TranslatedText xml:lang="zh">允许值（代码）</TranslatedText>
+                <TranslatedText xml:lang="ja">許容値（コード）</TranslatedText>
+        </entry>
+        <entry term="Programming Statements">
+                <TranslatedText xml:lang="zh">编程语句</TranslatedText>
+                <TranslatedText xml:lang="ja">プログラミング</TranslatedText>
+        </entry>
+        <entry term="Protocol Name">
+                <TranslatedText xml:lang="zh">协议名称</TranslatedText>
+                <TranslatedText xml:lang="ja">プロトコル名</TranslatedText>
+        </entry>
+        <entry term="Purpose">
+                <TranslatedText xml:lang="zh">目的</TranslatedText>
+                <TranslatedText xml:lang="ja">目的</TranslatedText>
+        </entry>
+        <entry term="Rank">
+                <TranslatedText xml:lang="zh">秩</TranslatedText>
+                <TranslatedText xml:lang="ja">ランク</TranslatedText>
+        </entry>
+        <entry term="Reference Name">
+                <TranslatedText xml:lang="zh">参考名称</TranslatedText>
+                <TranslatedText xml:lang="ja">参照名</TranslatedText>
+        </entry>
+        <entry term="Related Parent Dataset">
+                <TranslatedText xml:lang="zh">相关父数据集</TranslatedText>
+                <TranslatedText xml:lang="ja">関連する親データセット</TranslatedText>
+        </entry>
+        <entry term="Related Supplemental Qualifiers Dataset">
+                <TranslatedText xml:lang="zh">相关补充修饰语数据集</TranslatedText>
+                <TranslatedText xml:lang="ja">関連する子のデータセット</TranslatedText>
+        </entry>
+        <entry term="Role">
+                <TranslatedText xml:lang="zh">角色</TranslatedText>
+                <TranslatedText xml:lang="ja">役割</TranslatedText>
+        </entry>
+        <entry term="Significant Digits">
+                <TranslatedText xml:lang="zh">有效数字</TranslatedText>
+                <TranslatedText xml:lang="ja">有効桁数</TranslatedText>
+        </entry>
+        <entry term="Skip Navigation Link">
+                <TranslatedText xml:lang="zh">跳过导航链接</TranslatedText>
+                <TranslatedText xml:lang="ja">ナビゲーションリンクをスキップする</TranslatedText>
+        </entry>
+        <entry term="Source">
+                <TranslatedText xml:lang="zh">源</TranslatedText>
+                <TranslatedText xml:lang="ja">ソース</TranslatedText>
+        </entry>
+        <entry term="Standard">
+                <TranslatedText xml:lang="zh">标准</TranslatedText>
+                <TranslatedText xml:lang="ja">標準規格</TranslatedText>
+        </entry>
+        <entry term="Standards">
+                <TranslatedText xml:lang="zh">标准</TranslatedText>
+                <TranslatedText xml:lang="ja">標準規格</TranslatedText>
+        </entry>
+        <entry term="Standards for Study">
+                <TranslatedText xml:lang="zh">研究标准</TranslatedText>
+                <TranslatedText xml:lang="ja">スタディの標準規格</TranslatedText>
+        </entry>
+        <entry term="Status">
+                <TranslatedText xml:lang="zh">状态</TranslatedText>
+                <TranslatedText xml:lang="ja">ステータス</TranslatedText>
+        </entry>
+        <entry term="Structure">
+                <TranslatedText xml:lang="zh">结构</TranslatedText>
+                <TranslatedText xml:lang="ja">構造</TranslatedText>
+        </entry>
+        <entry term="Study Description">
+                <TranslatedText xml:lang="zh">研究概要</TranslatedText>
+                <TranslatedText xml:lang="ja">治験の要約</TranslatedText>
+        </entry>
+        <entry term="Study Name">
+                <TranslatedText xml:lang="zh">研究名称</TranslatedText>
+                <TranslatedText xml:lang="ja">治験名</TranslatedText>
+        </entry>
+        <entry term="Stylesheet version">
+                <TranslatedText xml:lang="zh">样式表版本</TranslatedText>
+                <TranslatedText xml:lang="ja">スタイルシートのバージョン</TranslatedText>
+        </entry>
+        <entry term="SubClass">
+                <TranslatedText xml:lang="zh">子类</TranslatedText>
+                <TranslatedText xml:lang="ja">サブクラス</TranslatedText>
+        </entry>
+        <entry term="Supplemental Documents">
+                <TranslatedText xml:lang="zh">补充文件</TranslatedText>
+                <TranslatedText xml:lang="ja">補足文書</TranslatedText>
+        </entry>
+        <entry term="Term">
+                <TranslatedText xml:lang="zh">术语</TranslatedText>
+                <TranslatedText xml:lang="ja">語</TranslatedText>
+        </entry>
+        <entry term="Terms">
+                <TranslatedText xml:lang="zh">术语</TranslatedText>
+                <TranslatedText xml:lang="ja">語</TranslatedText>
+        </entry>
+        <entry term="Type">
+                <TranslatedText xml:lang="zh">类型</TranslatedText>
+                <TranslatedText xml:lang="ja">タイプ</TranslatedText>
+        </entry>
+        <entry term="unresolved">
+                <TranslatedText xml:lang="zh">未解决</TranslatedText>
+                <TranslatedText xml:lang="ja">未解決</TranslatedText>
+        </entry>
+        <entry term="Variable">
+                <TranslatedText xml:lang="zh">变量</TranslatedText>
+                <TranslatedText xml:lang="ja">変数</TranslatedText>
+        </entry>
+        <entry term="vendor">
+                <TranslatedText xml:lang="zh">供应商</TranslatedText>
+                <TranslatedText xml:lang="ja">ベンダー</TranslatedText>
+        </entry>
+        <entry term="version">
+                <TranslatedText xml:lang="zh">版</TranslatedText>
+                <TranslatedText xml:lang="ja">バージョン</TranslatedText>
+        </entry>
+        <entry term="Where Condition">
+                <TranslatedText xml:lang="zh">Where条件</TranslatedText>
+                <TranslatedText xml:lang="ja">WHERE句</TranslatedText>
+        </entry>
+        
+        <!-- These last 3 terms are used for creating a link to the top of the Define-XML document -->
+        <entry term="LINK_TOP_PRE_HREF">
+                <TranslatedText xml:lang="en">Go to the</TranslatedText>
+                <TranslatedText xml:lang="zh">回到Define-XML文档的</TranslatedText>
+                <TranslatedText xml:lang="ja">Define-XMLドキュメント</TranslatedText>
+        </entry>
+        <entry term="LINK_TOP_HREF">
+                <TranslatedText xml:lang="en">top</TranslatedText>
+                <TranslatedText xml:lang="zh">顶部</TranslatedText>
+                <TranslatedText xml:lang="ja">の先頭</TranslatedText>
+        </entry>
+        <entry term="LINK_TOP_POST_HREF">
+                <TranslatedText xml:lang="en">of the Define-XML document</TranslatedText>
+                <TranslatedText xml:lang="zh"></TranslatedText>
+                <TranslatedText xml:lang="ja">へ移動する</TranslatedText>
+        </entry>
+        
+</dictionary>

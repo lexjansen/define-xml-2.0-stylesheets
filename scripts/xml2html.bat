@@ -18,4 +18,3 @@ set PSCmd=%PSCmd%; $xslt.Load('%xsl%', $XsltSettings, $(New-Object System.Xml.Xm
 set PSCmd=%PSCmd%; $xslt.Transform('%xml%','%html%');
 
 powershell -command "& {%PSCmd%}"
-
