@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 
-  The MIT License (MIT) 
-  
+  The MIT License (MIT)
+
   Copyright (c) 2013-2023 Lex Jansen
-  
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
-  associated documentation files (the "Software"), to deal in the Software without restriction, 
-  including without limitation the rights to use, copy, modify, merge, publish, distribute, 
-  sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is 
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+  associated documentation files (the "Software"), to deal in the Software without restriction,
+  including without limitation the rights to use, copy, modify, merge, publish, distribute,
+  sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
   furnished to do so, subject to the following conditions:
-  The above copyright notice and this permission notice shall be included in all copies or 
+  The above copyright notice and this permission notice shall be included in all copies or
   substantial portions of the Software.
-  
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT 
-  NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
-  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
-  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT 
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+  NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
   OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 -->
-<xsl:stylesheet version="1.0" 
+<xsl:stylesheet version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:odm="http://www.cdisc.org/ns/odm/v1.3" 
+  xmlns:odm="http://www.cdisc.org/ns/odm/v1.3"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:def="http://www.cdisc.org/ns/def/v2.0" 
-  xmlns:xlink="http://www.w3.org/1999/xlink" 
-  xmlns:arm="http://www.cdisc.org/ns/arm/v1.0" 
+  xmlns:def="http://www.cdisc.org/ns/def/v2.0"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:arm="http://www.cdisc.org/ns/arm/v1.0"
   xml:lang="en"
   exclude-result-prefixes="def xlink odm xsi arm">
-  
-  <xsl:output method="html" indent="no" encoding="utf-8" 
+
+  <xsl:output method="html" indent="no" encoding="utf-8"
     doctype-system="http://www.w3.org/TR/html4/strict.dtd"
     doctype-public="-//W3C//DTD HTML 4.01//EN" version="4.0"/>
 
@@ -39,10 +39,15 @@
   <!-- Stylesheet Parameters - These parameters can be set in the XSLT processor.                                -->
   <!-- ********************************************************************************************************* -->
 
-  <!-- Number of CodeListItems to display in Controlled Terms or Format column (default=5) 
+  <!-- Number of CodeListItems to display in Controlled Terms or Format column (default=5)
        To display all CodeListItems, specify 999; to display no CodeListItems, specify 0. -->
   <xsl:param name="nCodeListItemDisplay" select="5"/>
-  
+
+  <!-- Maximum Number of CheckValue values in the WhereClauseDefs attached to an item so that
+       Decode values will be displayed in the "Where Condition" column (default=5)
+       To display all Decode values, specify 999; to display no Decode values, specify 0. -->
+  <xsl:param name="nCheckValueDisplay" select="5"/>
+
   <!-- Display Methods table (0/1)? -->
   <xsl:param name="displayMethodsTable" select="1"/>
 
@@ -51,13 +56,13 @@
 
   <!-- Display Prefixes ([Comment], [Method], [Origin]) (0/1)? -->
   <xsl:param name="displayPrefix" select="0" />
-  
+
   <!-- Display Length, DisplayFormat and Significant Digits (0/1)? -->
   <xsl:param name="displayLengthDFormatSD" select="0" />
-  
+
   <!--  Interface language -->
   <xsl:param name="interfaceLang" select="'en'"/>
-    
+
   <!-- ********************************************************************************************************* -->
   <!-- File:        define2-0.xsl                                                                                -->
   <!-- Description: This stylesheet works with the Define-XML 2.0.x specification, including the Analysis        -->
@@ -65,6 +70,7 @@
   <!-- Author:      Lex Jansen, CDISC Data Exchange Standards Team                                               -->
   <!--                                                                                                           -->
   <!-- Changes:                                                                                                  -->
+  <!--   2026-02-09 - Added nCheckValueDisplay parameter                                                         -->
   <!--   2023-03-10 - Display ValueList Description as tooltip on VLM link                                       -->
   <!--              - Support one level of subclass nesting (Credits: Pierre Dostie)                             -->
   <!--   2023-02-08 - Add decodes to WhereClause when variables have the codelist in VLM                         -->
@@ -200,43 +206,43 @@
   <!--   2013-03-04 - Initial version.                                                                           -->
   <!--                                                                                                           -->
   <!-- ********************************************************************************************************* -->
-  
+
   <!-- Global Variables (constants) -->
 
-  <xsl:variable name="STYLESHEET_VERSION" select="'2023-03-10'"/>
-  
-  <!-- XSLT 1.0 does not support the function 'upper-case()', so we need to use the 'translate() function, 
+  <xsl:variable name="STYLESHEET_VERSION" select="'2026-02-09'"/>
+
+  <!-- XSLT 1.0 does not support the function 'upper-case()', so we need to use the 'translate() function,
     which uses the variables $lowercase and $uppercase. -->
   <xsl:variable name="LOWERCASE" select="'abcdefghijklmnopqrstuvwxyz'"/>
-  <xsl:variable name="UPPERCASE" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'"/>  
-  
+  <xsl:variable name="UPPERCASE" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'"/>
+
   <xsl:variable name="REFTYPE_PHYSICALPAGE">PhysicalRef</xsl:variable>
   <xsl:variable name="REFTYPE_NAMEDDESTINATION">NamedDestination</xsl:variable>
-  
+
   <xsl:variable name="Comparator_EQ"><text> = </text></xsl:variable>
   <xsl:variable name="Comparator_NE"><text> &#x2260; </text></xsl:variable>
   <xsl:variable name="Comparator_LT"><text> &lt; </text></xsl:variable>
   <xsl:variable name="Comparator_LE"><text> &#x2264; </text></xsl:variable>
   <xsl:variable name="Comparator_GT"><text> &gt; </text></xsl:variable>
   <xsl:variable name="Comparator_GE"><text> &#x2265; </text></xsl:variable>
-  
+
   <xsl:variable name="PREFIX_COMMENT_TEXT"><span class="prefix"><xsl:text>[</xsl:text><xsl:value-of select="$term_COMMENT"/><xsl:text>] </xsl:text></span></xsl:variable>
   <xsl:variable name="PREFIX_METHOD_TEXT"><span class="prefix"><xsl:text>[</xsl:text><xsl:value-of select="$term_METHOD"/><xsl:text>] </xsl:text></span></xsl:variable>
   <xsl:variable name="PREFIX_ORIGIN_TEXT"><span class="prefix"><xsl:text>[</xsl:text><xsl:value-of select="$term_ORIGIN"/><xsl:text>] </xsl:text></span></xsl:variable>
-  
+
   <xsl:variable name="UNRESOLVED_TEXT"><xsl:text>[</xsl:text><xsl:value-of select="$term_UNRESOLVED"/><xsl:text>: </xsl:text></xsl:variable>
-  
+
   <!-- Global Variables (XPath) -->
 
   <xsl:variable name="g_StudyName" select="/odm:ODM/odm:Study[1]/odm:GlobalVariables[1]/odm:StudyName"/>
   <xsl:variable name="g_StudyDescription" select="/odm:ODM/odm:Study[1]/odm:GlobalVariables[1]/odm:StudyDescription"/>
   <xsl:variable name="g_ProtocolName" select="/odm:ODM/odm:Study[1]/odm:GlobalVariables[1]/odm:ProtocolName"/>
-  
+
   <xsl:variable name="g_MetaDataVersion" select="/odm:ODM/odm:Study[1]/odm:MetaDataVersion[1]"/>
   <xsl:variable name="g_MetaDataVersionName" select="$g_MetaDataVersion/@Name"/>
   <xsl:variable name="g_MetaDataVersionDescription" select="$g_MetaDataVersion/@Description"/>
   <xsl:variable name="g_DefineVersion" select="$g_MetaDataVersion/@def:DefineVersion"/>
-  
+
   <xsl:variable name="g_seqStandard" select="$g_MetaDataVersion/def:Standards/def:Standard"/>
   <xsl:variable name="g_seqItemGroupDefs" select="$g_MetaDataVersion/odm:ItemGroupDef"/>
   <xsl:variable name="g_seqItemDefs" select="$g_MetaDataVersion/odm:ItemDef"/>
@@ -247,7 +253,7 @@
   <xsl:variable name="g_seqCommentDefs" select="$g_MetaDataVersion/def:CommentDef"/>
   <xsl:variable name="g_seqWhereClauseDefs" select="$g_MetaDataVersion/def:WhereClauseDef"/>
   <xsl:variable name="g_seqleafs" select="$g_MetaDataVersion/def:leaf"/>
-  
+
   <xsl:variable name="g_StandardName">
     <xsl:choose>
       <xsl:when test="$g_MetaDataVersion/@def:StandardName">
@@ -268,14 +274,14 @@
       </xsl:when>
       <xsl:otherwise >
         <!-- Define-XML v2.1 -->
-        <xsl:value-of select="$g_MetaDataVersion/def:Standards/def:Standard[1][@Type='IG']/@Version"/>        
+        <xsl:value-of select="$g_MetaDataVersion/def:Standards/def:Standard[1][@Type='IG']/@Version"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
-  
-  
+
+
   <!-- Global Variables for localization -->
-  
+
   <!-- Set a corrext default and force a lowercase lookup -->
   <xsl:variable name="interfaceLang_low">
     <xsl:choose>
@@ -286,11 +292,11 @@
         <xsl:value-of select="translate($interfaceLang,$UPPERCASE,$LOWERCASE)"/>
       </xsl:otherwise>
     </xsl:choose>
-  </xsl:variable> 
+  </xsl:variable>
 
   <xsl:variable name="LOCALIZATION_FILE"><xsl:value-of select="'dictionary.xml'" /></xsl:variable>
   <xsl:variable name="g_LookupText" select="document($LOCALIZATION_FILE)/dictionary"/>
-  
+
   <xsl:variable name="term_ANALYSIS_PARAMETER">
     <xsl:call-template name="lookupTerm"><xsl:with-param name="term" select="'Analysis Parameter(s)'"/></xsl:call-template>
   </xsl:variable>
@@ -531,7 +537,7 @@
   <xsl:variable name="term_WHERE_CONDITION">
     <xsl:call-template name="lookupTerm"><xsl:with-param name="term" select="'Where Condition'"/></xsl:call-template>
   </xsl:variable>
-  
+
   <xsl:variable name="term_LINK_TOP_PRE_HREF">
     <xsl:call-template name="lookupTerm">
       <xsl:with-param name="term" select="'LINK_TOP_PRE_HREF'"/>
@@ -555,7 +561,7 @@
   <xsl:template match="/">
 
     <xsl:element name="html">
-      
+
     <xsl:choose>
       <xsl:when test="$interfaceLang = '' or $interfaceLang = '&quot;&quot;' or not($interfaceLang)">
           <xsl:attribute name="lang"><xsl:value-of select="en"/></xsl:attribute>
@@ -564,18 +570,18 @@
         <xsl:attribute name="lang"><xsl:value-of select="$interfaceLang"/></xsl:attribute>
       </xsl:otherwise>
     </xsl:choose>
-      
+
       <xsl:call-template name="displaySystemProperties"/>
       <xsl:call-template name="displayParameters"/>
       <xsl:call-template name="createHtmlHead" />
-      
+
       <body onload="reset_menus();">
 
         <xsl:call-template name="generateMenu"/>
         <xsl:call-template name="generateMain"/>
 
       </body>
-      
+
     </xsl:element>
   </xsl:template>
 
@@ -585,13 +591,13 @@
   <xsl:template name="lookupTerm">
     <xsl:param name="term"/>
     <xsl:param name="impute" select="1"/>
-    
+
     <xsl:choose>
       <xsl:when test="substring($interfaceLang_low, 1, 2) = 'en'">
         <!-- Do not do a lookup with English -->
         <xsl:value-of select="$term"/>
       </xsl:when>
-      <xsl:otherwise>        
+      <xsl:otherwise>
         <xsl:choose>
           <xsl:when test="string-length(normalize-space($g_LookupText/entry[@term=$term]/TranslatedText[@xml:lang=$interfaceLang_low]/text())) &gt; 0">
             <xsl:value-of select="$g_LookupText/entry[@term=$term]/TranslatedText[@xml:lang=$interfaceLang_low]/text()"/>
@@ -604,9 +610,9 @@
         </xsl:choose>
       </xsl:otherwise>
     </xsl:choose>
-    
+
   </xsl:template>
-  
+
 
   <!-- **************************************************** -->
   <!-- **************  Create the Bookmarks  ************** -->
@@ -619,10 +625,10 @@
       <span class="study-name">
         <xsl:value-of select="$g_StudyName"/>
       </span>
-      
-      
+
+
       <ul class="hmenu">
-        
+
         <!-- **************************************************** -->
         <!-- **************  Annotated CRF    ******************* -->
         <!-- **************************************************** -->
@@ -649,8 +655,8 @@
             </xsl:for-each>
           </xsl:when>
           <xsl:otherwise>
-            <!-- No def:AnnotatedCRF element, then loop over the def:leaf elements and  
-                 see if these are referenced from ItemDef/def:Origin/def:DocumentRef elements -->           
+            <!-- No def:AnnotatedCRF element, then loop over the def:leaf elements and
+                 see if these are referenced from ItemDef/def:Origin/def:DocumentRef elements -->
             <xsl:for-each select="$g_MetaDataVersion/def:leaf">
               <xsl:variable name="leafID" select="@ID"/>
               <!-- Define-XML v2.0: @Type='CRF', Define-XML v2.1: @Type='Collected' -->
@@ -663,28 +669,28 @@
                   </a>
                   <xsl:call-template name="displayImage" />
                 </li>
-              </xsl:if> 
+              </xsl:if>
             </xsl:for-each>
-          </xsl:otherwise>  
+          </xsl:otherwise>
         </xsl:choose>
 
         <!-- **************************************************** -->
         <!-- **************  Supplemental Doc ******************* -->
         <!-- **************************************************** -->
-        
+
         <xsl:if test="$g_MetaDataVersion/def:SupplementalDoc">
 
           <li class="hmenu-submenu">
             <span onclick="toggle_submenu(this);" class="hmenu-bullet">+</span>
             <a class="tocItem"><xsl:value-of select="$term_SUPPLEMENTAL_DOCUMENTS"/></a>
             <ul>
-              
+
               <xsl:for-each select="$g_MetaDataVersion/def:SupplementalDoc/def:DocumentRef">
                 <xsl:variable name="leafIDs" select="@leafID"/>
                 <xsl:variable name="leaf" select="../../def:leaf[@ID=$leafIDs]"/>
-                <xsl:variable name="leafID" select="$leaf/@ID"/>                  
+                <xsl:variable name="leafID" select="$leaf/@ID"/>
                 <xsl:choose>
-                  <!-- Only display when the document is not part of the def:AnnotatedCRF container 
+                  <!-- Only display when the document is not part of the def:AnnotatedCRF container
                        or linked from an ItemDef/def:Origin/def:DocumentRef -->
                   <xsl:when test="$g_MetaDataVersion/def:AnnotatedCRF/def:DocumentRef[@leafID=$leafID]"/>
                   <xsl:otherwise>
@@ -707,11 +713,11 @@
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:for-each>
-              
+
             </ul>
           </li>
         </xsl:if>
-            
+
         <!-- **************************************************** -->
         <!-- ************ Standards ***************************** -->
         <!-- **************************************************** -->
@@ -721,7 +727,7 @@
             <a class="tocItem" href="#Standards_Table"><xsl:value-of select="$term_STANDARDS"/></a>
           </li>
         </xsl:if>
-        
+
         <!-- **************************************************** -->
       	<!-- ************ Analysis Results Metadata ************* -->
       	<!-- **************************************************** -->
@@ -729,7 +735,7 @@
       		<li class="hmenu-submenu" >
       			<span class="hmenu-bullet" onclick="toggle_submenu(this);">+</span>
       		  <a class="tocItem" href="#ARM_Table_Summary"><xsl:value-of select="$term_ANALYSIS_RESULTS_METADATA"/></a>
-      			<ul> 
+      			<ul>
       				<xsl:for-each select="/odm:ODM/odm:Study/odm:MetaDataVersion/arm:AnalysisResultDisplays/arm:ResultDisplay">
       					<li class="hmenu-item">
       						<span class="hmenu-bullet">-</span>
@@ -743,7 +749,7 @@
       			</ul>
       		</li>
       	</xsl:if>
-      	
+
       	<!-- **************************************************** -->
         <!-- ************** Datasets **************************** -->
         <!-- **************************************************** -->
@@ -861,23 +867,23 @@
           </xsl:if>
         </xsl:if>
       </ul>
- 
+
       <!-- **************************************************** -->
       <!-- ****************** VLM toggles ********************* -->
       <!-- **************************************************** -->
       <xsl:call-template name="displayButtons" />
-      
-      
+
+
     </div>
     <!-- end of menu -->
     </xsl:template>
 
-    
+
   <!-- **************************************************** -->
   <!-- **************  Create the Main Content ************ -->
   <!-- **************************************************** -->
   <xsl:template name="generateMain">
-    
+
     <!-- start of main -->
     <div id="main">
 
@@ -888,7 +894,7 @@
         <xsl:call-template name="displayContext"/>
         <xsl:call-template name="displayStylesheetDate"/>
       </div>
-      
+
       <!-- Display Study metadata -->
       <xsl:call-template name="tableStudyMetadata">
         <xsl:with-param name="g_StandardName" select="$g_StandardName"/>
@@ -899,18 +905,18 @@
         <xsl:with-param name="g_MetaDataVersionName" select="$g_MetaDataVersionName"/>
         <xsl:with-param name="g_MetaDataVersionDescription" select="$g_MetaDataVersionDescription"/>
       </xsl:call-template>
- 
+
       <!-- ***************************************************************** -->
       <!-- Create the Standards Table                                        -->
       <!-- ***************************************************************** -->
       <xsl:if test="/odm:ODM/odm:Study/odm:MetaDataVersion/def:Standards">
-        <xsl:call-template name="tableStandards"/>    
-      </xsl:if>  
-      
+        <xsl:call-template name="tableStandards"/>
+      </xsl:if>
+
       <!-- ***************************************************************** -->
     	<!-- Create the ADaM Results Metadata Tables                           -->
     	<!-- ***************************************************************** -->
-    	
+
     	<xsl:if test="/odm:ODM/odm:Study/odm:MetaDataVersion/arm:AnalysisResultDisplays">
     		<xsl:call-template name="tableAnalysisResultsSummary"/>
     		<xsl:call-template name="tableAnalysisResultsDetails"/>
@@ -919,8 +925,8 @@
       <!-- ***************************************************************** -->
       <!-- Create the Data Definition Tables                                 -->
       <!-- ***************************************************************** -->
-      <xsl:call-template name="tableItemGroups"/>    
-      
+      <xsl:call-template name="tableItemGroups"/>
+
       <!-- ***************************************************************** -->
       <!-- Detail for the Data Definition Tables                             -->
       <!-- ***************************************************************** -->
@@ -951,7 +957,7 @@
 
     </div>
     <!-- end of main -->
-    
+
   </xsl:template>
 
   <!-- **************************************************** -->
@@ -965,7 +971,7 @@
     <xsl:param name="g_ProtocolName"/>
     <xsl:param name="g_MetaDataVersionName"/>
     <xsl:param name="g_MetaDataVersionDescription"/>
-    
+
     <div class="study-metadata">
       <dl class="study-metadata">
         <xsl:if test="$g_MetaDataVersion/@def:StandardName">
@@ -995,11 +1001,11 @@
         <xsl:if test="$g_MetaDataVersionDescription">
           <dt><xsl:value-of select="$term_METADATA_DESCRIPTION"/></dt>
           <dd>
-            <xsl:value-of select="$g_MetaDataVersionDescription"/>            
+            <xsl:value-of select="$g_MetaDataVersionDescription"/>
           </dd>
         </xsl:if>
       </dl>
-      
+
       <!--  Define-XML v2.1 -->
       <xsl:if test="$g_MetaDataVersion/@def:CommentOID">
         <div class="description">
@@ -1010,7 +1016,7 @@
           </xsl:call-template>
         </div>
       </xsl:if>
-      
+
     </div>
   </xsl:template>
 
@@ -1018,12 +1024,12 @@
   <!-- Display Standards Metadata (Define-XML v2.1)         -->
   <!-- **************************************************** -->
   <xsl:template name="tableStandards">
-    
+
     <h1 class="invisible"><xsl:value-of select="$term_STANDARDS_FOR_STUDY"/><xsl:text> </xsl:text><xsl:value-of
       select="/odm:ODM/odm:Study/odm:GlobalVariables/odm:StudyName"/></h1>
- 
+
     <div class="containerbox">
-      
+
       <table id="Standards_Table" summary="Standards">
         <caption class="header"><xsl:value-of select="$term_STANDARDS_FOR_STUDY"/><xsl:text> </xsl:text><xsl:value-of
           select="/odm:ODM/odm:Study/odm:GlobalVariables/odm:StudyName"/></caption>
@@ -1039,37 +1045,37 @@
       </table>
     </div>
     <xsl:call-template name="lineBreak"/>
-    
+
   </xsl:template>
-  
+
   <!-- **************************************************** -->
   <!-- Template: TableRowStandards (Define-XML v2.1)        -->
   <!-- **************************************************** -->
   <xsl:template name="tableRowStandards">
-    
+
     <xsl:element name="tr">
-      
+
       <xsl:call-template name="setRowClassOddeven">
         <xsl:with-param name="rowNum" select="position()"/>
       </xsl:call-template>
-      
+
       <!-- Create an anchor -->
       <xsl:attribute name="id">STD.<xsl:value-of select="@OID"/></xsl:attribute>
-      
+
       <td>
         <xsl:value-of select="@Name"/>
         <xsl:text> </xsl:text>
-        
+
         <xsl:if test="@PublishingSet">
           <xsl:value-of select="@PublishingSet"/>
           <xsl:text> </xsl:text>
         </xsl:if>
-        
+
         <xsl:value-of select="@Version"/>
       </td>
       <td><xsl:value-of select="@Type"/></td>
       <td><xsl:value-of select="@Status"/></td>
-      
+
       <!-- ************************************************ -->
       <!-- Comments                                         -->
       <!-- ************************************************ -->
@@ -1079,10 +1085,10 @@
           <xsl:with-param name="CommentPrefix" select="$displayPrefix" />
         </xsl:call-template>
       </td>
-      
+
     </xsl:element>
   </xsl:template>
-  
+
   <!-- **************************************************** -->
   <!-- Analysis Results Summary                             -->
   <!-- **************************************************** -->
@@ -1116,12 +1122,12 @@
           </div>
         </xsl:for-each>
       </div>
-    </div> 
-    
+    </div>
+
     <xsl:call-template name="lineBreak"/>
-    
+
   </xsl:template>
-  
+
   <!-- **************************************************** -->
   <!--  Analysis Results Details                            -->
   <!-- **************************************************** -->
@@ -1134,23 +1140,23 @@
           <xsl:variable name="DisplayOID" select="@OID"/>
           <xsl:variable name="DisplayName" select="@Name"/>
           <xsl:variable name="Display" select="/odm:ODM/odm:Study/odm:MetaDataVersion/arm:AnalysisResultDisplays/arm:ResultDisplay[@OID=$DisplayOID]"/>
-  
+
           <a>
             <xsl:attribute name="id">ARD.<xsl:value-of select="$DisplayOID"/></xsl:attribute>
           </a>
-  
+
           <xsl:element name="table">
-            
+
             <xsl:attribute name="class">analysisresults-detail</xsl:attribute>
             <xsl:attribute name="summary"><xsl:value-of select="$term_ANALYSIS_RESULTS_METADATA_DETAIL"/></xsl:attribute>
             <caption>
               <xsl:value-of select="$DisplayName"/>
             </caption>
-  
+
             <tr>
               <th scope="col" class="arm-resultlabel"><xsl:value-of select="$term_DISPLAY"/></th>
               <th scope="col">
-  
+
                 <xsl:for-each select="def:DocumentRef">
                   <xsl:call-template name="displayDocumentRef">
                     <xsl:with-param name="element" select="'span'"/>
@@ -1160,11 +1166,11 @@
                 <span class="arm-displaytitle"><xsl:value-of select="$Display/odm:Description/odm:TranslatedText"/></span>
               </th>
             </tr>
-  
+
             <!--
                   Analysis Results
                 -->
-  
+
             <xsl:for-each select="$Display/arm:AnalysisResult">
               <xsl:variable name="AnalysisResultOID" select="@OID"/>
               <xsl:variable name="AnalysisResult" select="$Display/arm:AnalysisResult[@OID=$AnalysisResultOID]"/>
@@ -1178,34 +1184,34 @@
                   </span>
                 </td>
               </tr>
-  
+
               <!--
                   Get the analysis parameter code from the where clause,
-                  and then get the parameter from the decode in the codelist. 
+                  and then get the parameter from the decode in the codelist.
                 -->
-  
+
               <xsl:variable name="ParameterOID" select="$AnalysisResult/@ParameterOID"/>
               <tr>
-                
+
                 <td class="arm-label"><xsl:value-of select="$term_ANALYSIS_PARAMETER"/></td>
-                
+
                 <td>
-                  
+
                   <xsl:if test="$ParameterOID">
                     <xsl:if test="count($g_seqItemDefs[@OID=$ParameterOID]) = 0">
                       <span class="unresolved"><xsl:value-of select="$UNRESOLVED_TEXT"/><xsl:value-of select="$ParameterOID"/>]</span>
                     </xsl:if>
-                  </xsl:if>  
+                  </xsl:if>
 
                   <xsl:for-each select="$AnalysisResult/arm:AnalysisDatasets/arm:AnalysisDataset">
-  
+
                     <xsl:variable name="WhereClauseOID" select="def:WhereClauseRef/@WhereClauseOID"/>
                     <xsl:variable name="WhereClauseDef" select="$g_seqWhereClauseDefs[@OID=$WhereClauseOID]"/>
                     <xsl:variable name="ItemGroupOID" select="@ItemGroupOID"/>
-                    
-                    <!--  Get the RangeCheck associated with the parameter (typically only one ...) --> 
+
+                    <!--  Get the RangeCheck associated with the parameter (typically only one ...) -->
                     <xsl:for-each select="$WhereClauseDef/odm:RangeCheck[@def:ItemOID=$ParameterOID]">
-                      
+
                       <xsl:variable name="whereRefItemOID" select="./@def:ItemOID"/>
                       <xsl:variable name="whereRefItemName" select="$g_seqItemDefs[@OID=$whereRefItemOID]/@Name"/>
                       <xsl:variable name="whereRefItemDataType" select="$g_seqItemDefs[@OID=$whereRefItemOID]/@DataType"/>
@@ -1218,14 +1224,14 @@
             					<!-- PDO                                                           -->
             					<!-- ************************************************************* -->
             					<!--xsl:variable name="whereRefItemCodeList" select="$g_seqCodeLists[@OID=$whereRefItemCodeListOID]"/-->
-            					<xsl:variable name="whereRefItemValueListOID" select="$g_seqItemDefs[@OID=$whereRefItemOID]/def:ValueListRef/@ValueListOID"/>	
-                     
+            					<xsl:variable name="whereRefItemValueListOID" select="$g_seqItemDefs[@OID=$whereRefItemOID]/def:ValueListRef/@ValueListOID"/>
+
                       <xsl:call-template name="ItemGroupItemLink">
                         <xsl:with-param name="ItemGroupOID" select="$ItemGroupOID"/>
                         <xsl:with-param name="ItemOID" select="$whereRefItemOID"/>
                         <xsl:with-param name="ItemName" select="$whereRefItemName"/>
-                      </xsl:call-template> 
-  
+                      </xsl:call-template>
+
                       <xsl:choose>
                         <xsl:when test="$whereOP = 'IN' or $whereOP = 'NOTIN'">
                           <xsl:text> </xsl:text>
@@ -1241,7 +1247,7 @@
                           <xsl:text> (</xsl:text>
                           <xsl:for-each select="./odm:CheckValue">
                             <xsl:variable name="CheckValueINNOTIN" select="."/>
-                            <p class="linebreakcell"> 
+                            <p class="linebreakcell">
             							  <!-- ************************************************************* -->
             							  <!-- PDO                                                           -->
             							  <!-- Call new template displayValue                                -->
@@ -1260,7 +1266,7 @@
                             </p>
                           </xsl:for-each><xsl:text> ) </xsl:text>
                         </xsl:when>
-  
+
                         <xsl:when test="$whereOP = 'EQ'">
                           <xsl:variable name="CheckValueEQ" select="./odm:CheckValue"/>
                           <xsl:text> = </xsl:text>
@@ -1277,7 +1283,7 @@
               							<xsl:with-param name="decode" select="1"/>
             						  </xsl:call-template>
                         </xsl:when>
-  
+
                         <xsl:when test="$whereOP = 'NE'">
                           <xsl:variable name="CheckValueNE" select="./odm:CheckValue"/>
                           <xsl:text> &#x2260; </xsl:text>
@@ -1294,7 +1300,7 @@
               							<xsl:with-param name="decode" select="1"/>
             						  </xsl:call-template>
                         </xsl:when>
-  
+
                         <xsl:otherwise>
                           <xsl:variable name="CheckValueOTH" select="./odm:CheckValue"/>
                           <xsl:text> </xsl:text>
@@ -1329,21 +1335,21 @@
             						  </xsl:call-template>
                         </xsl:otherwise>
                       </xsl:choose>
-                      
+
                       <br/>
                       <xsl:if test="position() != last()">
                         <xsl:text> and </xsl:text>
                       </xsl:if>
-                      
+
                     </xsl:for-each>
-                    
-                    <!--  END - Get the RangeCheck associated with the parameter (typically only one ...) --> 
-                  
-                  </xsl:for-each>               
-                  
+
+                    <!--  END - Get the RangeCheck associated with the parameter (typically only one ...) -->
+
+                  </xsl:for-each>
+
                 </td>
               </tr>
-  
+
               <!--
                   The analysis Variables are next. It will link to ItemDef information.
                 -->
@@ -1368,27 +1374,27 @@
                             </xsl:otherwise>
                           </xsl:choose>
                           <xsl:text>.</xsl:text>
-                          
+
                           <xsl:choose>
                             <xsl:when test="/odm:ODM/odm:Study/odm:MetaDataVersion/odm:ItemGroupDef[@OID=$ItemGroupOID] and /odm:ODM/odm:Study/odm:MetaDataVersion/odm:ItemDef[@OID=$ItemOID]">
                               <a>
                                 <xsl:attribute name="href">#<xsl:value-of select="$ItemGroupOID"/>.<xsl:value-of select="$ItemOID"/></xsl:attribute>
                                 <xsl:value-of select="$ItemDef/@Name"/>
                               </a> (<xsl:value-of select="$ItemDef/odm:Description/odm:TranslatedText"/>)
-                              
+
                             </xsl:when>
                             <xsl:otherwise>
                               <span class="unresolved"><xsl:value-of select="$UNRESOLVED_TEXT"/><xsl:value-of select="$ItemOID"/>]</span>
                             </xsl:otherwise>
                           </xsl:choose>
-                        
+
                         </p>
                     </xsl:for-each>
                   </xsl:for-each>
                 </td>
-  
+
               </tr>
-  
+
               <!-- Use the AnalysisReason attribute of the AnalysisResults -->
               <tr>
                 <td class="arm-label"><xsl:value-of select="$term_ANALYSIS_REASON"/></td>
@@ -1399,8 +1405,8 @@
                 <td class="arm-label"><xsl:value-of select="$term_ANALYSIS_PURPOSE"/></td>
                 <td><xsl:value-of select="$AnalysisResult/@AnalysisPurpose"/></td>
               </tr>
-              
-              <!-- 
+
+              <!--
                   AnalysisDataset Data References
                 -->
               <tr>
@@ -1422,10 +1428,10 @@
                           <span class="unresolved"><xsl:value-of select="$UNRESOLVED_TEXT"/><xsl:value-of select="$ItemGroupOID"/>]</span>
                         </xsl:otherwise>
                       </xsl:choose>
-                      
+
                       <xsl:text>  [</xsl:text>
                       <xsl:call-template name="displayWhereClause">
-                        <xsl:with-param name="ValueItemRef" 
+                        <xsl:with-param name="ValueItemRef"
                           select="$AnalysisResult/arm:AnalysisDatasets/arm:AnalysisDataset[@ItemGroupOID=$ItemGroupOID]"/>
                         <xsl:with-param name="ItemGroupLink" select="$ItemGroupOID"/>
                         <xsl:with-param name="decode" select="0"/>
@@ -1433,25 +1439,25 @@
                       </xsl:call-template>
                       <xsl:text>]</xsl:text>
                     </div>
-  
+
                   </xsl:for-each>
-  
+
                   <!--AnalysisDatasets Comments-->
                   <xsl:for-each select="$AnalysisResult/arm:AnalysisDatasets">
                     <xsl:call-template name="displayComment">
                       <xsl:with-param name="CommentOID" select="@def:CommentOID" />
                       <xsl:with-param name="CommentPrefix" select="$displayPrefix" />
                     </xsl:call-template>
-                  </xsl:for-each>                
-  
+                  </xsl:for-each>
+
                </td>
               </tr>
-  
+
               <!--
                   if we have an arm:Documentation element
                   produce a row with the contained information
                 -->
-  
+
               <xsl:for-each select="$AnalysisResult/arm:Documentation">
                 <tr>
                   <td class="arm-label"><xsl:value-of select="$term_DOCUMENTATION"/></td>
@@ -1459,7 +1465,7 @@
                     <span>
                       <xsl:value-of select="$AnalysisResult/arm:Documentation/odm:Description/odm:TranslatedText"/>
                     </span>
-  
+
                     <xsl:for-each select="def:DocumentRef">
                       <xsl:call-template name="displayDocumentRef" />
                     </xsl:for-each>
@@ -1467,7 +1473,7 @@
                   </td>
                 </tr>
               </xsl:for-each>
-  
+
               <!--
                   if we have a arm:ProgrammingCode element
                   produce a row with the contained information
@@ -1476,15 +1482,15 @@
                 <tr>
                   <td class="arm-label"><xsl:value-of select="$term_PROGRAMMING_STATEMENTS"/></td>
                   <td>
-  
+
                     <xsl:if test="@Context">
                         <span class="arm-code-context">[<xsl:value-of select="@Context"/>]</span>
-                    </xsl:if>  
-  
+                    </xsl:if>
+
                     <xsl:if test="arm:Code">
                       <pre class="arm-code"><xsl:value-of select="arm:Code"/></pre>
-                    </xsl:if>  
-  
+                    </xsl:if>
+
                     <div class="arm-code-ref">
                       <xsl:for-each select="def:DocumentRef">
                         <xsl:call-template name="displayDocumentRef"/>
@@ -1494,18 +1500,18 @@
                   </td>
                 </tr>
               </xsl:for-each>
-  
+
             </xsl:for-each>
           </xsl:element>
         </div>
-        
+
         <xsl:call-template name="linkTop"/>
         <xsl:call-template name="lineBreak"/>
-        
+
       </xsl:for-each>
-    
+
     <xsl:call-template name="lineBreak"/>
-    
+
   </xsl:template>
 
   <!-- **************************************************** -->
@@ -1514,10 +1520,10 @@
   <xsl:template name="tableItemGroups">
 
     <a id="datasets"/>
-    
+
     <h1 class="invisible"><xsl:value-of select="$term_DATASETS"/></h1>
     <div class="containerbox">
-      
+
       <table summary="Data Definition Tables">
         <caption class="header"><xsl:value-of select="$term_DATASETS"/></caption>
         <tr class="header">
@@ -1526,31 +1532,31 @@
           <th scope="col"><xsl:value-of select="$term_CLASS"/>
             <!--  Define-XML v2.1 -->
             <xsl:if test="$g_seqItemGroupDefs/def:Class/def:SubClass/@Name"> - <xsl:value-of select="$term_SUBCLASS"/></xsl:if>
-          </th>  
+          </th>
           <th scope="col"><xsl:value-of select="$term_STRUCTURE"/></th>
           <th scope="col"><xsl:value-of select="$term_PURPOSE"/></th>
           <th scope="col"><xsl:value-of select="$term_KEYS"/></th>
           <th scope="col"><xsl:value-of select="$term_DOCUMENTATION"/></th>
           <th scope="col"><xsl:value-of select="$term_LOCATION"/></th>
         </tr>
-        
+
         <xsl:for-each select="$g_seqItemGroupDefs">
           <xsl:call-template name="tableRowItemGroupDefs" />
         </xsl:for-each>
       </table>
-      
+
     </div>
-    
+
     <xsl:call-template name="linkTop"/>
     <xsl:call-template name="lineBreak"/>
-    
+
   </xsl:template>
 
   <!-- **************************************************** -->
   <!-- Template: TableRowItemGroupDefs                      -->
   <!-- **************************************************** -->
   <xsl:template name="tableRowItemGroupDefs">
-    
+
     <xsl:element name="tr">
 
       <xsl:call-template name="setRowClassOddeven">
@@ -1565,20 +1571,20 @@
           <xsl:attribute name="href">#IG.<xsl:value-of select="@OID"/></xsl:attribute>
           <xsl:value-of select="@Name"/>
         </a>
-        
+
         <!--  Define-XML v2.1 -->
         <xsl:call-template name="displayStandard">
           <xsl:with-param name="element" select="'span'" />
-        </xsl:call-template>  
+        </xsl:call-template>
         <!--  Define-XML v2.1 -->
         <xsl:call-template name="displayNonStandard">
           <xsl:with-param name="element" select="'span'" />
-        </xsl:call-template>  
+        </xsl:call-template>
         <!--  Define-XML v2.1 -->
         <xsl:call-template name="displayNoData">
           <xsl:with-param name="element" select="'span'" />
-        </xsl:call-template>  
-        
+        </xsl:call-template>
+
       </td>
 
       <!-- *************************************************************** -->
@@ -1591,7 +1597,7 @@
         <xsl:variable name="ParentDescription">
           <xsl:call-template name="getParentDescription">
             <xsl:with-param name="OID" select="@OID" />
-          </xsl:call-template>  
+          </xsl:call-template>
         </xsl:variable>
         <xsl:if test="string-length(normalize-space($ParentDescription)) &gt; 0">
           <xsl:text> (</xsl:text><xsl:value-of select="$ParentDescription"/><xsl:text>)</xsl:text>
@@ -1604,7 +1610,7 @@
       <td>
         <xsl:call-template name="displayItemGroupClass"/>
       </td>
-      
+
       <td>
         <xsl:value-of select="@def:Structure"/>
       </td>
@@ -1628,7 +1634,7 @@
       <!-- **************************************************** -->
       <!-- Link each Dataset to its corresponding archive file  -->
       <!-- **************************************************** -->
-      
+
       <xsl:variable name="archiveLocationID" select="@def:ArchiveLocationID"/>
       <xsl:variable name="archiveTitle">
         <xsl:choose>
@@ -1645,7 +1651,7 @@
           </xsl:call-template>
           </xsl:if>
       </td>
-      
+
     </xsl:element>
   </xsl:template>
 
@@ -1659,7 +1665,7 @@
 
       <h1 class="invisible">
         <xsl:value-of select="concat(./odm:Description/odm:TranslatedText, ' (', @Name, ') ')"/>
-      </h1>      
+      </h1>
 
       <xsl:element name="table">
         <xsl:attribute name="summary">ItemGroup IG.<xsl:value-of select="@OID"/>
@@ -1675,44 +1681,44 @@
         <!-- *************************************************** -->
         <xsl:call-template name="linkSuppQual"/>
         <xsl:call-template name="linkSQAP"/>
-        
+
         <!-- *************************************************** -->
         <!-- Link to Parent domain                               -->
         <!-- For those domains that are Suplemental Qualifiers   -->
         <!-- *************************************************** -->
         <xsl:call-template name="linkParentDomain"/>
         <xsl:call-template name="linkApParentDomain"/>
-        
+
         <xsl:variable name="nItemsWithVLM"><xsl:value-of select="count(./odm:ItemRef[@ItemOID=$g_seqItemDefsValueListRef/../@OID])"/></xsl:variable>
-        
+
         <xsl:variable name="isSuppQual">
           <xsl:choose>
             <xsl:when test="starts-with(@Name, 'SUPP') or starts-with(@Name, 'SQAP')">1</xsl:when>
             <xsl:otherwise>0</xsl:otherwise>
-          </xsl:choose>              
+          </xsl:choose>
         </xsl:variable>
-        
+
         <xsl:variable name="addRoleColumn">
           <xsl:choose>
             <xsl:when test="count(./odm:ItemRef/@Role) > 0 or $isSuppQual='1'">1</xsl:when>
             <xsl:otherwise>0</xsl:otherwise>
-          </xsl:choose>              
+          </xsl:choose>
         </xsl:variable>
- 
+
         <xsl:variable name="addConditionColumn">
           <xsl:choose>
             <xsl:when test="$nItemsWithVLM > 0 and $isSuppQual='0'">1</xsl:when>
             <xsl:otherwise>0</xsl:otherwise>
-          </xsl:choose>              
+          </xsl:choose>
         </xsl:variable>
-        
- 
+
+
         <!-- Output the column headers -->
         <tr class="header">
           <th scope="col"><xsl:value-of select="$term_VARIABLE"/></th>
           <xsl:if test="$addConditionColumn='1'">
             <th scope="col"><xsl:value-of select="$term_WHERE_CONDITION"/></th>
-          </xsl:if>  
+          </xsl:if>
           <th scope="col"><xsl:value-of select="$term_LABEL_DESCRIPTION"/></th>
           <th scope="col"><xsl:value-of select="$term_TYPE"/></th>
           <xsl:if test="$addRoleColumn='1'">
@@ -1748,7 +1754,7 @@
                 <xsl:text>tablerowodd</xsl:text>
               </xsl:otherwise>
             </xsl:choose>
-          </xsl:variable>            
+          </xsl:variable>
 
           <xsl:element name="tr">
 
@@ -1760,9 +1766,9 @@
               <xsl:choose>
                 <xsl:when test="$ItemDef/def:ValueListRef/@ValueListOID">
                   <xsl:value-of select="$ItemDef/@Name"/>
-                  
-                  <xsl:variable name="ValueListDesciption" select="$g_seqValueListDefs[@OID = $ItemDef/def:ValueListRef/@ValueListOID]/odm:Description/odm:TranslatedText"/>                  
-                  
+
+                  <xsl:variable name="ValueListDesciption" select="$g_seqValueListDefs[@OID = $ItemDef/def:ValueListRef/@ValueListOID]/odm:Description/odm:TranslatedText"/>
+
                   <xsl:choose>
                     <xsl:when test="$g_seqValueListDefs[@OID = $ItemDef/def:ValueListRef/@ValueListOID]">
                       <xsl:element name="span">
@@ -1784,10 +1790,10 @@
                         <xsl:attribute name="class"><xsl:text>valuelist-no-reference</xsl:text></xsl:attribute>
                         <span class="unresolved"><xsl:value-of select="$UNRESOLVED_TEXT"/><xsl:value-of select="$ItemDef/def:ValueListRef/@ValueListOID"/>]</span>
                       </xsl:element>
-                      
+
                     </xsl:otherwise>
                   </xsl:choose>
-                  
+
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:choose>
@@ -1810,18 +1816,18 @@
               <!--  Define-XML v2.1 -->
               <xsl:call-template name="displayNonStandard">
                 <xsl:with-param name="element" select="'span'" />
-              </xsl:call-template>  
+              </xsl:call-template>
 
               <!--  Define-XML v2.1 -->
               <xsl:call-template name="displayNoData">
                 <xsl:with-param name="element" select="'span'" />
-              </xsl:call-template>  
-              
+              </xsl:call-template>
+
             </td>
 
             <xsl:if test="$addConditionColumn='1'">
               <td></td>
-            </xsl:if>  
+            </xsl:if>
 
             <td><xsl:value-of select="$ItemDef/odm:Description/odm:TranslatedText"/></td>
             <td class="datatype"><xsl:value-of select="$ItemDef/@DataType"/></td>
@@ -1829,7 +1835,7 @@
             <xsl:if test="$addRoleColumn='1'">
               <td class="role"><xsl:value-of select="@Role"/></td>
             </xsl:if>
-            
+
             <xsl:choose>
               <xsl:when test="$displayLengthDFormatSD='1'">
                 <td class="number">
@@ -1846,7 +1852,7 @@
                 </td>
               </xsl:otherwise>
             </xsl:choose>
-            
+
             <!-- *************************************************** -->
             <!-- Hypertext Link to the Decode Appendix               -->
             <!-- *************************************************** -->
@@ -1881,8 +1887,8 @@
               </xsl:call-template>
 
             </td>
-            
-          </xsl:element> 
+
+          </xsl:element>
 
           <xsl:if test="$ItemDef/def:ValueListRef/@ValueListOID">
             <xsl:call-template name="tableValueListsInTable">
@@ -1898,47 +1904,47 @@
                 select="$VLMClass"/>
             </xsl:call-template>
           </xsl:if>
-          
+
         </xsl:for-each>
-        
+
       </xsl:element>
     </div>
-    
+
     <xsl:call-template name="linkTop"/>
     <xsl:call-template name="lineBreak"/>
-    
+
   </xsl:template>
 
   <!-- ************************************************************************* -->
   <!-- Template: TableValueList InLine (handles the def:ValueListDef elements    -->
   <!-- ************************************************************************* -->
   <xsl:template name="tableValueListsInTable">
-    
+
     <xsl:param name="OID"/>
     <xsl:param name="ParentItemDefOID"/>
     <xsl:param name="addRoleColumn"/>
     <xsl:param name="isSuppQual"/>
     <xsl:param name="VLMClass" />
-    
+
         <xsl:for-each select="$g_seqValueListDefs[@OID=$OID]">
 
               <!-- Get the individual data points -->
               <xsl:for-each select="./odm:ItemRef">
-                
+
                 <xsl:sort data-type="number" order="ascending" select="@OrderNumber"/>
 
                 <xsl:variable name="ItemRef" select="."/>
                 <xsl:variable name="valueDefOID" select="@ItemOID"/>
                 <xsl:variable name="valueDef" select="../../odm:ItemDef[@OID=$valueDefOID]"/>
-                 
+
                 <xsl:variable name="vlOID" select="../@OID"/>
                 <xsl:variable name="parentDef" select="../../odm:ItemDef/def:ValueListRef[@ValueListOID=$vlOID]"/>
                 <xsl:variable name="parentOID" select="$parentDef/../@OID"/>
                 <xsl:variable name="ParentVName" select="$parentDef/../@Name"/>
-                
+
                 <xsl:variable name="ValueItemGroupOID"
                   select="$g_seqItemGroupDefs/odm:ItemRef[@ItemOID=$parentOID]/../@OID"/>
-                
+
                 <xsl:variable name="whereOID" select="./def:WhereClauseRef/@WhereClauseOID"/>
                 <xsl:variable name="whereDef" select="$g_seqWhereClauseDefs[@OID=$whereOID]"/>
                 <xsl:variable name="whereRefItemOID" select="$whereDef/odm:RangeCheck/@def:ItemOID"/>
@@ -1946,19 +1952,34 @@
                   select="$g_seqItemDefs[@OID=$whereRefItemOID]/@Name"/>
                 <xsl:variable name="whereOP" select="$whereDef/odm:RangeCheck/@Comparator"/>
                 <xsl:variable name="whereVal" select="$whereDef/odm:RangeCheck/odm:CheckValue"/>
-                
+
+                <xsl:variable name="n_checkvalues" select="count($whereDef/odm:RangeCheck/odm:CheckValue)"/>
+
+                <xsl:variable name="displayDecodes">
+                  <xsl:choose>
+                    <xsl:when test="$n_checkvalues &gt; $nCheckValueDisplay">0</xsl:when>
+                    <xsl:otherwise>1</xsl:otherwise>
+                  </xsl:choose>
+                </xsl:variable>
+
                 <xsl:element name="tr">
                   <xsl:attribute name="class">vlm<xsl:text> </xsl:text><xsl:value-of select="$VLMClass"/><xsl:text> </xsl:text><xsl:value-of select="$ParentItemDefOID"/>
                   </xsl:attribute>
-                  
+
                   <!-- Source Variable column -->
-                  <td>  
+                  <td>
+
+                    <!--
+                        <xsl:value-of select="$n_checkvalues"/> -
+                        <xsl:value-of select="$nCheckValueDisplay"/> -
+                        <xsl:value-of select="$displayDecodes"/>
+                    -->
                     
                     <xsl:if test="$isSuppQual='0'">
                     </xsl:if>
-                    
+
                     <xsl:if test="$isSuppQual='1'">
-                      
+
                       <div class="qval-indent">
                         <xsl:text>&#x27A4;  </xsl:text>
                         <xsl:call-template name="displayWhereClause">
@@ -1968,11 +1989,11 @@
                           <xsl:with-param name="break" select="1"/>
                         </xsl:call-template>
                       </div>
-                      
+
                     </xsl:if>
 
                     <xsl:if test="$isSuppQual='2'">
-                      
+
                       <div class="qval-indent2">
                         <xsl:text>&#x27A4;  </xsl:text>
                         <xsl:call-template name="displayWhereClause">
@@ -1981,31 +2002,31 @@
                           <xsl:with-param name="decode" select="1"/>
                           <xsl:with-param name="break" select="1"/>
                         </xsl:call-template>
-                      </div>  
-                      
-                    </xsl:if>  
-                    
+                      </div>
+
+                    </xsl:if>
+
                     <!--  Define-XML v2.1 -->
                     <xsl:call-template name="displayNoData">
                       <xsl:with-param name="element" select="'span'" />
                     </xsl:call-template>
 
                   </td>
-                  
+
                   <!-- 'WhereClause' column -->
                   <xsl:if test="$isSuppQual='0'">
                     <td>
-                      
+
                       <xsl:call-template name="displayWhereClause">
                         <xsl:with-param name="ValueItemRef" select="$ItemRef"/>
                         <xsl:with-param name="ItemGroupLink" select="$ValueItemGroupOID"/>
-                        <xsl:with-param name="decode" select="1"/>
+                        <xsl:with-param name="decode" select="$displayDecodes"/>
                         <xsl:with-param name="break" select="1"/>
                       </xsl:call-template>
-                      
+
                     </td>
-                  </xsl:if>  
-                                    
+                  </xsl:if>
+
                   <!-- Label column for SuppQuals -->
                   <xsl:choose>
                     <xsl:when test="$isSuppQual='1'">
@@ -2030,17 +2051,17 @@
                     </td>
                   </xsl:otherwise>
                   </xsl:choose>
-                  
+
                   <!-- Datatype -->
                   <td class="datatype">
                     <xsl:value-of select="$valueDef/@DataType"/>
                   </td>
-                  
+
                   <!-- Role (when defined) -->
                   <xsl:if test="count($ItemRef/@Role) > 0 or $addRoleColumn='1'">
                     <td class="role"><xsl:value-of select="$ItemRef/@Role"/></td>
                   </xsl:if>
-                  
+
                   <!-- Length [Significant Digits] : DisplayFormat -->
                   <xsl:choose>
                     <xsl:when test="$displayLengthDFormatSD='1'">
@@ -2058,45 +2079,45 @@
                       </td>
                     </xsl:otherwise>
                   </xsl:choose>
-                  
+
                   <!-- Controlled Terms or Format -->
                   <td>
                     <xsl:call-template name="displayItemDefDecodeList">
                       <xsl:with-param name="itemDef" select="$valueDef"/>
                     </xsl:call-template>
-                    
+
                     <xsl:call-template name="displayItemDefISO8601">
                       <xsl:with-param name="itemDef" select="$valueDef"/>
-                    </xsl:call-template>										
+                    </xsl:call-template>
                   </td>
-                  
+
                   <!-- Origin/Source/Method/Comment    -->
                   <td>
 
                     <xsl:if test="count($valueDef)=0">
                       <span class="unresolved"><xsl:value-of select="$UNRESOLVED_TEXT"/><xsl:value-of select="$valueDefOID"/>]</span>
                     </xsl:if>
-                    
+
                     <xsl:call-template name="displayItemDefOrigin">
                       <xsl:with-param name="itemDef" select="$valueDef"/>
                       <xsl:with-param name="OriginPrefix" select="$displayPrefix"/>
                     </xsl:call-template>
-                    
+
                     <xsl:call-template name="displayItemDefMethod">
                       <xsl:with-param name="MethodOID" select="$ItemRef/@MethodOID"/>
                       <xsl:with-param name="MethodPrefix" select="$displayPrefix"/>
                     </xsl:call-template>
-                    
+
                     <xsl:call-template name="displayComment">
                       <xsl:with-param name="CommentOID" select="$valueDef/@def:CommentOID"/>
                       <xsl:with-param name="CommentPrefix" select="$displayPrefix"/>
                     </xsl:call-template>
-                    
+
                     <xsl:call-template name="displayComment">
                       <xsl:with-param name="CommentOID" select="$whereDef/@def:CommentOID"/>
                       <xsl:with-param name="CommentPrefix" select="$displayPrefix"/>
                     </xsl:call-template>
-                    
+
                   </td>
                 </xsl:element>
                 <!-- end of loop over all def:ValueListDef elements -->
@@ -2116,15 +2137,15 @@
                       select="$VLMClass"/>
                   </xsl:call-template>
                 </xsl:if>
-                
+
               </xsl:for-each>
-            
+
               <!-- end of loop over all ValueListDefs -->
-          
+
         </xsl:for-each>
-      
+
   </xsl:template>
-  
+
   <!-- ***************************************** -->
   <!-- CodeLists                                 -->
   <!-- ***************************************** -->
@@ -2152,7 +2173,7 @@
 
         <xsl:call-template name="linkTop"/>
         <xsl:call-template name="lineBreak"/>
-        
+
       </div>
     </xsl:if>
   </xsl:template>
@@ -2162,10 +2183,10 @@
   <!-- ***************************************** -->
   <xsl:template name="tableCodeListItems">
     <xsl:variable name="n_extended" select="count(odm:CodeListItem/@def:ExtendedValue)"/>
-    
+
     <div class="codelist">
       <xsl:attribute name="id">CL.<xsl:value-of select="@OID"/></xsl:attribute>
-      
+
       <div class="codelist-caption">
         <xsl:value-of select="@Name"/>
         <xsl:if test="./odm:Alias/@Context = 'nci:ExtCodeID'">
@@ -2173,18 +2194,18 @@
           <span class="nci"><xsl:value-of select="./odm:Alias/@Name"/></span>
           <xsl:text>]</xsl:text>
         </xsl:if>
-        
+
         <!--  Define-XML v2.1 -->
         <xsl:call-template name="displayStandard">
           <xsl:with-param name="element" select="'span'" />
-        </xsl:call-template>  
+        </xsl:call-template>
         <!--  Define-XML v2.1 -->
         <xsl:call-template name="displayNonStandard">
           <xsl:with-param name="element" select="'span'" />
-        </xsl:call-template>  
-        
+        </xsl:call-template>
+
         <xsl:call-template name="displayDescription"/>
-        
+
         <!--  Define-XML v2.1 -->
         <xsl:if test="@def:CommentOID">
           <div class="description">
@@ -2196,10 +2217,10 @@
           </div>
         </xsl:if>
       </div>
-      
+
       <xsl:element name="table">
         <xsl:attribute name="summary"><xsl:value-of select="$term_CONTROLLED_TERM"/> - <xsl:value-of select="@Name"/></xsl:attribute>
-        
+
         <tr class="header">
           <th scope="col" class="codedvalue"><xsl:value-of select="$term_PERMITTED_VALUE"/></th>
           <th scope="col"><xsl:value-of select="$term_DISPLAY_VALUE"/></th>
@@ -2211,12 +2232,12 @@
             <th scope="col"><xsl:value-of select="$term_RANK"/></th>
           </xsl:if>
         </tr>
-        
+
         <xsl:for-each select="./odm:CodeListItem">
           <xsl:sort data-type="number" select="@OrderNumber" order="ascending"/>
           <xsl:sort data-type="number" select="@Rank" order="ascending"/>
           <xsl:element name="tr">
-            
+
             <xsl:call-template name="setRowClassOddeven">
               <xsl:with-param name="rowNum" select="position()"/>
             </xsl:call-template>
@@ -2225,44 +2246,44 @@
               <xsl:if test="./odm:Alias/@Context = 'nci:ExtCodeID'">
                 <xsl:text> [</xsl:text>
                 <span class="nci"><xsl:value-of select="./odm:Alias/@Name"/></span>
-                <xsl:text>]</xsl:text> 
+                <xsl:text>]</xsl:text>
               </xsl:if>
               <xsl:if test="@def:ExtendedValue='Yes'">
                 <xsl:text> [</xsl:text>
                 <span class="extended">*</span>
                 <xsl:text>]</xsl:text>
-              </xsl:if>                            
+              </xsl:if>
             </td>
             <td class="codelist-item-decode">
               <xsl:value-of select="./odm:Decode/odm:TranslatedText"/>
             </td>
             <xsl:if test="../odm:CodeListItem/odm:Description/odm:TranslatedText">
             <td>
-              <xsl:call-template name="displayItemDescription"/>              
+              <xsl:call-template name="displayItemDescription"/>
             </td>
             </xsl:if>
             <xsl:if test="../odm:CodeListItem/@Rank">
               <td><xsl:value-of select="@Rank"/></td>
-            </xsl:if>  
+            </xsl:if>
           </xsl:element>
         </xsl:for-each>
       </xsl:element>
       <xsl:if test="$n_extended &gt; 0">
         <p class="footnote"><span class="super">*</span><xsl:text> </xsl:text><xsl:value-of select="$term_EXTENDED_VALUE"/></p>
       </xsl:if>
-      
+
     </div>
   </xsl:template>
-  
+
   <!-- ***************************************** -->
   <!-- Display Enumerated Items Table            -->
   <!-- ***************************************** -->
   <xsl:template name="tableEnumeratedItems">
     <xsl:variable name="n_extended" select="count(odm:EnumeratedItem/@def:ExtendedValue)"/>
-    
+
     <div class="codelist">
       <xsl:attribute name="id">CL.<xsl:value-of select="@OID"/></xsl:attribute>
-      
+
       <div class="codelist-caption">
         <xsl:value-of select="@Name"/>
         <xsl:if test="./odm:Alias/@Context = 'nci:ExtCodeID'">
@@ -2270,18 +2291,18 @@
           <span class="nci"><xsl:value-of select="./odm:Alias/@Name"/></span>
           <xsl:text>]</xsl:text>
         </xsl:if>
-        
+
         <!--  Define-XML v2.1 -->
         <xsl:call-template name="displayStandard">
           <xsl:with-param name="element" select="'span'" />
-        </xsl:call-template>  
+        </xsl:call-template>
         <!--  Define-XML v2.1 -->
         <xsl:call-template name="displayNonStandard">
           <xsl:with-param name="element" select="'span'" />
-        </xsl:call-template>  
-        
+        </xsl:call-template>
+
         <xsl:call-template name="displayDescription"/>
-        
+
         <!--  Define-XML v2.1 -->
         <xsl:if test="@def:CommentOID">
           <div class="description">
@@ -2293,10 +2314,10 @@
           </div>
         </xsl:if>
       </div>
-      
+
       <xsl:element name="table">
         <xsl:attribute name="summary"><xsl:value-of select="$term_CODE_LIST"/> - <xsl:value-of select="@Name"/></xsl:attribute>
-        
+
         <tr class="header">
           <th scope="col"><xsl:value-of select="$term_PERMITTED_VALUE"/></th>
           <xsl:if test="./odm:EnumeratedItem/odm:Description/odm:TranslatedText">
@@ -2306,11 +2327,11 @@
             <th scope="col"><xsl:value-of select="$term_RANK"/></th>
           </xsl:if>
         </tr>
-        
+
         <xsl:for-each select="./odm:EnumeratedItem">
           <xsl:sort data-type="number" select="@OrderNumber" order="ascending"/>
           <xsl:sort data-type="number" select="@Rank" order="ascending"/>
-          
+
           <xsl:element name="tr">
             <xsl:call-template name="setRowClassOddeven">
               <xsl:with-param name="rowNum" select="position()"/>
@@ -2320,7 +2341,7 @@
               <xsl:if test="./odm:Alias/@Context = 'nci:ExtCodeID'">
                 <xsl:text> [</xsl:text>
                 <span class="nci"><xsl:value-of select="./odm:Alias/@Name"/></span>
-                <xsl:text>]</xsl:text> 
+                <xsl:text>]</xsl:text>
               </xsl:if>
               <xsl:if test="@def:ExtendedValue='Yes'">
                 <xsl:text> [</xsl:text>
@@ -2331,12 +2352,12 @@
             <!--  Define-XML v2.1 -->
             <xsl:if test="../odm:EnumeratedItem/odm:Description/odm:TranslatedText">
               <td>
-                <xsl:call-template name="displayItemDescription"/>              
+                <xsl:call-template name="displayItemDescription"/>
               </td>
             </xsl:if>
             <xsl:if test="../odm:EnumeratedItem/@Rank">
               <td><xsl:value-of select="@Rank"/></td>
-            </xsl:if>  
+            </xsl:if>
           </xsl:element>
         </xsl:for-each>
       </xsl:element>
@@ -2345,8 +2366,8 @@
       </xsl:if>
     </div>
   </xsl:template>
-  
-  
+
+
   <!-- ***************************************** -->
   <!-- External Dictionaries                     -->
   <!-- ***************************************** -->
@@ -2382,9 +2403,9 @@
               <td><xsl:value-of select="../@Name"/>
 
               <xsl:if test="../odm:Description/odm:TranslatedText">
-                <div class="description"><xsl:value-of select="../odm:Description/odm:TranslatedText"/></div> 
+                <div class="description"><xsl:value-of select="../odm:Description/odm:TranslatedText"/></div>
               </xsl:if>
- 
+
                 <!--  Define-XML v2.1 -->
                 <xsl:if test="../@def:CommentOID">
                 <div class="description">
@@ -2395,7 +2416,7 @@
                   </xsl:call-template>
                 </div>
               </xsl:if>
-                
+
               </td>
               <td>
                 <xsl:choose>
@@ -2430,10 +2451,10 @@
           </xsl:for-each>
         </xsl:element>
       </div>
-      
+
       <xsl:call-template name="linkTop"/>
       <xsl:call-template name="lineBreak"/>
-      
+
     </xsl:if>
   </xsl:template>
 
@@ -2477,7 +2498,7 @@
               </td>
               <td>
                 <div class="method-code"><xsl:value-of select="./odm:Description/odm:TranslatedText"/></div>
- 
+
                 <xsl:if test="string-length(./odm:FormalExpression) &gt; 0">
                   <xsl:for-each select="odm:FormalExpression">
                     <div class="formalexpression">
@@ -2496,16 +2517,16 @@
                 <xsl:for-each select="./def:DocumentRef">
                   <xsl:call-template name="displayDocumentRef"/>
                 </xsl:for-each>
-                
+
               </td>
             </xsl:element>
           </xsl:for-each>
         </xsl:element>
       </div>
-      
+
       <xsl:call-template name="linkTop"/>
       <xsl:call-template name="lineBreak"/>
-      
+
     </xsl:if>
   </xsl:template>
 
@@ -2543,22 +2564,22 @@
                 <xsl:value-of select="@OID"/>
               </td>
               <td>
-                
+
                 <xsl:value-of select="normalize-space(.)"/>
-                
+
                 <xsl:for-each select="./def:DocumentRef">
                   <xsl:call-template name="displayDocumentRef"/>
                 </xsl:for-each>
-                
+
               </td>
             </xsl:element>
           </xsl:for-each>
         </xsl:element>
       </div>
-      
+
       <xsl:call-template name="linkTop"/>
       <xsl:call-template name="lineBreak"/>
-      
+
     </xsl:if>
   </xsl:template>
 
@@ -2570,13 +2591,13 @@
   <!-- Document References                                             -->
   <!-- *************************************************************** -->
   <xsl:template name="displayDocumentRef">
-    
+
     <xsl:param name="element" select="'p'"/>
-    
+
     <xsl:variable name="leafID" select="@leafID"/>
     <xsl:variable name="leaf" select="$g_seqleafs[@ID = $leafID]"/>
     <xsl:variable name="href" select="$leaf/@xlink:href"/>
-    
+
     <xsl:choose>
       <xsl:when test="def:PDFPageRef">
         <xsl:for-each select="def:PDFPageRef">
@@ -2598,8 +2619,8 @@
           <xsl:variable name="PageRefs" select="normalize-space(@PageRefs)"/>
           <xsl:variable name="PageFirst" select="normalize-space(@FirstPage)"/>
           <xsl:variable name="PageLast" select="normalize-space(@LastPage)"/>
-          
-          <xsl:element name="{$element}">  
+
+          <xsl:element name="{$element}">
             <xsl:attribute name="class">
               <xsl:text>linebreakcell</xsl:text>
             </xsl:attribute>
@@ -2630,7 +2651,7 @@
                       </xsl:otherwise>
                     </xsl:choose>
                   </xsl:with-param>
-                  
+
                 </xsl:call-template>
               </xsl:when>
               <xsl:when test="$PageRefType = $REFTYPE_NAMEDDESTINATION">
@@ -2645,10 +2666,10 @@
             </xsl:choose>
 
           </xsl:element>
-        </xsl:for-each>        
+        </xsl:for-each>
       </xsl:when>
       <xsl:otherwise>
-        
+
         <xsl:variable name="title">
           <xsl:choose>
             <xsl:when test="count($leaf) = 0">
@@ -2659,8 +2680,8 @@
             </xsl:otherwise>
           </xsl:choose>
         </xsl:variable>
-        
-        <xsl:element name="{$element}">  
+
+        <xsl:element name="{$element}">
           <xsl:attribute name="class">
             <xsl:text>linebreakcell</xsl:text>
           </xsl:attribute>
@@ -2674,7 +2695,7 @@
     </xsl:choose>
 
   </xsl:template>
-  
+
   <!-- ******************************************************** -->
   <!-- Hypertext Link to CRF Pages (if necessary)               -->
   <!-- New mechanism: transform all numbers found in the string -->
@@ -2686,7 +2707,7 @@
     <xsl:param name="title"/>
     <xsl:param name="ShowTitle"/>
     <xsl:param name="Separator"/>
-    
+
     <xsl:variable name="OriginString" select="$pagenumbers"/>
     <xsl:variable name="first">
       <xsl:choose>
@@ -2700,12 +2721,12 @@
     </xsl:variable>
     <xsl:variable name="rest" select="substring-after($OriginString,$Separator)"/>
     <xsl:variable name="stringlengthfirst" select="string-length($first)"/>
-    
+
     <xsl:if test="$ShowTitle != '0'">
       <xsl:value-of select="$title"/>
       <xsl:text> [</xsl:text>
-    </xsl:if>  
-    
+    </xsl:if>
+
     <xsl:if test="string-length($first) > 0">
       <xsl:choose>
         <xsl:when test="number($first)">
@@ -2722,10 +2743,10 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:if>
-    
+
     <!-- split up the second part in words (recursion) -->
     <xsl:if test="string-length($rest) > 0">
-      
+
       <xsl:choose>
         <xsl:when test="contains($rest,$Separator)">
           <xsl:call-template name="linkPages2Hyperlinks">
@@ -2740,7 +2761,7 @@
           <xsl:text> </xsl:text>
           <xsl:value-of select="$Separator"/>
           <xsl:text> </xsl:text>
-          
+
           <xsl:choose>
             <xsl:when test="number($rest)">
               <!-- it is a number, create the hyperlink -->
@@ -2757,15 +2778,15 @@
               <xsl:text>]</xsl:text>
             </xsl:otherwise>
           </xsl:choose>
-          
+
         </xsl:otherwise>
       </xsl:choose>
     </xsl:if>
-    
+
     <xsl:if test="string-length($rest) = 0">
       <xsl:text>]</xsl:text>
     </xsl:if>
-    
+
   </xsl:template>
 
   <!-- ******************************************************** -->
@@ -2777,7 +2798,7 @@
     <xsl:param name="title"/>
     <xsl:param name="ShowTitle"/>
     <xsl:param name="Separator"/>
-    
+
     <xsl:variable name="OriginString" select="$destinations"/>
     <xsl:variable name="first">
       <xsl:choose>
@@ -2791,12 +2812,12 @@
     </xsl:variable>
     <xsl:variable name="rest" select="substring-after($OriginString,$Separator)"/>
     <xsl:variable name="stringlengthfirst" select="string-length($first)"/>
-    
+
     <xsl:if test="$ShowTitle != '0'">
       <xsl:value-of select="$title"/>
       <xsl:text> [</xsl:text>
-    </xsl:if>  
-    
+    </xsl:if>
+
     <xsl:if test="string-length($first) > 0">
       <xsl:call-template name="displayHyperlink">
         <xsl:with-param name="href" select="$href"/>
@@ -2811,10 +2832,10 @@
         </xsl:with-param>
       </xsl:call-template>
     </xsl:if>
-    
+
     <!-- split up the second part in words (recursion) -->
     <xsl:if test="string-length($rest) > 0">
-      
+
       <xsl:choose>
         <xsl:when test="contains($rest,$Separator)">
           <xsl:call-template name="linkNamedDestinations2Hyperlinks">
@@ -2829,7 +2850,7 @@
           <xsl:text> </xsl:text>
           <xsl:value-of select="$Separator"/>
           <xsl:text> </xsl:text>
-          
+
           <xsl:call-template name="displayHyperlink">
             <xsl:with-param name="href" select="$href"/>
             <xsl:with-param name="anchor" select="concat('#', $rest)"/>
@@ -2846,13 +2867,13 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:if>
-    
+
     <xsl:if test="string-length($rest) = 0">
       <xsl:text>]</xsl:text>
     </xsl:if>
-    
+
   </xsl:template>
-  
+
   <!-- ******************************************************** -->
   <!-- Hypertext Link to a Document                             -->
   <!-- ******************************************************** -->
@@ -2867,7 +2888,7 @@
           <xsl:attribute name="href">
             <xsl:value-of select="concat($href, $anchor)"/>
           </xsl:attribute>
-          <xsl:value-of select="$title"/>          
+          <xsl:value-of select="$title"/>
         </a>
         <xsl:call-template name="displayImage" />
         <xsl:text> </xsl:text>
@@ -2879,7 +2900,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
- 
+
 
   <!-- ************************************************************* -->
   <!-- Link to Parent Domain                                         -->
@@ -2910,15 +2931,15 @@
       </xsl:if>
     </xsl:if>
   </xsl:template>
-  
+
   <!-- ************************************************************* -->
   <!-- Link to Associated Persons Parent Domain                      -->
   <!-- ************************************************************* -->
   <xsl:template name="linkApParentDomain">
-    
+
     <!-- REMARK that we are still in the 'ItemRef' template
              but at the 'ItemGroupDef' level -->
-    
+
     <xsl:if test="starts-with(@Name, 'SQAP')">
       <!-- create an extra row to the XX dataset when there is one -->
       <xsl:variable name="parentDatasetName" select="concat('AP', substring(@Name, 5))"/>
@@ -2945,12 +2966,12 @@
   <!-- Link to Supplemental Qualifiers                               -->
   <!-- ************************************************************* -->
   <xsl:template name="linkSuppQual">
-    
+
     <!-- REMARK that we are still in the 'ItemRef' template
              but at the 'ItemGroupDef' level -->
 
     <xsl:variable name="suppDatasetName" select="concat('SUPP', @Name)"/>
-    
+
     <xsl:if test="../odm:ItemGroupDef[@Name = $suppDatasetName]">
       <!-- create an extra row to the SUPPXX dataset when there is one -->
       <xsl:variable name="datasetOID" select="../odm:ItemGroupDef[@Name = $suppDatasetName]/@OID"/>
@@ -2968,18 +2989,18 @@
       </tr>
     </xsl:if>
   </xsl:template>
-  
+
   <!-- ************************************************************* -->
   <!-- Link to Associated Domain Supplemental Qualifiers             -->
   <!-- ************************************************************* -->
   <xsl:template name="linkSQAP">
-    
+
     <!-- REMARK that we are still in the 'ItemRef' template
              but at the 'ItemGroupDef' level -->
-    
+
     <xsl:if test="substring(@Name, 1, 2)='AP'">
       <xsl:variable name="suppDatasetName" select="concat('SQAP', substring(@Name, 3))"/>
-      
+
       <xsl:if test="../odm:ItemGroupDef[@Name = $suppDatasetName]">
         <!-- create an extra row to the SUPPXX dataset when there is one -->
         <xsl:variable name="datasetOID" select="../odm:ItemGroupDef[@Name = $suppDatasetName]/@OID"/>
@@ -2996,21 +3017,21 @@
           </td>
         </tr>
       </xsl:if>
-    </xsl:if>  
+    </xsl:if>
   </xsl:template>
-  
-  
+
+
   <!-- ************************************************************* -->
   <!-- Get Parent Dataset Description                                -->
   <!-- ************************************************************* -->
-  <xsl:template name="getParentDescription">  
-    
+  <xsl:template name="getParentDescription">
+
     <xsl:param name="OID" />
-    
+
     <xsl:variable name="Domain" select="$g_seqItemGroupDefs[@OID=$OID]/@Domain"/>
     <xsl:variable name="Name" select="$g_seqItemGroupDefs[@OID=$OID]/@Name"/>
     <xsl:variable name="ParentDescription" select="$g_seqItemGroupDefs[@Domain = $Domain and @Domain = @Name and @Name != $Name]/odm:Description/odm:TranslatedText"/>
-        
+
     <xsl:choose>
       <xsl:when test="odm:Alias[@Context='DomainDescription']">
         <xsl:value-of select="odm:Alias/@Name"/>
@@ -3018,9 +3039,9 @@
       <xsl:otherwise>
         <xsl:value-of select="$ParentDescription"/>
       </xsl:otherwise>
-    </xsl:choose>    
-  </xsl:template>  
-  
+    </xsl:choose>
+  </xsl:template>
+
   <!-- ************************************************************* -->
   <!-- Display Comment                                               -->
   <!-- ************************************************************* -->
@@ -3029,15 +3050,15 @@
     <xsl:param name="CommentOID" />
     <xsl:param name="CommentPrefix"/>
     <xsl:param name="element" select="'p'"/>
-    
+
     <xsl:if test="$CommentOID">
       <xsl:variable name="Comment" select="$g_seqCommentDefs[@OID=$CommentOID]"/>
-      
+
       <xsl:variable name="CommentTranslatedText">
         <xsl:value-of select="normalize-space($g_seqCommentDefs[@OID=$CommentOID]/odm:Description/odm:TranslatedText)"/>
-      </xsl:variable> 
- 
-      <xsl:element name="{$element}">  
+      </xsl:variable>
+
+      <xsl:element name="{$element}">
         <xsl:attribute name="class">
           <xsl:text>linebreakcell</xsl:text>
         </xsl:attribute>
@@ -3045,24 +3066,24 @@
           <xsl:when test="string-length($CommentTranslatedText) &gt; 0">
             <xsl:if test="$CommentPrefix != '0'">
               <span class="prefix"><xsl:value-of select="$PREFIX_COMMENT_TEXT"/></span>
-            </xsl:if>  
+            </xsl:if>
             <xsl:value-of select="$CommentTranslatedText"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:if test="$CommentPrefix != '0'">
               <span class="prefix"><xsl:value-of select="$PREFIX_COMMENT_TEXT"/></span>
-            </xsl:if>  
+            </xsl:if>
             <span class="unresolved"><xsl:value-of select="$UNRESOLVED_TEXT"/><xsl:value-of select="$CommentOID"/>]</span>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:element>
-      
+
       <xsl:for-each select="$Comment/def:DocumentRef">
         <xsl:call-template name="displayDocumentRef">
           <xsl:with-param name="element" select="$element" />
         </xsl:call-template>
       </xsl:for-each>
-      
+
     </xsl:if>
   </xsl:template>
 
@@ -3077,7 +3098,7 @@
       </span>
     </xsl:if>
   </xsl:template>
-  
+
   <!-- ***************************************** -->
   <!-- Display Item Description                       -->
   <!-- ***************************************** -->
@@ -3088,14 +3109,14 @@
       </span>
     </xsl:if>
   </xsl:template>
-  
+
   <!-- ************************************************************* -->
   <!-- Display ItemDef Length                                        -->
   <!-- ************************************************************* -->
   <xsl:template name="displayItemDefLength">
-    
+
     <xsl:param name="ItemDef"/>
-    
+
     <xsl:choose>
       <xsl:when test="$ItemDef/@Length">
         <xsl:value-of select="$ItemDef/@Length"/>
@@ -3103,16 +3124,16 @@
       <xsl:otherwise>
       </xsl:otherwise>
     </xsl:choose>
-    
+
   </xsl:template>
-  
+
   <!-- ************************************************************* -->
   <!-- Display ItemDef Length / DisplayFormat                        -->
   <!-- ************************************************************* -->
   <xsl:template name="displayItemDefLengthDFormat">
-    
+
     <xsl:param name="ItemDef"/>
-    
+
     <xsl:choose>
       <xsl:when test="$ItemDef/@def:DisplayFormat">
         <xsl:value-of select="$ItemDef/@def:DisplayFormat"/>
@@ -3123,14 +3144,14 @@
     </xsl:choose>
 
   </xsl:template>
-  
+
   <!-- ************************************************************* -->
   <!-- Display ItemDef Length [Significant Digits] : DisplayFormat   -->
   <!-- ************************************************************* -->
   <xsl:template name="displayItemDefLengthSignDigitsDisplayFormat">
-    
+
     <xsl:param name="ItemDef"/>
-    
+
     <xsl:choose>
       <xsl:when test="$ItemDef/@Length">
         <xsl:value-of select="$ItemDef/@Length"/>
@@ -3150,23 +3171,23 @@
         </xsl:if>
       </xsl:otherwise>
     </xsl:choose>
-    
+
   </xsl:template>
-  
+
   <!-- ************************************************************* -->
   <!-- Display ItemDef Method                                        -->
   <!-- ************************************************************* -->
   <xsl:template name="displayItemDefMethod">
-    
+
     <xsl:param name="MethodOID"/>
     <xsl:param name="MethodPrefix"/>
-    
+
     <xsl:if test="$MethodOID">
       <xsl:variable name="Method" select="$g_seqMethodDefs[@OID=$MethodOID]"/>
       <xsl:variable name="MethodType" select="$g_seqMethodDefs[@OID=$MethodOID]/@Type"/>
       <xsl:variable name="MethodTranslatedText" select="$Method/odm:Description/odm:TranslatedText"/>
       <xsl:variable name="MethodFormalExpression" select="$Method/odm:FormalExpression"/>
-      
+
       <div class="method-code">
         <xsl:choose>
           <xsl:when test="string-length($MethodTranslatedText) &gt; 0">
@@ -3181,7 +3202,7 @@
                   <xsl:attribute name="title"><xsl:value-of select="$term_FORMAL_EXPRESSION"/></xsl:attribute>
                   <xsl:value-of select="$term_FORMAL_EXPRESSION"/>
                 </a>
-              </span>  
+              </span>
             </xsl:if>
           </xsl:when>
           <xsl:otherwise>
@@ -3196,7 +3217,7 @@
       <xsl:for-each select="$Method/def:DocumentRef">
         <xsl:call-template name="displayDocumentRef"/>
       </xsl:for-each>
-      
+
     </xsl:if>
   </xsl:template>
 
@@ -3207,27 +3228,27 @@
 
     <xsl:param name="itemDef"/>
     <xsl:param name="OriginPrefix"/>
-    
-    <xsl:for-each select="$itemDef/def:Origin"> 	
-      
+
+    <xsl:for-each select="$itemDef/def:Origin">
+
       <xsl:variable name="OriginType" select="@Type"/>
       <!--  Define-XML v2.1 -->
       <xsl:variable name="OriginSource" select="@Source"/>
       <xsl:variable name="OriginDescription" select="./odm:Description/odm:TranslatedText"/>
-            
+
       <div class="linebreakcell">
         <xsl:if test="$OriginPrefix != '0'">
           <span class="prefix"><xsl:value-of select="$PREFIX_ORIGIN_TEXT"/></span>
-        </xsl:if>  
+        </xsl:if>
         <xsl:value-of select="$OriginType"/>
-        
+
         <!--  Define-XML v2.1 -->
         <xsl:if test="$OriginSource">
           <xsl:text> (</xsl:text>
           <span class="linebreakcell"><xsl:value-of select="$term_SOURCE"/><xsl:text>: </xsl:text><xsl:value-of select="$OriginSource"/></span>
           <xsl:text>)</xsl:text>
         </xsl:if>
-        
+
         <xsl:if test="$OriginDescription">
           <xsl:choose>
             <!--  Define-XML v2.1 -->
@@ -3253,26 +3274,26 @@
         </xsl:if>
       </div>
 
-      <xsl:for-each select="def:DocumentRef">	
+      <xsl:for-each select="def:DocumentRef">
         <xsl:call-template name="displayDocumentRef"/>
-      </xsl:for-each>  
+      </xsl:for-each>
 
       <xsl:if test="position() != last()">
         <br />
       </xsl:if>
-      
-    </xsl:for-each>  		
+
+    </xsl:for-each>
   </xsl:template>
 
   <!-- ************************************************************* -->
   <!-- Display ItemGroup Class                                        -->
   <!-- ************************************************************* -->
   <xsl:template name="displayItemGroupClass">
-    
+
     <xsl:if test="@def:Class">
-      <xsl:value-of select="@def:Class" />    
+      <xsl:value-of select="@def:Class" />
     </xsl:if>
-    
+
     <xsl:if test="def:Class/@Name">
       <xsl:variable name="ClassName" select="def:Class/@Name"/>
       <xsl:value-of select="$ClassName" />
@@ -3284,16 +3305,16 @@
             <li class="SubClassContainer">
               <ul class="SubClass">
                 <xsl:for-each select="../def:SubClass[@ParentClass=$SubClassName]">
-                  <li class="SubSubClass"><xsl:value-of select="@Name" /></li>        
+                  <li class="SubSubClass"><xsl:value-of select="@Name" /></li>
                 </xsl:for-each>
               </ul>
-            </li>          
+            </li>
           </xsl:if>
         </ul>
       </xsl:for-each>
     </xsl:if>
   </xsl:template>
-  
+
   <!-- ************************************************************* -->
   <!-- Display ItemGroup Keys                                        -->
   <!-- ************************************************************* -->
@@ -3301,21 +3322,21 @@
     <xsl:variable name="datasetName" select="@Name"/>
     <xsl:variable name="suppDatasetName" select="concat('SUPP', $datasetName)"/>
     <xsl:variable name="sqDatasetName" select="concat('SQ', $datasetName)"/>
-    
+
     <xsl:variable name="ItemDef" select="$g_seqItemDefs[@Name='QVAL']" />
     <xsl:variable name="ItemDefValueListOID" select="$ItemDef[@OID=$g_seqItemGroupDefs[@Name = $suppDatasetName or @Name = $sqDatasetName]/odm:ItemRef/@ItemOID]/def:ValueListRef/@ValueListOID" />
-    
+
     <xsl:for-each select="odm:ItemRef|$g_seqValueListDefs[@OID=$ItemDefValueListOID]/odm:ItemRef">
       <xsl:sort select="@KeySequence" data-type="number" order="ascending"/>
       <xsl:if test="@KeySequence[ .!='' ]">
       <xsl:variable name="ItemOID" select="@ItemOID"/>
       <xsl:variable name="Name" select="$g_seqItemDefs[@OID=$ItemOID]"/>
-      <xsl:if test="../@OID = $ItemDefValueListOID">QNAM.</xsl:if>  
+      <xsl:if test="../@OID = $ItemDefValueListOID">QNAM.</xsl:if>
       <xsl:value-of select="$Name/@Name"/>
       <xsl:if test="position() != last()">, </xsl:if>
       </xsl:if>
     </xsl:for-each>
-    
+
   </xsl:template>
 
   <!-- ************************************************************* -->
@@ -3327,29 +3348,29 @@
     <xsl:variable name="ParentDescription">
       <xsl:call-template name="getParentDescription">
         <xsl:with-param name="OID" select="@OID" />
-      </xsl:call-template>  
+      </xsl:call-template>
     </xsl:variable>
     <xsl:if test="string-length(normalize-space($ParentDescription)) &gt; 0">
       <xsl:text>, </xsl:text><xsl:value-of select="$ParentDescription"/><xsl:text></xsl:text>
     </xsl:if>
     <xsl:text>) - </xsl:text>
-    
+
     <xsl:value-of select="@def:Class"/>
     <xsl:text> </xsl:text>
-    
+
     <!--  Define-XML v2.1 -->
     <xsl:call-template name="displayStandard">
       <xsl:with-param name="element" select="'span'" />
-    </xsl:call-template>  
+    </xsl:call-template>
     <!--  Define-XML v2.1 -->
     <xsl:call-template name="displayNonStandard">
       <xsl:with-param name="element" select="'span'" />
-    </xsl:call-template>  
+    </xsl:call-template>
     <!--  Define-XML v2.1 -->
     <xsl:call-template name="displayNoData">
       <xsl:with-param name="element" select="'span'" />
-    </xsl:call-template>  
-    
+    </xsl:call-template>
+
     <xsl:variable name="archiveLocationID" select="@def:ArchiveLocationID"/>
     <xsl:variable name="archiveTitle">
       <xsl:choose>
@@ -3377,13 +3398,13 @@
   <!-- Display Standard  (Define-XML v2.1)                           -->
   <!-- ************************************************************* -->
   <xsl:template name="displayStandard">
-    
+
     <xsl:param name="element" select="'p'"/>
     <xsl:variable name="StandardOID" select="@def:StandardOID"/>
     <xsl:variable name="Standard" select="$g_seqStandard[@OID=$StandardOID]"/>
-    
+
     <xsl:if test="$StandardOID">
-       <xsl:element name="{$element}">  
+       <xsl:element name="{$element}">
         <xsl:attribute name="class">
           <xsl:text>standard-reference</xsl:text>
         </xsl:attribute>
@@ -3396,18 +3417,18 @@
          <xsl:text>]</xsl:text>
       </xsl:element>
     </xsl:if>
-    
+
   </xsl:template>
-  
+
   <!-- ************************************************************* -->
   <!-- Display NonStandard  (Define-XML v2.1)                        -->
   <!-- ************************************************************* -->
   <xsl:template name="displayNonStandard">
-    
+
     <xsl:param name="element" select="'p'"/>
-    
+
     <xsl:if test="@def:IsNonStandard='Yes'">
-      <xsl:element name="{$element}">  
+      <xsl:element name="{$element}">
         <xsl:attribute name="class">
           <xsl:text>standard-reference</xsl:text>
         </xsl:attribute>
@@ -3415,16 +3436,16 @@
       </xsl:element>
     </xsl:if>
   </xsl:template>
-  
+
   <!-- ************************************************************* -->
   <!-- Display NoData (Define-XML v2.1)                              -->
   <!-- ************************************************************* -->
   <xsl:template name="displayNoData">
-    
+
     <xsl:param name="element" select="'p'"/>
-    
+
     <xsl:if test="@def:HasNoData='Yes'">
-      <xsl:element name="{$element}">  
+      <xsl:element name="{$element}">
         <xsl:attribute name="class">
           <xsl:text>nodata</xsl:text>
         </xsl:attribute>
@@ -3432,7 +3453,7 @@
       </xsl:element>
     </xsl:if>
   </xsl:template>
-  
+
   <!-- ************************************************************* -->
   <!-- Display WhereClause                                           -->
   <!-- ************************************************************* -->
@@ -3441,22 +3462,23 @@
     <xsl:param name="ItemGroupLink"/>
     <xsl:param name="decode"/>
     <xsl:param name="break"/>
-    
+
     <xsl:variable name="ValueRef" select="$ValueItemRef"/>
     <xsl:variable name="Nwhereclauses" select="count(./def:WhereClauseRef)"/>
-    
+
+
     <xsl:for-each select="$ValueRef/def:WhereClauseRef">
-    
+
       <xsl:if test="$Nwhereclauses &gt; 1"><xsl:text>(</xsl:text></xsl:if>
       <xsl:variable name="whereOID" select="./@WhereClauseOID"/>
       <xsl:variable name="whereDef" select="$g_seqWhereClauseDefs[@OID=$whereOID]"/>
-      
+
       <xsl:if test="count($g_seqWhereClauseDefs[@OID=$whereOID])=0">
         <span class="unresolved"><xsl:value-of select="$UNRESOLVED_TEXT"/><xsl:value-of select="$whereOID"/>]</span>
       </xsl:if>
-      
+
       <xsl:for-each select="$whereDef/odm:RangeCheck">
-        
+
         <xsl:variable name="whereRefItemOID" select="./@def:ItemOID"/>
         <xsl:variable name="whereRefItemName" select="$g_seqItemDefs[@OID=$whereRefItemOID]/@Name"/>
         <xsl:variable name="whereOP" select="./@Comparator"/>
@@ -3468,13 +3490,13 @@
     		<!-- PDO                                                           -->
     		<!-- ************************************************************* -->
     		<!--xsl:variable name="whereRefItemCodeList" select="$g_seqCodeLists[@OID=$whereRefItemCodeListOID]"/-->
-    		<xsl:variable name="whereRefItemValueListOID" select="$g_seqItemDefs[@OID=$whereRefItemOID]/def:ValueListRef/@ValueListOID"/>	
-        
+    		<xsl:variable name="whereRefItemValueListOID" select="$g_seqItemDefs[@OID=$whereRefItemOID]/def:ValueListRef/@ValueListOID"/>
+
         <xsl:call-template name="ItemGroupItemLink">
           <xsl:with-param name="ItemGroupOID" select="$ItemGroupLink"/>
           <xsl:with-param name="ItemOID" select="$whereRefItemOID"/>
           <xsl:with-param name="ItemName" select="$whereRefItemName"/>
-        </xsl:call-template> 
+        </xsl:call-template>
 
         <xsl:choose>
           <xsl:when test="$whereOP = 'IN' or $whereOP = 'NOTIN'">
@@ -3581,20 +3603,20 @@
   			    </xsl:call-template>
           </xsl:otherwise>
         </xsl:choose>
-        
+
         <xsl:if test="position() != last()">
           <xsl:text> and </xsl:text>
           <xsl:if test="$break='1'"><br/></xsl:if>
         </xsl:if>
-        
+
       </xsl:for-each>
-      
+
       <xsl:if test="$Nwhereclauses &gt; 1"><xsl:text>)</xsl:text></xsl:if>
       <xsl:if test="position() != last()">
         <br/><xsl:text> or </xsl:text><br/>
         <!-- only if this is not the last WhereRef in the ItemRef  -->
       </xsl:if>
-      
+
     </xsl:for-each>
   </xsl:template>
 
@@ -3625,7 +3647,7 @@
   			<xsl:variable name="CodeList" select="$g_seqCodeLists[@OID=$whereRefItemCodeListOID]"/>
   			<xsl:if test="$decode='1'">
   			  <xsl:if test="$CodeList/odm:CodeListItem[@CodedValue=$Value]">
-  				<xsl:text> (</xsl:text>  
+  				<xsl:text> (</xsl:text>
   				<xsl:value-of
   				  select="$CodeList/odm:CodeListItem[@CodedValue=$Value]/odm:Decode/odm:TranslatedText"/>
   				<xsl:text>)</xsl:text>
@@ -3640,7 +3662,7 @@
     	      <xsl:variable name="CodeList" select="$g_seqCodeLists[@OID=$ValueListCodeListOID]"/>
     	      <xsl:if test="$decode='1'">
       			  <xsl:if test="$CodeList/odm:CodeListItem[@CodedValue=$Value]">
-      				<xsl:text> (</xsl:text>  
+      				<xsl:text> (</xsl:text>
       				<xsl:value-of
       				  select="$CodeList/odm:CodeListItem[@CodedValue=$Value]/odm:Decode/odm:TranslatedText"/>
       				<xsl:text>)</xsl:text>
@@ -3656,7 +3678,7 @@
   <!-- ************************************************************* -->
   <!-- PDO                                                           -->
   <!-- ************************************************************* -->
-  
+
   <!-- ************************************************************* -->
   <!-- Link to ItemGroup Item                                        -->
   <!-- ************************************************************* -->
@@ -3689,11 +3711,11 @@
             <xsl:value-of select="$ItemName"/>
           </xsl:otherwise>
         </xsl:choose>
-        
+
       </xsl:otherwise>
     </xsl:choose>
     <xsl:if test="string-length(normalize-space($ItemName))=0"><span class="unresolved"><xsl:value-of select="$UNRESOLVED_TEXT"/><xsl:value-of select="$ItemOID"/>]</span></xsl:if>
-    
+
   </xsl:template>
 
   <!-- ************************************************************* -->
@@ -3714,7 +3736,7 @@
           <ul class="codelist">
           <xsl:for-each select="$CodeListDef/odm:CodeListItem">
             <li class="codelist-item">
-               
+
           	<xsl:if test="$CodeListDataType='text'">
           	  <xsl:text>&#8226;&#160;</xsl:text><xsl:value-of select="concat('&quot;', @CodedValue, '&quot;')"/>
           	</xsl:if>
@@ -3773,7 +3795,7 @@
                 </p>
               </xsl:otherwise>
             </xsl:choose>
-          </xsl:if>  
+          </xsl:if>
         </xsl:otherwise>
       </xsl:choose>
 
@@ -3835,18 +3857,18 @@
     <xsl:param name="itemDef"/>
     <!-- when the datatype is one of the date/time datatypes, display 'ISO8601' in this column -->
     <xsl:if
-      test="$itemDef/@DataType='date' or 
-      $itemDef/@DataType='time' or 
-      $itemDef/@DataType='datetime' or 
-      $itemDef/@DataType='partialDate' or 
-      $itemDef/@DataType='partialTime' or 
-      $itemDef/@DataType='partialDatetime' or 
-      $itemDef/@DataType='incompleteDatetime' or 
+      test="$itemDef/@DataType='date' or
+      $itemDef/@DataType='time' or
+      $itemDef/@DataType='datetime' or
+      $itemDef/@DataType='partialDate' or
+      $itemDef/@DataType='partialTime' or
+      $itemDef/@DataType='partialDatetime' or
+      $itemDef/@DataType='incompleteDatetime' or
       $itemDef/@DataType='durationDatetime'">
       <xsl:text>ISO 8601</xsl:text>
     </xsl:if>
   </xsl:template>
-  
+
   <!-- ************************************************************* -->
   <!-- Template:    lineBreak                                        -->
   <!-- Description: This template adds a line break element          -->
@@ -3873,8 +3895,8 @@
     <xsl:if test="$g_seqValueListDefs">
       <div class="buttons">
         <div class="button">
-          <button type="button" onclick="expand_all_vlm();">              
-          <xsl:value-of select="$term_EXPAND_ALL_VLM"/>  
+          <button type="button" onclick="expand_all_vlm();">
+          <xsl:value-of select="$term_EXPAND_ALL_VLM"/>
           </button>
         </div>
         <div class="button">
@@ -3890,7 +3912,7 @@
   <!-- Link to Top                                                   -->
   <!-- ************************************************************* -->
   <xsl:template name="linkTop">
-    
+
     <xsl:choose>
       <xsl:when test="substring($interfaceLang_low, 1, 2) = 'en'">
         <p class="linktop">Go to the <a href="#main">top</a> of the Define-XML document</p>
@@ -3904,9 +3926,9 @@
           </a><xsl:text> </xsl:text><xsl:value-of select="$term_LINK_TOP_POST_HREF"/></p>
       </xsl:otherwise>
     </xsl:choose>
-   
+
   </xsl:template>
-	
+
   <!-- ************************************************************* -->
   <!-- Display image                                                 -->
   <!-- ************************************************************* -->
@@ -3932,7 +3954,7 @@
     </xsl:comment>
     <xsl:text>&#xA;</xsl:text>
   </xsl:template>
-  
+
   <!-- ************************************************************* -->
   <!-- Display Parameters                                            -->
   <!-- ************************************************************* -->
@@ -3965,14 +3987,14 @@
   <!-- Create HTML head element                                      -->
   <!-- ************************************************************* -->
   <xsl:template name="createHtmlHead">
-    
+
     <!-- Define-XML v2.1 -->
     <xsl:variable name="moreStandards">
       <xsl:if test="count($g_MetaDataVersion/def:Standards/def:Standard[@Type='IG']) > 1">
-        <xsl:text>, ...</xsl:text>              
+        <xsl:text>, ...</xsl:text>
       </xsl:if>
     </xsl:variable>
-    
+
     <head>
       <xsl:text>&#xA;  </xsl:text>
       <meta http-equiv="Content-Script-Type" content="text/javascript"/>
@@ -3989,30 +4011,30 @@
       <xsl:text>&#xA;  </xsl:text>
     </head>
   </xsl:template>
-  
+
   <!-- ************************************************************* -->
   <!-- Display Document Generation Date                              -->
   <!-- ************************************************************* -->
   <xsl:template name="displayODMCreationDateTimeDate">
     <p class="documentinfo"><xsl:value-of select="$term_DATETIME_OF_DEFINEXML_DOCUMENT_GENERATION"/>: <xsl:value-of select="/odm:ODM/@CreationDateTime"/></p>
   </xsl:template>
-  
+
   <!-- ************************************************************* -->
   <!-- Display Document Context (Define-XML v2.1)                    -->
   <!-- ************************************************************* -->
   <xsl:template name="displayContext">
     <xsl:if test="/odm:ODM/@def:Context">
       <p class="documentinfo"><xsl:value-of select="$term_DEFINEXML_CONTEXT"/>: <xsl:value-of select="/odm:ODM/@def:Context"/></p>
-    </xsl:if>  
+    </xsl:if>
   </xsl:template>
-  
+
   <!-- ************************************************************* -->
   <!-- Display Define-XML Version                                    -->
   <!-- ************************************************************* -->
   <xsl:template name="displayDefineXMLVersion">
     <p class="documentinfo"><xsl:value-of select="$term_DEFINEXML_VERSION"/>: <xsl:value-of select="$g_DefineVersion"/></p>
   </xsl:template>
-  
+
   <!-- ************************************************************* -->
   <!-- Display StyleSheet Date                                       -->
   <!-- ************************************************************* -->
@@ -4106,7 +4128,7 @@ function toggle_vlm(element) {
     if (vlm_rows[j].style.display==='none') {
       vlm_rows[j].style.display=''; }
     else {
-      vlm_rows[j].style.display='none'; 
+      vlm_rows[j].style.display='none';
       }
     }
 }
@@ -4130,7 +4152,7 @@ function collapse_all_vlm() {
  */
 document.onclick = function(e)
 {
-  var target = e ? e.target : window.event.srcElement;    
+  var target = e ? e.target : window.event.srcElement;
   while (target && !/^(a|body)$/i.test(target.nodeName))
   {
     target = target.parentNode;
@@ -4152,34 +4174,34 @@ document.onclick = function(e)
   <!-- ************************************************************* -->
   <xsl:variable name="COLOR_MENU_BODY_BACKGROUND">#FFFFFF</xsl:variable>
   <xsl:variable name="COLOR_MENU_BODY_FOREGROUND">#000000</xsl:variable>
-  <xsl:variable name="COLOR_HMENU_TEXT">#004A95</xsl:variable>  
-  <xsl:variable name="COLOR_HMENU_BULLET">#AAAAAA</xsl:variable>  
+  <xsl:variable name="COLOR_HMENU_TEXT">#004A95</xsl:variable>
+  <xsl:variable name="COLOR_HMENU_BULLET">#AAAAAA</xsl:variable>
   <xsl:variable name="COLOR_CAPTION">#696969</xsl:variable>
 
-  <xsl:variable name="COLOR_TABLE_BACKGROUND">#EEEEEE</xsl:variable>  
-  <xsl:variable name="COLOR_TR_HEADER_BACK">#6699CC</xsl:variable>  
-  <xsl:variable name="COLOR_TR_HEADER">#FFFFFF</xsl:variable>  
+  <xsl:variable name="COLOR_TABLE_BACKGROUND">#EEEEEE</xsl:variable>
+  <xsl:variable name="COLOR_TR_HEADER_BACK">#6699CC</xsl:variable>
+  <xsl:variable name="COLOR_TR_HEADER">#FFFFFF</xsl:variable>
   <xsl:variable name="COLOR_TABLEROW_ODD">#FFFFFF</xsl:variable>
   <xsl:variable name="COLOR_TABLEROW_EVEN">#EEEEEE</xsl:variable>
-  <xsl:variable name="COLOR_TR_VLM_BACK">#D3D3D3</xsl:variable>  
+  <xsl:variable name="COLOR_TR_VLM_BACK">#D3D3D3</xsl:variable>
 
-  <xsl:variable name="COLOR_BORDER">#000000</xsl:variable>  
+  <xsl:variable name="COLOR_BORDER">#000000</xsl:variable>
   <xsl:variable name="COLOR_ERROR">#000000</xsl:variable>
   <xsl:variable name="COLOR_WARNING">#000000</xsl:variable>
   <xsl:variable name="COLOR_LINK">#0000FF</xsl:variable>
   <xsl:variable name="COLOR_LINK_HOVER">#FF9900</xsl:variable>
   <xsl:variable name="COLOR_LINK_VISITED">#551A8B</xsl:variable>
-  
+
   <xsl:template name="generateCSS">
     <style type="text/css">
       .external-link-gif{
-        background: 
+        background:
         url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9gCGhErDWL4mOoAAAB6SURBVBjTbVCxDcAgDHNRP2KDY9gYO5YbWNno1mPY6E3pAJEIYCmCOCQOPogII6wNkug4d49KiXMz1EiUEg8uLBN3Ui7FVduYmxjG3JRru+facubVuIdLEV4Dzwe8V4BYg7t4Ap+d57qUnuWICBzi116v1ggfd3bM+AEZWXFvnym8EwAAAABJRU5ErkJggg==)
        no-repeat
        right center;
         padding: 8px;
-      }      
-      
+      }
+
       body{
         background-color: <xsl:value-of select="$COLOR_MENU_BODY_BACKGROUND" />;
         font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -4187,7 +4209,7 @@ document.onclick = function(e)
         margin: 0;
         padding: 30px;
       }
-      
+
       h1{
         font-size: 1.6em;
         margin-left: 0;
@@ -4195,15 +4217,15 @@ document.onclick = function(e)
         text-align: left;
         color: <xsl:value-of select="$COLOR_CAPTION" />;
       }
-      
+
       h1.header{
         text-align: center;
       }
-      
+
       ul{
         margin-left: 0px;
       }
-      
+
       a{
       color: <xsl:value-of select="$COLOR_LINK" />;
         text-decoration: underline;
@@ -4227,7 +4249,7 @@ document.onclick = function(e)
       margin-top: 2px;
       font-size: 1.4em;
       }
-      
+
       #menu{
         position: fixed;
         left: 0px;
@@ -4242,7 +4264,7 @@ document.onclick = function(e)
         text-align: left;
         white-space: nowrap;
       }
- 
+
       .hmenu li{
         list-style-type: none;
         line-height: 200%;
@@ -4262,16 +4284,16 @@ document.onclick = function(e)
         color: <xsl:value-of select="$COLOR_HMENU_BULLET" />;
         font-size: 1.2em;
       }
-      
+
       div.buttons {
         padding: 5px 0 5px 40px;
         display: inline-block;
       }
         div.button {
-        padding: 5px 0 5px 0;   
+        padding: 5px 0 5px 0;
       }
-      
-      button { 
+
+      button {
         width: 100%;
         -webkit-border-radius: 10px;
         -moz-border-radius: 10px;
@@ -4293,14 +4315,14 @@ document.onclick = function(e)
         color: <xsl:value-of select="$COLOR_MENU_BODY_FOREGROUND" />;
         float: none !important;
       }
-      
+
       ul.codelist{
         padding: 1px;
         margin-left: 1px;
         margin-right: 1px;
         margin-top: 1px;
         margin-bottom: 1px;
-        
+
       }
       .codelist li{
         list-style-type:none;
@@ -4308,7 +4330,7 @@ document.onclick = function(e)
         padding-left: 0;
         text-indent: -4px;
       }
-      
+
       .codelist-caption{
         font-size: 1.4em;
         margin-top: 20px;
@@ -4318,7 +4340,7 @@ document.onclick = function(e)
         text-align: left;
         color: <xsl:value-of select="$COLOR_CAPTION" />;
       }
-      
+
       .codelist-item{
         list-style-type: disc;
         list-style-position: inside;
@@ -4336,7 +4358,7 @@ document.onclick = function(e)
         white-space: -moz-pre-wrap; /* Mozilla */
         white-space: -hp-pre-wrap; /* HP Printers */
         word-wrap: break-word; /* IE 5+ */
-      }      
+      }
 
       ul.SubClass {
         list-style-type: disc;
@@ -4344,7 +4366,7 @@ document.onclick = function(e)
       }
       li.SubClass {
         list-style-type: disc;
-      }  
+      }
       li.SubClassContainer {
         list-style-type: none;
       }
@@ -4357,14 +4379,14 @@ document.onclick = function(e)
         text-align: right;
         padding: 0px 5px;
       }
-      
+
       div.containerbox{
         padding: 0px;
         margin: 10px auto;
         border: 0px;
         page-break-after: always;
       }
-      
+
       .study-name{
         font-size: 1.6em;
         font-weight: bold;
@@ -4377,7 +4399,7 @@ document.onclick = function(e)
         color: <xsl:value-of select="$COLOR_CAPTION" />;
         border: 0px;
       }
-      
+
       div.study-metadata{
         font-size: 1.6em;
         font-weight: bold;
@@ -4390,14 +4412,14 @@ document.onclick = function(e)
         color: <xsl:value-of select="$COLOR_CAPTION" />;
         border: 0px;
       }
-      
+
       dl.study-metadata{
         width: 95%;
         padding: 5px 0px;
         font-size: 0.8em;
         color: black;
       }
-      
+
       dl.study-metadata dt{
         clear: left;
         float: left;
@@ -4406,26 +4428,26 @@ document.onclick = function(e)
         padding: 5px 5px 5px 0px;
         font-weight: bold;
       }
-      
+
       dl.study-metadata dd{
         margin-left: 210px;
         padding: 5px;
         font-weight: normal;
         min-height: 20px;
       }
-      
+
       div.codelist{
         page-break-after: avoid;
       }
-      
+
       div.qval-indent {
       margin-left: 20px;
       }
-      
+
       div.qval-indent2 {
       margin-left: 40px;
       }
-      
+
       table{
         width: 95%;
         border-spacing: 4px;
@@ -4436,7 +4458,7 @@ document.onclick = function(e)
         padding: 5px;
         empty-cells: show;
       }
-      
+
       table caption{
         border: 0px;
         left: 20px;
@@ -4446,14 +4468,14 @@ document.onclick = function(e)
         margin: 10px auto;
         text-align: left;
       }
-      
+
       .description{
         margin-left: 0px;
         color: black;
         font-weight: normal;
         font-size: 0.85em;
       }
-      
+
       table caption .dataset{
         font-weight: normal;
         float: right;
@@ -4466,17 +4488,17 @@ document.onclick = function(e)
         text-align: center;
         color: <xsl:value-of select="$COLOR_CAPTION" />;
       }
-      
+
       table tr{
         border: 1px solid <xsl:value-of select="$COLOR_BORDER" />;
       }
-      
+
       table tr.header{
         background-color: <xsl:value-of select="$COLOR_TR_HEADER_BACK" />;
         color: <xsl:value-of select="$COLOR_TR_HEADER" />;
         font-weight: bold;
       }
-      
+
       table th{
         font-weight: bold;
         vertical-align: top;
@@ -4485,18 +4507,18 @@ document.onclick = function(e)
         border: 1px solid <xsl:value-of select="$COLOR_BORDER" />;
         font-size: 1.3em;
       }
-      
+
       table th.codedvalue{
         width: 20%;
       }
       table th.length{
         width: 7%;
       }
- 
+
       table th.label{
         width: 13%;
       }
- 
+
       table td{
         vertical-align: top;
         padding: 5px;
@@ -4514,20 +4536,20 @@ document.onclick = function(e)
       table td.number{
         text-align: right;
       }
-      
+
       tr.tablerowodd{
         background-color: <xsl:value-of select="$COLOR_TABLEROW_ODD" />;
       }
       tr.tableroweven{
         background-color: <xsl:value-of select="$COLOR_TABLEROW_EVEN" />;
       }
-      
+
       .linebreakcell{
         vertical-align: top;
         margin-top: 3px;
         margin-bottom: 3px;
       }
-      
+
       .nci,
       .extended{
         font-style: italic;
@@ -4538,27 +4560,27 @@ document.onclick = function(e)
       .footnote{
         font-size: 1.2em;
       }
-      
+
       .valuelist-reference{
       vertical-align: super;
       font-size: 0.8em;
       padding-left: 5px;
       cursor: pointer;
       }
-      
+
       .valuelist-no-reference{
       vertical-align: super;
       font-size: 0.8em;
       padding-left: 5px;
       }
-      
+
       div.formalexpression{
         margin-top: 6px;
-        margin-bottom: 6px;      
+        margin-bottom: 6px;
       }
 
       span.label{
-        font-weight: bold;      
+        font-weight: bold;
       }
 
       .formalexpression-reference{
@@ -4584,7 +4606,7 @@ document.onclick = function(e)
         white-space: -hp-pre-wrap; /* HP Printers */
         word-wrap: break-word; /* IE 5+ */
       }
-      
+
       .method-code{
         vertical-align: top;
         white-space: pre; /* CSS 2.0 */
@@ -4606,11 +4628,11 @@ document.onclick = function(e)
         font-size: 1.1em;
         line-height: 60%;
       }
-      
+
       .invisible{
         display: none;
       }
-      
+
       .standard-reference {
         width: 95%;
         font-size: 1.0em;
@@ -4638,10 +4660,10 @@ document.onclick = function(e)
       td.span.unresolved{
       color: <xsl:value-of select="$COLOR_ERROR" />;
       }
-      
+
       span.prefix{
         font-weight: normal;
-      }      
+      }
 
       .arm-summary{
         width: 95%;
@@ -4656,7 +4678,7 @@ document.onclick = function(e)
       }
       .arm-summary-resultdisplay{
         margin: 0px 0px 0px 0px;
-        padding: 10px 10px 10px 10px;  
+        padding: 10px 10px 10px 10px;
         border-spacing: 5px;
         border-width: 1px;
         border-color: <xsl:value-of select="$COLOR_BORDER" />;
@@ -4666,11 +4688,11 @@ document.onclick = function(e)
       .arm-display-title{
         margin-left: 5pt;
       }
-      
+
       .table.analysisresults-detail{
         background-color: <xsl:value-of select="$COLOR_TABLEROW_EVEN" />;
       }
-      
+
       .arm-summary-result{
         margin-left: 20px;
         margin-top: 5px;
@@ -4700,7 +4722,7 @@ document.onclick = function(e)
         margin-top: 5px;
         margin-bottom: 5px;
       }
-      
+
       .arm-code-context{
         padding: 5px 0px;
       }
@@ -4727,15 +4749,15 @@ document.onclick = function(e)
         white-space: -hp-pre-wrap; /* HP Printers */
         word-wrap: break-word; /* IE 5+ */
       }
-      
+
 
       <!-- Specific print styling -->
       @media print{
-      
+
         @page {
           margin: 1.5cm;
         }
-      
+
         body,
         h1,
         table caption,
@@ -4744,13 +4766,13 @@ document.onclick = function(e)
           background: #fff;
           float: none !important;
         }
-      
+
         div.containerbox{
           padding: 0px;
           border: 0px;
           page-break-after: always;
         }
-      
+
         a:link,
         a:visited{
           background: transparent;
@@ -4771,7 +4793,7 @@ document.onclick = function(e)
           display: none !important;
           width: 0px;
         }
-        
+
         table{
           border-width: 2px;
         }
@@ -4779,7 +4801,7 @@ document.onclick = function(e)
         table tr.vlm{
         display: table-row !important;
         }
-      
+
         #menu,
         .linktop{
           display: none !important;
@@ -4792,11 +4814,11 @@ document.onclick = function(e)
         span.prefix{
           font-weight: normal;
         }
-        
+
         row, ul, img {
           page-break-inside: avoid;
         }
-      
+
       }
     </style>
   </xsl:template>
@@ -4807,5 +4829,5 @@ document.onclick = function(e)
   <xsl:template match="/odm:ODM/odm:Study/odm:GlobalVariables" />
   <xsl:template match="/odm:ODM/odm:Study/odm:BasicDefinitions" />
   <xsl:template match="/odm:ODM/odm:Study/odm:MetaDataVersion" />
-  
+
 </xsl:stylesheet>
