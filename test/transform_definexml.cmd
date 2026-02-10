@@ -10,7 +10,6 @@ call :transform adam-ja %project%\test\xml\define.cdisc.adam.xml %stylesheet% %p
 call :transform adam-zh %project%\test\xml\define.cdisc.adam.xml %stylesheet% %project%\test\html\define.cdisc.adam_zh.html "interfaceLang=zh"
 call :transform adam-en %project%\test\xml\define.cdisc.adam.xml %stylesheet% %project%\test\html\define.cdisc.adam_en.html "interfaceLang=en"
 call :transform adam    %project%\test\xml\define.cdisc.adam.xml %stylesheet% %project%\test\html\define.cdisc.adam_default.html
-call :transform adam    %project%\test\xml\define.cdisc.adam_issue09.xml %stylesheet% %project%\test\html\define.cdisc.adam_defaultissue09.html
 
 call :transform arm-ja %project%\test\xml\define.cdisc.arm.xml %stylesheet% %project%\test\html\define.cdisc.arm_ja.html "interfaceLang=ja"
 call :transform arm-zh %project%\test\xml\define.cdisc.arm.xml %stylesheet% %project%\test\html\define.cdisc.arm_zh.html "interfaceLang=zh"
@@ -47,10 +46,12 @@ call :transform_params phuse-zh %project%\test\xml\define.phuse.test.xml %styles
 call :transform_params phuse-en %project%\test\xml\define.phuse.test.xml %stylesheet% %project%\test\html\define.phuse.test.parameters_en.html "interfaceLang=en"
 call :transform_params phuse    %project%\test\xml\define.phuse.test.xml %stylesheet% %project%\test\html\define.phuse.test.parameters_default.html
 
-call :transform adam %project%\test\xml\define.cdisc.arm.xml %stylesheet% %project%\test\html\define.cdisc.arm_issue14_all_decodes.html "nCheckValueDisplay=999"
-call :transform adam %project%\test\xml\define.cdisc.arm.xml %stylesheet% %project%\test\html\define.cdisc.arm_issue14_no_decodes.html "nCheckValueDisplay=0"
-call :transform adam %project%\test\xml\define.cdisc.arm.xml %stylesheet% %project%\test\html\define.cdisc.arm_issue14.html "nCheckValueDisplay=3"
-call :transform sdtm %project%\test\xml\define.cdisc.sdtm.xml %stylesheet% %project%\test\html\define.cdisc.sdtm_issue14.html "nCheckValueDisplay=3"
+call :transform adam %project%\test\xml\define.cdisc.adam_issue09.xml %stylesheet% %project%\test\html\issue09\define.cdisc.adam_defaultissue09.html
+
+call :transform adam %project%\test\xml\define.cdisc.arm.xml %stylesheet% %project%\test\html\issue14\define.cdisc.arm_issue14_all_decodes.html "nCheckValueDisplay=999"
+call :transform adam %project%\test\xml\define.cdisc.arm.xml %stylesheet% %project%\test\html\issue14\define.cdisc.arm_issue14_no_decodes.html "nCheckValueDisplay=0"
+call :transform adam %project%\test\xml\define.cdisc.arm.xml %stylesheet% %project%\test\html\issue14\define.cdisc.arm_issue14.html "nCheckValueDisplay=3"
+call :transform sdtm %project%\test\xml\define.cdisc.sdtm.xml %stylesheet% %project%\test\html\issue14\define.cdisc.sdtm_issue14.html "nCheckValueDisplay=3"
 
 
 
