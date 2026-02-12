@@ -10,10 +10,10 @@ $xsltfile = Join-Path $(Get-Location) $xsltfile
 $xmlfile = Join-Path $(Get-Location) $xmlfile
 $outfile = Join-Path $(Get-Location) $outfile
 
-echo $xsltfile
-echo $xmlfile
-echo $outfile
-echo $interfaceLang
+Write-Output $xsltfile
+Write-Output $xmlfile
+Write-Output $outfile
+Write-Output $interfaceLang
 
 try {
   $XsltSettings = New-Object System.Xml.Xsl.XsltSettings
@@ -35,9 +35,9 @@ try {
 
   $xslt.Transform($xmlfile, $al, $_outFile)
   $_outFile.Close()
-} 
+}
 catch {
-  echo $_.Exception.Message
+  Write-Output $_.Exception.Message
 }
 finally {
 }
