@@ -181,9 +181,9 @@ Invoke-TransformWithParams "sdtm" "$project/test/xml/define.cdisc.sdtm.xml" $sty
 # Issue-specific tests
 Invoke-Transform "adam" "$project/test/xml/define.cdisc.adam_issue09.xml" $stylesheet "$project/test/html/issue09/define.cdisc.adam_issue09.html"
 
-Invoke-Transform "adam" "$project/test/xml/define.cdisc.arm.xml.xml" $stylesheet "$project/test/html/issue15/define.cdisc.arm_issue14.html"
-Invoke-Transform "adam" "$project/test/xml/define.cdisc.arm.xml.xml" $stylesheet "$project/test/html/issue15/define.cdisc.arm_issue14_all_decodes.html" "nCheckValueDisplay=999"
-Invoke-Transform "adam" "$project/test/xml/define.cdisc.arm.xml.xml" $stylesheet "$project/test/html/issue15/define.cdisc.arm_issue14_no_decodes.html" "nCheckValueDisplay=0"
-Invoke-Transform "sdtm" "$project/test/xml/define.cdisc.sdtm.xml" $stylesheet "$project/test/html/issue15/define.cdisc.sdtm_issue14.html" "nCheckValueDisplay=3"
+Invoke-Transform "adam" "$project/test/xml/define.cdisc.arm.xml" $stylesheet "$project/test/html/issue14/define.cdisc.arm_issue14.html"
+Invoke-Transform "adam" "$project/test/xml/define.cdisc.arm.xml" $stylesheet "$project/test/html/issue14/define.cdisc.arm_issue14_all_decodes.html" "nCheckValueDisplay=999"
+Invoke-Transform "adam" "$project/test/xml/define.cdisc.arm.xml" $stylesheet "$project/test/html/issue14/define.cdisc.arm_issue14_no_decodes.html" "nCheckValueDisplay=0"
+Invoke-Transform "sdtm" "$project/test/xml/define.cdisc.sdtm.xml" $stylesheet "$project/test/html/issue14/define.cdisc.sdtm_issue14.html" "nCheckValueDisplay=3"
 
 Write-Host "Transformation complete. Check $logFile for details."
