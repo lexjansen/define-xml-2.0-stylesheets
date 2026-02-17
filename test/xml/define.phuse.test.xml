@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="./stylesheets/define2-0.xsl"?>
+<?xml-stylesheet type="text/xsl" href="../../localization/define2-0.xsl"?>
 
 <!-- ********************************************************************************* -->
 <!-- File: define.xml                                                                  -->
@@ -18,20 +18,20 @@
  CreationDateTime="2017-11-06T23:58:14"
  Originator="PhUSE">
 
- <!-- ****************************************** -->
- <!-- OID conventions used in this file:         -->
- <!--    FileID                  = FL.           -->
- <!--    Study                   = ST.           -->
- <!--    MetaDataVersion         = MDV.          -->
- <!--    def:leaf, leafID        = LF.           -->
- <!--    def:ValueListDef        = VL.           -->
- <!--    def:WhereClauseDef      = WC.           -->
- <!--    ItemGroupDef            = IG.           -->
- <!--    ItemDef                 = IT.           -->
- <!--    CodeList                = CL.           -->
- <!--    MethodDef               = MT.           -->
- <!--    def:CommentDef          = COM.          -->
- <!-- ****************************************** -->
+  <!-- ****************************************** -->
+  <!-- OID conventions used in this file:         -->
+  <!--    FileID                  = FL.           -->
+  <!--    Study                   = ST.           -->
+  <!--    MetaDataVersion         = MDV.          -->
+  <!--    def:leaf, leafID        = LF.           -->
+  <!--    def:ValueListDef        = VL.           -->
+  <!--    def:WhereClauseDef      = WC.           -->
+  <!--    ItemGroupDef            = IG.           -->
+  <!--    ItemDef                 = IT.           -->
+  <!--    CodeList                = CL.           -->
+  <!--    MethodDef               = MT.           -->
+  <!--    def:CommentDef          = COM.          -->
+  <!-- ****************************************** -->
 
  <Study OID="ST.PHUSE/PHUSE01">
   <GlobalVariables>
@@ -47,29 +47,29 @@
    def:StandardName="XYZ-IG"
    def:StandardVersion="1.0">
 
-    <!-- ******************************** -->
-    <!-- Annotated CRF                    -->
-    <!-- ******************************** -->
+      <!-- ******************************** -->
+      <!-- Annotated CRF                    -->
+      <!-- ******************************** -->
 
     <def:AnnotatedCRF>
       <def:DocumentRef leafID="LF.blankcrf"/>
     </def:AnnotatedCRF>
 
-   <!-- ******************************** -->
-   <!-- Supporting Documents Section [2] -->
-   <!-- ******************************** -->
+      <!-- ******************************** -->
+      <!-- Supporting Documents Section [2] -->
+      <!-- ******************************** -->
 
    <def:SupplementalDoc>
      <def:DocumentRef leafID="LF.EXTDOC1"/>
      <def:DocumentRef leafID="LF.EXTDOC2"/>
-     <!-- LF.blankcrf should not display in Supplemental Documents container as well -->
+        <!-- LF.blankcrf should not display in Supplemental Documents container as well -->
      <def:DocumentRef leafID="LF.blankcrf"/>
    </def:SupplementalDoc>
 
 
-   <!-- ********************************************************************************************* -->
-   <!-- Value list Definitions Section [3] for VLMDS.VLMCOM                                           -->
-   <!-- ********************************************************************************************* -->
+      <!-- ********************************************************************************************* -->
+      <!-- Value list Definitions Section [3] for VLMDS.VLMCOM                                           -->
+      <!-- ********************************************************************************************* -->
 
    <def:ValueListDef OID="VL.VLMDS.VLMCOM">
     <ItemRef ItemOID="IT.VLMDS.VLMCOM.49D0A6F36A80FDC6"
@@ -82,9 +82,9 @@
 
    </def:ValueListDef>
 
-   <!-- ********************************************************************************************* -->
-   <!-- Value list Definitions Section [3] for VLMDS.VLMGCD                                           -->
-   <!-- ********************************************************************************************* -->
+      <!-- ********************************************************************************************* -->
+      <!-- Value list Definitions Section [3] for VLMDS.VLMGCD                                           -->
+      <!-- ********************************************************************************************* -->
 
    <def:ValueListDef OID="VL.VLMDS.VLMGCD">
     <ItemRef ItemOID="IT.VLMDS.VLMGCD.319AB88F3E1C2056"
@@ -97,9 +97,9 @@
 
    </def:ValueListDef>
 
-   <!-- ********************************************************************************************* -->
-   <!-- Value list Definitions Section [3] for VLMDS.VLMGDCD                                          -->
-   <!-- ********************************************************************************************* -->
+      <!-- ********************************************************************************************* -->
+      <!-- Value list Definitions Section [3] for VLMDS.VLMGDCD                                          -->
+      <!-- ********************************************************************************************* -->
 
    <def:ValueListDef OID="VL.VLMDS.VLMGDCD">
     <ItemRef ItemOID="IT.VLMDS.VLMGDCD.C7F4F3D1BD85227E"
@@ -112,9 +112,9 @@
 
    </def:ValueListDef>
 
-   <!-- ********************************************************************************************* -->
-   <!-- Value list Definitions Section [3] for VLMDS.VLMLINK                                          -->
-   <!-- ********************************************************************************************* -->
+      <!-- ********************************************************************************************* -->
+      <!-- Value list Definitions Section [3] for VLMDS.VLMLINK                                          -->
+      <!-- ********************************************************************************************* -->
 
    <def:ValueListDef OID="VL.VLMDS.VLMLINK">
     <ItemRef ItemOID="IT.VLMDS.VLMLINK.D38BF4FA5F69BD3F"
@@ -158,9 +158,9 @@
 
    </def:ValueListDef>
 
-   <!-- ********************************************************************************************* -->
-   <!-- Value list Definitions Section [3] for VLMDS.VLMORIG                                          -->
-   <!-- ********************************************************************************************* -->
+      <!-- ********************************************************************************************* -->
+      <!-- Value list Definitions Section [3] for VLMDS.VLMORIG                                          -->
+      <!-- ********************************************************************************************* -->
 
    <def:ValueListDef OID="VL.VLMDS.VLMORIG">
     <ItemRef ItemOID="IT.VLMDS.VLMORIG.BA076102E08C0240"
@@ -207,9 +207,9 @@
 
    </def:ValueListDef>
 
-   <!-- ********************************************************************************************* -->
-   <!-- Value list Definitions Section [3] for VLMDS.VLMTYPE                                          -->
-   <!-- ********************************************************************************************* -->
+      <!-- ********************************************************************************************* -->
+      <!-- Value list Definitions Section [3] for VLMDS.VLMTYPE                                          -->
+      <!-- ********************************************************************************************* -->
 
    <def:ValueListDef OID="VL.VLMDS.VLMTYPE">
     <ItemRef ItemOID="IT.VLMDS.VLMTYPE.77FB8B51F19C33D8"
@@ -302,9 +302,9 @@
 
    </def:ValueListDef>
 
-   <!-- ********************************************************************************************* -->
-   <!-- Value list Definitions Section [3] for VLMDS.VLMWHEXT                                         -->
-   <!-- ********************************************************************************************* -->
+      <!-- ********************************************************************************************* -->
+      <!-- Value list Definitions Section [3] for VLMDS.VLMWHEXT                                         -->
+      <!-- ********************************************************************************************* -->
 
    <def:ValueListDef OID="VL.VLMDS.VLMWHEXT">
     <ItemRef ItemOID="IT.VLMDS.VLMWHEXT.B453BBA7E9590F96"
@@ -317,9 +317,9 @@
 
    </def:ValueListDef>
 
-   <!-- ********************************************************************************************* -->
-   <!-- Value list Definitions Section [3] for VLMDS.VLMWHNCI                                         -->
-   <!-- ********************************************************************************************* -->
+      <!-- ********************************************************************************************* -->
+      <!-- Value list Definitions Section [3] for VLMDS.VLMWHNCI                                         -->
+      <!-- ********************************************************************************************* -->
 
    <def:ValueListDef OID="VL.VLMDS.VLMWHNCI">
     <ItemRef ItemOID="IT.VLMDS.VLMWHNCI.97F8085568AF10EC"
@@ -332,9 +332,9 @@
 
    </def:ValueListDef>
 
-   <!-- ********************************************************************************************* -->
-   <!-- Value list Definitions Section [3] for VLMDS.VLMWHR                                           -->
-   <!-- ********************************************************************************************* -->
+      <!-- ********************************************************************************************* -->
+      <!-- Value list Definitions Section [3] for VLMDS.VLMWHR                                           -->
+      <!-- ********************************************************************************************* -->
 
    <def:ValueListDef OID="VL.VLMDS.VLMWHR">
     <ItemRef ItemOID="IT.VLMDS.VLMWHR.2295993BFB7B482F"
@@ -411,9 +411,9 @@
 
    </def:ValueListDef>
 
-    <!-- ********************************************************************************************* -->
-    <!-- Value list with govering variable not in current dataset                                      -->
-    <!-- ********************************************************************************************* -->
+      <!-- ********************************************************************************************* -->
+      <!-- Value list with govering variable not in current dataset                                      -->
+      <!-- ********************************************************************************************* -->
 
     <def:ValueListDef OID="VL.VLMDS.FLAGVAR">
       <ItemRef ItemOID="IT.VLMDS.FLAGVAR.97F8085568AF10EC"
@@ -426,9 +426,9 @@
 
     </def:ValueListDef>
 
-    <!-- ********************************************************************************************* -->
-    <!-- Value list Definitions for SuppQuals: SuppTest                                                -->
-    <!-- ********************************************************************************************* -->
+      <!-- ********************************************************************************************* -->
+      <!-- Value list Definitions for SuppQuals: SuppTest                                                -->
+      <!-- ********************************************************************************************* -->
 
     <def:ValueListDef OID="VL.SUPPTEST.QVAL">
       <ItemRef ItemOID="IT.SUPPTEST.QVAL.VALUE1" OrderNumber="1" Mandatory="No" KeySequence="4" MethodOID="MT.VALUE1" Role="RoleVal1">
@@ -454,9 +454,9 @@
      </ItemRef>
     </def:ValueListDef>
 
-    <!-- ********************************************************************************************* -->
-    <!-- Value list Definitions for SuppQuals: SqApTestDs                                              -->
-    <!-- ********************************************************************************************* -->
+      <!-- ********************************************************************************************* -->
+      <!-- Value list Definitions for SuppQuals: SqApTestDs                                              -->
+      <!-- ********************************************************************************************* -->
 
     <def:ValueListDef OID="VL.SQAPTEST.QVAL">
       <ItemRef ItemOID="IT.SQAPTEST.QVAL.APVALUE1" OrderNumber="1" Mandatory="No" KeySequence="4" MethodOID="MT.VALUE1" Role="RoleApVal1">
@@ -470,9 +470,9 @@
       </ItemRef>
     </def:ValueListDef>
 
-    <!-- ********************************************************************************************* -->
-   <!-- WhereClause Definitions Section [4] (Used/Referenced in Value List Definitions)               -->
-   <!-- ********************************************************************************************* -->
+      <!-- ********************************************************************************************* -->
+      <!-- WhereClause Definitions Section [4] (Used/Referenced in Value List Definitions)               -->
+      <!-- ********************************************************************************************* -->
 
    <def:WhereClauseDef OID="WC.VLMDS.VLMCOM.49D0A6F36A80FDC6" def:CommentOID="COM.WHRCOM">
     <RangeCheck SoftHard="Soft" def:ItemOID="IT.VLMDS.VLMGV" Comparator="EQ">
@@ -770,7 +770,7 @@
       </RangeCheck>
     </def:WhereClauseDef>
 
-    <!-- Selection Criteria -->
+      <!-- Selection Criteria -->
     <def:WhereClauseDef OID="WC.Table_14-3.01.R.1.VLMDS">
       <RangeCheck Comparator="EQ" SoftHard="Soft" def:ItemOID="IT.VLMDS.VLMGV">
         <CheckValue>WHRBASIC</CheckValue>
@@ -810,9 +810,9 @@
       </RangeCheck>
     </def:WhereClauseDef>
 
-    <!-- ************************************************************************************************************************ -->
-   <!-- ItemGroupDef Definitions Section [5] for TESTDS (Datasets and first set of variable properties)                          -->
-   <!-- ************************************************************************************************************************ -->
+      <!-- ************************************************************************************************************************ -->
+      <!-- ItemGroupDef Definitions Section [5] for TESTDS (Datasets and first set of variable properties)                          -->
+      <!-- ************************************************************************************************************************ -->
 
    <ItemGroupDef OID="IG.TESTDS"
      Domain="TESTDS"
@@ -829,9 +829,9 @@
       <TranslatedText xml:lang="en">Test dataset for Define-XML 2.0 stylesheet</TranslatedText>
      </Description>
 
-    <!-- *************************************************************** -->
-    <!-- Variables for the ItemGroupDef TESTDS                           -->
-    <!-- *************************************************************** -->
+        <!-- *************************************************************** -->
+        <!-- Variables for the ItemGroupDef TESTDS                           -->
+        <!-- *************************************************************** -->
 
     <ItemRef ItemOID="IT.TESTDS.MNDVAR"
      OrderNumber="1" Mandatory="Yes"
@@ -1005,18 +1005,18 @@
      MethodOID="MT.TESTDS.CLEXT"
     />
 
-    <!-- ********************************************************************************** -->
-    <!-- def:leaf details for hypertext linking the dataset TESTDS                          -->
-    <!-- ********************************************************************************** -->
+        <!-- ********************************************************************************** -->
+        <!-- def:leaf details for hypertext linking the dataset TESTDS                          -->
+        <!-- ********************************************************************************** -->
 
     <def:leaf ID="LF.DS.TESTDS" xlink:href="datasets/testds.xpt">
      <def:title>testds.xpt</def:title>
     </def:leaf>
    </ItemGroupDef>
 
-    <!-- ************************************************************************************************************************ -->
-    <!-- ItemGroupDef Definitions for APTESTDS                                                                                    -->
-    <!-- ************************************************************************************************************************ -->
+      <!-- ************************************************************************************************************************ -->
+      <!-- ItemGroupDef Definitions for APTESTDS                                                                                    -->
+      <!-- ************************************************************************************************************************ -->
 
     <ItemGroupDef OID="IG.APTESTDS"
       Domain="APTESTDS"
@@ -1045,9 +1045,9 @@
       </def:leaf>
     </ItemGroupDef>
 
-    <!-- ************************************************************************************************************************ -->
-   <!-- ItemGroupDef Definitions Section [5] for VLMDS (Datasets and first set of variable properties)                           -->
-   <!-- ************************************************************************************************************************ -->
+      <!-- ************************************************************************************************************************ -->
+      <!-- ItemGroupDef Definitions Section [5] for VLMDS (Datasets and first set of variable properties)                           -->
+      <!-- ************************************************************************************************************************ -->
 
    <ItemGroupDef OID="IG.VLMDS"
      Domain="VLMDS"
@@ -1064,9 +1064,9 @@
      <TranslatedText xml:lang="en">Dataset with value level metadata</TranslatedText>
     </Description>
 
-    <!-- *************************************************************** -->
-    <!-- Variables for the ItemGroupDef VLMDS                            -->
-    <!-- *************************************************************** -->
+        <!-- *************************************************************** -->
+        <!-- Variables for the ItemGroupDef VLMDS                            -->
+        <!-- *************************************************************** -->
 
     <ItemRef ItemOID="IT.VLMDS.KEY1"
      OrderNumber="1" Mandatory="No"
@@ -1165,18 +1165,18 @@
        MethodOID="MT.TESTDS.FLOATTP"
      />
 
-    <!-- ********************************************************************************** -->
-    <!-- def:leaf details for hypertext linking the dataset VLMDS                           -->
-    <!-- ********************************************************************************** -->
+        <!-- ********************************************************************************** -->
+        <!-- def:leaf details for hypertext linking the dataset VLMDS                           -->
+        <!-- ********************************************************************************** -->
 
     <def:leaf ID="LF.DS.VLMDS" xlink:href="datasets/vlmds.xpt">
      <def:title>vlmds.xpt</def:title>
     </def:leaf>
    </ItemGroupDef>
 
-    <!-- ************************************************************************************************************************ -->
-    <!-- ItemGroupDef Definitions for SUPPTEST                                                                                  -->
-    <!-- ************************************************************************************************************************ -->
+      <!-- ************************************************************************************************************************ -->
+      <!-- ItemGroupDef Definitions for SUPPTEST                                                                                  -->
+      <!-- ************************************************************************************************************************ -->
 
     <ItemGroupDef OID="IG.SUPPTEST"
       Domain="SUPPTEST"
@@ -1206,9 +1206,9 @@
       </def:leaf>
     </ItemGroupDef>
 
-    <!-- ************************************************************************************************************************ -->
-    <!-- ItemGroupDef Definitions for SqApTest                                                                                  -->
-    <!-- ************************************************************************************************************************ -->
+      <!-- ************************************************************************************************************************ -->
+      <!-- ItemGroupDef Definitions for SqApTest                                                                                  -->
+      <!-- ************************************************************************************************************************ -->
 
     <ItemGroupDef OID="IG.SQAPTEST"
       Domain="SQAPTEST"
@@ -1238,9 +1238,9 @@
       </def:leaf>
     </ItemGroupDef>
 
-   <!-- ******************************************************************************** -->
-   <!-- ItemDef Section [6] Details of each variable for domain TESTDS                   -->
-   <!-- ******************************************************************************** -->
+      <!-- ******************************************************************************** -->
+      <!-- ItemDef Section [6] Details of each variable for domain TESTDS                   -->
+      <!-- ******************************************************************************** -->
 
    <ItemDef OID="IT.TESTDS.MNDVAR"
     Name="MNDVAR"
@@ -1823,9 +1823,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
       </def:Origin>
     </ItemDef>
 
-    <!-- ******************************************************************************** -->
-    <!-- SuppQual ItemDef definitions for SuppTest                                        -->
-    <!-- ******************************************************************************** -->
+      <!-- ******************************************************************************** -->
+      <!-- SuppQual ItemDef definitions for SuppTest                                        -->
+      <!-- ******************************************************************************** -->
 
     <ItemDef OID="IT.RDOMAIN" Name="RDOMAIN" DataType="text" Length="2" SASFieldName="RDOMAIN">
       <Description>
@@ -1915,9 +1915,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
       <def:ValueListRef ValueListOID="VL.SUPPTEST.QVAL"/>
     </ItemDef>
 
-    <!-- ******************************************************************************** -->
-    <!-- SuppQual ItemDef definitions for SqApTestDs                                      -->
-    <!-- ******************************************************************************** -->
+      <!-- ******************************************************************************** -->
+      <!-- SuppQual ItemDef definitions for SqApTestDs                                      -->
+      <!-- ******************************************************************************** -->
 
     <ItemDef OID="IT.SQAPTEST.IDVAR" Name="IDVAR" DataType="text" Length="5" SASFieldName="IDVAR"
       def:CommentOID="COM.IDVAR">
@@ -1965,9 +1965,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
       <def:ValueListRef ValueListOID="VL.SQAPTEST.QVAL"/>
     </ItemDef>
 
-    <!-- ******************************************************************************** -->
-   <!-- ItemDef Section [6] Details of each variable for domain VLMDS                    -->
-   <!-- ******************************************************************************** -->
+      <!-- ******************************************************************************** -->
+      <!-- ItemDef Section [6] Details of each variable for domain VLMDS                    -->
+      <!-- ******************************************************************************** -->
 
    <ItemDef OID="IT.VLMDS.KEY1"
     Name="KEY1"
@@ -2227,9 +2227,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
     </ItemDef>
 
 
-    <!-- ******************************************************************************** -->
-   <!-- ItemDef Section [7] Value level meta definitions                                 -->
-   <!-- ******************************************************************************** -->
+      <!-- ******************************************************************************** -->
+      <!-- ItemDef Section [7] Value level meta definitions                                 -->
+      <!-- ******************************************************************************** -->
 
    <ItemDef OID="IT.VLMDS.VLMCOM.49D0A6F36A80FDC6"
     Name="VLMGVEQWHRCOM"
@@ -2627,9 +2627,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
       <def:Origin Type="Assigned"/>
     </ItemDef>
 
-   <!-- ************************************************************ -->
-   <!-- Codelist section [8]                                         -->
-   <!-- ************************************************************ -->
+      <!-- ************************************************************ -->
+      <!-- Codelist section [8]                                         -->
+      <!-- ************************************************************ -->
 
    <CodeList OID="CL.CLFLOAT" Name="CLFLOAT" DataType="float">
     <EnumeratedItem CodedValue="1.0" OrderNumber="1"/>
@@ -2647,18 +2647,18 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
     <EnumeratedItem CodedValue="WHRCOD" OrderNumber="1"/>
    </CodeList>
 
-   <!-- ************************************************************ -->
-   <!-- External codelist section [9B]                               -->
-   <!-- ************************************************************ -->
+      <!-- ************************************************************ -->
+      <!-- External codelist section [9B]                               -->
+      <!-- ************************************************************ -->
 
    <CodeList OID="CL.CLEXT" Name="CLEXT" DataType="text">
     <ExternalCodeList Dictionary="EXTCT" Version="1.0" ref="Reference" href="http://www.sample.com"/>
    </CodeList>
 
 
-   <!-- ************************************************************ -->
-   <!-- The Codelists (with codes/decodes) [9] are starting here     -->
-   <!-- ************************************************************ -->
+      <!-- ************************************************************ -->
+      <!-- The Codelists (with codes/decodes) [9] are starting here     -->
+      <!-- ************************************************************ -->
 
    <CodeList OID="CL.AGEU" Name="Age Unit" DataType="text">
     <CodeListItem CodedValue="DAYS" OrderNumber="1">
@@ -3315,9 +3315,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
       <EnumeratedItem CodedValue="APVALUE3" OrderNumber="3"/>
     </CodeList>
 
-    <!-- ************************************************************ -->
-   <!-- Variable Methods Section [10]                                -->
-   <!-- ************************************************************ -->
+      <!-- ************************************************************ -->
+      <!-- Variable Methods Section [10]                                -->
+      <!-- ************************************************************ -->
 
    <MethodDef Type="Computation" OID="MT.TESTDS.MNDVAR"
     Name="Algorithm for TESTDS.MNDVAR">
@@ -3672,9 +3672,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
       </Description>
     </MethodDef>
 
-   <!-- ************************************************************ -->
-   <!-- Valuemeta Methods Section [11]                               -->
-   <!-- ************************************************************ -->
+      <!-- ************************************************************ -->
+      <!-- Valuemeta Methods Section [11]                               -->
+      <!-- ************************************************************ -->
 
    <MethodDef Type="Computation" OID="MT.VLMDS.VLMCOM.49D0A6F36A80FDC6"
     Name="Algorithm for VLMDS.VLMCOM (WHERE VLMGV EQ WHRCOM)">
@@ -3932,9 +3932,9 @@ catx(".",STUDYID,SUBJID)</FormalExpression>
       <FormalExpression Context="R">paste(STUDYID, SUBJID, sep = ".")</FormalExpression>
     </MethodDef>
 
-    <!-- ************************************************************ -->
-   <!-- Comments definition section [12]                             -->
-   <!-- ************************************************************ -->
+      <!-- ************************************************************ -->
+      <!-- Comments definition section [12]                             -->
+      <!-- ************************************************************ -->
 
     <def:CommentDef OID="COM.TESTDS">
       <Description>
@@ -4085,9 +4085,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
       </Description>
     </def:CommentDef>
 
-    <!-- *********************************************** -->
-   <!-- Documents Reference section                     -->
-   <!-- *********************************************** -->
+      <!-- *********************************************** -->
+      <!-- Documents Reference section                     -->
+      <!-- *********************************************** -->
 
     <def:leaf ID="LF.blankcrf" xlink:href="blankcrf.pdf">
       <def:title>Annotated Case Report Form</def:title>
@@ -4101,11 +4101,11 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
     <def:title>Additional External Document</def:title>
    </def:leaf>
 
-    <!-- ******************************** -->
-    <!-- Leafs Definitions Section        -->
-    <!-- ******************************** -->
+      <!-- ******************************** -->
+      <!-- Leafs Definitions Section        -->
+      <!-- ******************************** -->
 
-    <!-- Leafs Definitions Section for ARM -->
+      <!-- Leafs Definitions Section for ARM -->
     <def:leaf ID="LF.Table-14-3.01"
       xlink:href="../dummy-csr/dummy-csr.pdf">
       <def:title>Table 14-3.01 </def:title>
@@ -4126,9 +4126,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
       xlink:href="../programs/at14-5-02-sas.txt">
       <def:title>at14-5-02.sas</def:title>
     </def:leaf>
-    <!-- *********************************** -->
-   <!-- End of metadata definitions section -->
-   <!-- *********************************** -->
+      <!-- *********************************** -->
+      <!-- End of metadata definitions section -->
+      <!-- *********************************** -->
 
 
 

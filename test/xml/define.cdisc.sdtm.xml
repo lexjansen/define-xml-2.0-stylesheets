@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="./stylesheets/define2-0.xsl"?>
+<?xml-stylesheet type="text/xsl" href="../../localization/define2-0.xsl"?>
 <!-- ********************************************************************************** -->
 <!-- File: define2-0-0-example-sdtm.xml                                                 -->
 <!-- Author: CDISC XML Technologies Team                                                -->
@@ -20,11 +20,11 @@
 <!--    c. The resulting HTML presentation and the availability and usability of        -->
 <!--       functions will vary depending upon which browser application is used.        -->
 <!--    d. At the time this example was released, the Google Chrome browser does not    -->
-<!--       render an XML file by using an XSL stylesheet on a local system, and for     --> 
+<!--       render an XML file by using an XSL stylesheet on a local system, and for     -->
 <!--       other browsers it may depend on extensions that the user has installed.      -->
 <!-- ********************************************************************************** -->
-<ODM 
-  xmlns="http://www.cdisc.org/ns/odm/v1.3" 
+<ODM
+  xmlns="http://www.cdisc.org/ns/odm/v1.3"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:def="http://www.cdisc.org/ns/def/v2.0"
   ODMVersion="1.3.2"
@@ -34,7 +34,7 @@
   Originator="CDISC XML Technologies Team"
   SourceSystem="MH-System"
   SourceSystemVersion="2.0.1"
-  > 
+  >
 
   <!-- ******************************************  -->
   <!-- OID conventions used in this example:       -->
@@ -56,7 +56,7 @@
   <!-- The cases included are included for         -->
   <!-- illustration purposes only.                 -->
   <!-- ******************************************  -->
-  
+
   <Study OID="cdisc01">
     <GlobalVariables>
       <StudyName>CDISC01</StudyName>
@@ -82,7 +82,7 @@
         <def:DocumentRef leafID="LF.ReviewersGuide"/>
         <def:DocumentRef leafID="LF.ComplexAlgorithms"/>
       </def:SupplementalDoc>
- 
+
 
       <!-- ************************************************************************************************************************ -->
       <!-- Value List Definitions Section (Required for Supplemental Qualifiers, Optional for other Normalized (Vertical) Datasets) -->
@@ -7650,11 +7650,11 @@ subject-level dataset to be joined with the Demographics dataset.</TranslatedTex
       <def:leaf ID="LF.ComplexAlgorithms" xlink:href="complexalgorithms.pdf">
         <def:title>Complex Algorithms</def:title>
       </def:leaf>
- 
 
-    <!-- ***********************************     -->
-    <!-- End of Metadata Definitions Section     -->
-    <!-- ***********************************     -->
+
+      <!-- ***********************************     -->
+      <!-- End of Metadata Definitions Section     -->
+      <!-- ***********************************     -->
 
     </MetaDataVersion>
   </Study>

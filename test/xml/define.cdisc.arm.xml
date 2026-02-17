@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="./stylesheets/define2-0.xsl"?>
+<?xml-stylesheet type="text/xsl" href="../../localization/define2-0.xsl"?>
 <!-- ********************************************************************************** -->
 <!-- File: define2-0-0-example-adam.xml                                                 -->
 <!-- Author: CDISC ADaM Metadata Team                                                   -->
@@ -28,7 +28,7 @@
      FileType="Snapshot"
      CreationDateTime="2015-01-27T11:51:00"
      Originator="CDISC ADaM Metadata Team">
-     
+
   <!-- ******************************************  -->
   <!-- OID conventions used in this example:       -->
   <!--    MetaDataVersion         = MDV.           -->
@@ -40,8 +40,8 @@
   <!--    CodeList                = CL.            -->
   <!--    MethodDef               = MT.            -->
   <!--    def:CommentDef          = COM.           -->
-  <!--    arm:ResultDisplay       = RD             --> 
-  <!--    arm:AnalysisResult      = AR             --> 
+  <!--    arm:ResultDisplay       = RD             -->
+  <!--    arm:AnalysisResult      = AR             -->
   <!-- ******************************************  -->
 
   <Study OID="CDISC-Sample">
@@ -180,13 +180,13 @@
           <CheckValue>Y</CheckValue>
         </RangeCheck>
       </def:WhereClauseDef>
-      
+
       <def:WhereClauseDef OID="WC.Table_14-5.02.R.1.ADSL">
         <RangeCheck Comparator="EQ" SoftHard="Soft" def:ItemOID="IT.ADSL.SAFFL">
           <CheckValue>Y</CheckValue>
         </RangeCheck>
       </def:WhereClauseDef>
-      
+
       <!-- ************************************************************************************ -->
       <!-- ItemGroupDef Definitions Section (Datasets and and first set of variable properties) -->
       <!-- ************************************************************************************ -->
@@ -2755,7 +2755,7 @@
           <TranslatedText>Set QSSEQ to missing for post baseline records. Set to QS.QSSEQ where QS.VISIT=BASELINE and QS.QSTESTCD=ACTOT.</TranslatedText>
         </Description>
       </def:CommentDef>
-      
+
       <!-- ******************************** -->
       <!-- Leafs Definitions Section        -->
       <!-- ******************************** -->
@@ -2792,7 +2792,7 @@
         xlink:href="../programs/at14-5-02-sas.txt">
         <def:title>at14-5-02.sas</def:title>
       </def:leaf>
-      
+
       <!-- ***********************************     -->
       <!-- End of Metadata Definitions Section     -->
       <!-- ***********************************     -->

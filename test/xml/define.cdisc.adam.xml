@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="./stylesheets/define2-0.xsl"?>
+<?xml-stylesheet type="text/xsl" href="../../localization/define2-0.xsl"?>
 <!-- ********************************************************************************** -->
 <!-- File: define2-0-0-example-adam.xml                                                 -->
 <!-- Author: CDISC ADaM Metadata Team                                                   -->
@@ -16,15 +16,15 @@
 <!--    c. The resulting HTML presentation and the availability and usability of        -->
 <!--       functions will vary depending upon which browser application is used.        -->
 <!--    d. At the time this example was released, the Google Chrome browser does not    -->
-<!--       render an XML file by using an XSL stylesheet on a local system, and for     --> 
+<!--       render an XML file by using an XSL stylesheet on a local system, and for     -->
 <!--       other browsers it may depend on extensions that the user has installed.      -->
 <!-- ********************************************************************************** -->
-<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3" 
-     xmlns:def="http://www.cdisc.org/ns/def/v2.0" 
+<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"
+     xmlns:def="http://www.cdisc.org/ns/def/v2.0"
      xmlns:xlink="http://www.w3.org/1999/xlink"
-     ODMVersion="1.3.2" 
-     FileOID="CDISC-Sample" 
-     FileType="Snapshot" 
+     ODMVersion="1.3.2"
+     FileOID="CDISC-Sample"
+     FileType="Snapshot"
      CreationDateTime="2013-03-03T14:47:00"
      Originator="CDISC ADaM Metadata Team"
      >
@@ -48,11 +48,11 @@
       <StudyDescription>CDISC-Sample Data Definition</StudyDescription>
       <ProtocolName>CDISC-Sample</ProtocolName>
     </GlobalVariables>
-    <MetaDataVersion OID="MDV.CDISC01.ADaMIG.1.0.ADaM.2.1" 
-      Name="Study CDISC-Sample, Data Definitions" 
-      Description="Study CDISC-Sample, Data Definitions" 
+    <MetaDataVersion OID="MDV.CDISC01.ADaMIG.1.0.ADaM.2.1"
+      Name="Study CDISC-Sample, Data Definitions"
+      Description="Study CDISC-Sample, Data Definitions"
       def:DefineVersion="2.0.0"
-      def:StandardName="ADaM-IG" 
+      def:StandardName="ADaM-IG"
       def:StandardVersion="1.0">
 
       <!-- ******************** -->
